@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, PlayCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Nav } from "@/components/marketing/Nav";
@@ -55,8 +55,8 @@ function Hero() {
             One platform for CRM, sales, invoices, inventory, analytics, AI and automation.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Button size="lg" className="w-full bg-gradient-brand animate-sheen text-primary-foreground hover:opacity-90 sm:w-auto">
-              Start Free <ArrowRight className="ml-1 h-4 w-4" />
+            <Button asChild size="lg" className="w-full bg-gradient-brand animate-sheen text-primary-foreground hover:opacity-90 sm:w-auto">
+              <Link to="/auth">Start Free <ArrowRight className="ml-1 h-4 w-4" /></Link>
             </Button>
             <Button size="lg" variant="outline" className="w-full sm:w-auto">
               <PlayCircle className="mr-1 h-4 w-4" /> See How It Works

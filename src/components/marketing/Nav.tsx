@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 import { BrandLockup } from "@/components/brand/Logo";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 
 const links = [
   { label: "Platform", href: "#platform" },
@@ -15,6 +17,13 @@ const links = [
 
 export function Nav() {
   const [open, setOpen] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSignedIn(!!data.session));
+    const { data } = supabase.auth.onAuthStateChange((_event, session) => setSignedIn(!!session));
+    return () => data.subscription.unsubscribe();
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-xl">
@@ -32,10 +41,18 @@ export function Nav() {
         </ul>
 
         <div className="hidden items-center gap-2 lg:flex">
-          <Button variant="ghost" size="sm">Log in</Button>
-          <Button size="sm" className="bg-gradient-brand animate-sheen text-primary-foreground hover:opacity-90">
-            Start Free
-          </Button>
+          {signedIn ? (
+            <Button asChild size="sm" className="bg-gradient-brand animate-sheen text-primary-foreground hover:opacity-90">
+              <Link to="/dashboard">Go to dashboard</Link>
+            </Button>
+          ) : (
+            <>
+              <Button asChild variant="ghost" size="sm"><Link to="/auth">Log in</Link></Button>
+              <Button asChild size="sm" className="bg-gradient-brand animate-sheen text-primary-foreground hover:opacity-90">
+                <Link to="/auth">Start Free</Link>
+              </Button>
+            </>
+          )}
         </div>
 
         <button
@@ -63,8 +80,18 @@ export function Nav() {
             ))}
           </ul>
           <div className="flex gap-2">
-            <Button variant="outline" className="flex-1">Log in</Button>
-            <Button className="flex-1 bg-gradient-brand text-primary-foreground">Start Free</Button>
+            {signedIn ? (
+              <Button asChild className="flex-1 bg-gradient-brand text-primary-foreground">
+                <Link to="/dashboard">Go to dashboard</Link>
+              </Button>
+            ) : (
+              <>
+                <Button asChild variant="outline" className="flex-1"><Link to="/auth">Log in</Link></Button>
+                <Button asChild className="flex-1 bg-gradient-brand text-primary-foreground">
+                  <Link to="/auth">Start Free</Link>
+                </Button>
+              </>
+            )}
           </div>
         </div>
       )}
