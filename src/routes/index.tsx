@@ -1,24 +1,96 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { ArrowRight, PlayCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Nav } from "@/components/marketing/Nav";
+import { DashboardPreview } from "@/components/marketing/DashboardPreview";
+import {
+  AiSection,
+  AutomationSection,
+  DifferentiatorSection,
+  FaqSection,
+  FinalCta,
+  Footer,
+  IntegrationsSection,
+  PlatformSection,
+  PricingSection,
+  ProblemSection,
+  SecuritySection,
+  TestimonialsSection,
+} from "@/components/marketing/Sections";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+const title = "opteraOS — AI Business Operating System";
+const description =
+  "opteraOS unifies CRM, sales, invoices, payments, inventory, analytics and AI automation in one intelligent platform. One system. Smarter business.";
+
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title },
+      { name: "description", content: description },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
+function Hero() {
+  return (
+    <section className="aurora relative overflow-hidden">
+      <div className="grid-lines pointer-events-none absolute inset-0" aria-hidden />
+      <div className="mx-auto max-w-7xl px-4 pb-20 pt-16 sm:px-6 sm:pt-24">
+        <div className="mx-auto max-w-3xl text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
+            <span className="h-1.5 w-1.5 rounded-full bg-gradient-brand" />
+            AI-powered business operating system
+          </span>
+          <h1 className="mt-6 text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-6xl">
+            Run your entire business.
+            <br />
+            <span className="text-gradient animate-sheen">Intelligently.</span>
+          </h1>
+          <p className="mx-auto mt-6 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg">
+            One platform for CRM, sales, invoices, inventory, analytics, AI and automation.
+          </p>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Button size="lg" className="w-full bg-gradient-brand animate-sheen text-primary-foreground hover:opacity-90 sm:w-auto">
+              Start Free <ArrowRight className="ml-1 h-4 w-4" />
+            </Button>
+            <Button size="lg" variant="outline" className="w-full sm:w-auto">
+              <PlayCircle className="mr-1 h-4 w-4" /> See How It Works
+            </Button>
+          </div>
+        </div>
+
+        <div className="float-soft mt-16">
+          <DashboardPreview />
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div id="top" className="min-h-screen bg-background text-foreground">
+      <Nav />
+      <main>
+        <Hero />
+        <ProblemSection />
+        <PlatformSection />
+        <AiSection />
+        <AutomationSection />
+        <DifferentiatorSection />
+        <IntegrationsSection />
+        <SecuritySection />
+        <PricingSection />
+        <TestimonialsSection />
+        <FaqSection />
+        <FinalCta />
+      </main>
+      <Footer />
     </div>
   );
 }
