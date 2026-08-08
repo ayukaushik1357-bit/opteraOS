@@ -84,12 +84,12 @@ export function DashboardPreview() {
             </button>
           </div>
           <div className="rounded-xl border border-border bg-secondary/30 p-3 text-[11px] text-muted-foreground">
-            <p className="inline-flex items-center gap-1.5 font-medium text-foreground">
+            <p className="flex items-center gap-1.5 font-medium text-foreground">
               <Zap className="h-3.5 w-3.5 text-brand-cyan" /> Automation activity
             </p>
-            <p className="mt-1.5 inline-flex items-center gap-1.5"><Boxes className="h-3 w-3" /> 8 low-stock alerts routed</p>
-            <p className="mt-1 inline-flex items-center gap-1.5"><FileText className="h-3 w-3" /> 12 invoice reminders sent</p>
-            <p className="mt-1 inline-flex items-center gap-1.5"><Bot className="h-3 w-3" /> 46 leads scored today</p>
+            <p className="mt-1.5 flex items-center gap-1.5"><Boxes className="h-3 w-3 shrink-0" /> 8 low-stock alerts routed</p>
+            <p className="mt-1 flex items-center gap-1.5"><FileText className="h-3 w-3 shrink-0" /> 12 invoice reminders sent</p>
+            <p className="mt-1 flex items-center gap-1.5"><Bot className="h-3 w-3 shrink-0" /> 46 leads scored today</p>
           </div>
         </div>
       </div>
