@@ -41,16 +41,19 @@ function AuthPage() {
     });
   }, [navigate]);
 
-  async function signIn(e: React.FormEvent) {
+  async function signIn(e: React.FormEvent): Promise<void> {
     e.preventDefault();
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     navigate({ to: "/dashboard", replace: true });
   }
 
-  async function signUp(e: React.FormEvent) {
+  async function signUp(e: React.FormEvent): Promise<void> {
     e.preventDefault();
     setLoading(true);
     const { data, error } = await supabase.auth.signUp({
@@ -59,16 +62,25 @@ function AuthPage() {
       options: { emailRedirectTo: `${window.location.origin}/dashboard` },
     });
     setLoading(false);
-    if (error) return toast.error(error.message);
-    if (data.session) return navigate({ to: "/dashboard", replace: true });
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    if (data.session) {
+      navigate({ to: "/dashboard", replace: true });
+      return;
+    }
     setSent(true);
   }
 
-  async function oauth(provider: "google" | "apple") {
+  async function oauth(provider: "google" | "apple"): Promise<void> {
     const result = await lovable.auth.signInWithOAuth(provider, {
       redirect_uri: window.location.origin,
     });
-    if (result.error) return toast.error("Could not start sign-in. Please try again.");
+    if (result.error) {
+      toast.error("Could not start sign-in. Please try again.");
+      return;
+    }
     if (result.redirected) return;
     navigate({ to: "/dashboard", replace: true });
   }
