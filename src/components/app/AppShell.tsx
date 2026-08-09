@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 import { Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { BarChart3, Building2, ChevronDown, LayoutDashboard, LogOut, Users } from "lucide-react";
+import { BarChart3, Building2, ChevronDown, Contact, FileText, LayoutDashboard, LogOut, TrendingUp, Users } from "lucide-react";
 import { BrandLockup } from "@/components/brand/Logo";
 import { Button } from "@/components/ui/button";
 import {
@@ -79,6 +79,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
 
 const nav = [
   { to: "/dashboard", label: "Overview", icon: LayoutDashboard },
+  { to: "/customers", label: "Customers", icon: Contact },
+  { to: "/deals", label: "Pipeline", icon: TrendingUp },
+  { to: "/invoices", label: "Invoices", icon: FileText },
   { to: "/team", label: "Team", icon: Users },
 ];
 
