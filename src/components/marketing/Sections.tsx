@@ -350,6 +350,7 @@ const integrations = [
 ];
 
 export function IntegrationsSection() {
+  const [connect, setConnect] = useState<string | null>(null);
   return (
     <section id="integrations" className="mx-auto max-w-7xl px-4 py-24 sm:px-6">
       <SectionHeading
@@ -367,10 +368,13 @@ export function IntegrationsSection() {
               <p className="truncate font-medium">{name}</p>
               <p className="text-xs text-muted-foreground">{cat}</p>
             </div>
-            <Button variant="outline" size="sm" className="ml-auto">Connect</Button>
+            <Button variant="outline" size="sm" className="ml-auto shrink-0" onClick={() => setConnect(name)}>
+              Connect
+            </Button>
           </div>
         ))}
       </div>
+      <ConnectModal name={connect} onOpenChange={(v) => !v && setConnect(null)} />
     </section>
   );
 }
@@ -404,15 +408,16 @@ export function SecuritySection() {
 /* ---------------- Pricing ---------------- */
 
 const plans = [
-  { name: "Free", monthly: 0, yearly: 0, desc: "For getting started", features: ["1 organization", "Up to 250 customers", "CRM + invoices", "Community support"] },
-  { name: "Starter", monthly: 1499, yearly: 14990, desc: "For small teams", features: ["5 users", "Sales + inventory", "10 automations", "Email support"] },
-  { name: "Growth", monthly: 3999, yearly: 39990, desc: "Most popular", features: ["20 users", "optera AI assistant", "Unlimited automations", "Analytics suite"], featured: true },
-  { name: "Business", monthly: 8999, yearly: 89990, desc: "For scaling companies", features: ["Unlimited users", "AI actions & agents", "Advanced permissions", "Priority support"] },
-  { name: "Enterprise", monthly: null, yearly: null, desc: "Custom deployment", features: ["SSO & SAML", "Dedicated support", "Custom integrations", "SLA"] },
+  { id: "free", name: "Free", monthly: 0, yearly: 0, desc: "For getting started", features: ["1 organization", "Up to 250 customers", "CRM + invoices", "Community support"] },
+  { id: "starter", name: "Starter", monthly: 1499, yearly: 14390, desc: "For small teams", features: ["5 users", "Sales + inventory", "10 automations", "Email support"] },
+  { id: "growth", name: "Growth", monthly: 3999, yearly: 38390, desc: "Most popular", features: ["20 users", "optera AI assistant", "Unlimited automations", "Analytics suite"], featured: true },
+  { id: "business", name: "Business", monthly: 8999, yearly: 86390, desc: "For scaling companies", features: ["Unlimited users", "AI actions & agents", "Advanced permissions", "Priority support"] },
+  { id: "enterprise", name: "Enterprise", monthly: null, yearly: null, desc: "Custom deployment", features: ["SSO & SAML", "Dedicated support", "Custom integrations", "SLA"] },
 ];
 
 export function PricingSection() {
   const [yearly, setYearly] = useState(false);
+  const [checkout, setCheckout] = useState<CheckoutPlan | null>(null);
 
   return (
     <section id="pricing" className="mx-auto max-w-7xl px-4 py-24 sm:px-6">
@@ -431,7 +436,9 @@ export function PricingSection() {
             style={{ height: 18, width: 18 }}
           />
         </button>
-        <span className={yearly ? "" : "text-muted-foreground"}>Yearly <span className="text-brand-cyan">· 2 months free</span></span>
+        <span className={yearly ? "" : "text-muted-foreground"}>
+          Yearly <span className="text-brand-cyan">· Save 20%</span>
+        </span>
       </div>
 
       <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
@@ -457,15 +464,30 @@ export function PricingSection() {
                 </li>
               ))}
             </ul>
-            <Button
-              className={`mt-6 ${p.featured ? "bg-gradient-brand text-primary-foreground hover:opacity-90" : ""}`}
-              variant={p.featured ? "default" : "outline"}
-            >
-              {p.monthly === null ? "Contact sales" : "Start Free"}
-            </Button>
+            {p.monthly === 0 ? (
+              <Button asChild className="mt-6" variant={p.featured ? "default" : "outline"}>
+                <Link to="/auth">Start Free</Link>
+              </Button>
+            ) : (
+              <Button
+                className={`mt-6 ${p.featured ? "bg-gradient-brand text-primary-foreground hover:opacity-90" : ""}`}
+                variant={p.featured ? "default" : "outline"}
+                onClick={() =>
+                  setCheckout({
+                    id: p.id,
+                    name: p.name,
+                    amount: p.monthly === null ? null : yearly ? p.yearly! : p.monthly,
+                    cycle: yearly ? "yearly" : "monthly",
+                  })
+                }
+              >
+                {p.monthly === null ? "Contact sales" : `Choose ${p.name}`}
+              </Button>
+            )}
           </div>
         ))}
       </div>
+      <CheckoutModal plan={checkout} onOpenChange={(v) => !v && setCheckout(null)} />
     </section>
   );
 }
