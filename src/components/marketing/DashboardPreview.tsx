@@ -1,5 +1,7 @@
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 import { ArrowUpRight, Bot, Boxes, FileText, Sparkles, Zap } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useCountUp } from "@/components/shared/ui-kit";
 
 const revenue = [
   { m: "Apr", v: 640 },
@@ -11,13 +13,52 @@ const revenue = [
 ];
 
 const stats = [
-  { label: "Revenue", value: "₹12,84,500", delta: "+18.2%" },
-  { label: "Orders", value: "1,248", delta: "+6.4%" },
-  { label: "New customers", value: "312", delta: "+11.9%" },
-  { label: "Pending invoices", value: "₹2,48,000", delta: "12 overdue" },
+  { label: "Revenue", target: 1284500, prefix: "₹", delta: "+18.2%" },
+  { label: "Orders", target: 1248, prefix: "", delta: "+6.4%" },
+  { label: "New customers", target: 312, prefix: "", delta: "+11.9%" },
+  { label: "Pending invoices", target: 248000, prefix: "₹", delta: "12 overdue" },
+];
+
+function Metric({ label, target, prefix, delta }: { label: string; target: number; prefix: string; delta: string }) {
+  const value = useCountUp(target);
+  return (
+    <div className="rounded-xl border border-border bg-secondary/40 p-3">
+      <p className="text-[11px] text-muted-foreground">{label}</p>
+      <p className="mt-1 text-sm font-semibold tabular-nums sm:text-base">
+        {prefix}
+        {value.toLocaleString("en-IN")}
+      </p>
+      <p className="mt-1 text-[11px] text-brand-cyan">{delta}</p>
+    </div>
+  );
+}
+
+const insights = [
+  "37 high-value customers haven't purchased in 60+ days.",
+  "2 SKUs will stock out this week at current velocity.",
+  "₹2.48L of invoices are more than 7 days past due.",
+];
+
+const activity = [
+  { icon: Boxes, text: "8 low-stock alerts routed" },
+  { icon: FileText, text: "12 invoice reminders sent" },
+  { icon: Bot, text: "46 leads scored today" },
+  { icon: Zap, text: "3 orders auto-invoiced" },
 ];
 
 export function DashboardPreview() {
+  const [insight, setInsight] = useState(0);
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    const a = setInterval(() => setInsight((v) => (v + 1) % insights.length), 4200);
+    const b = setInterval(() => setTick((v) => v + 1), 5200);
+    return () => {
+      clearInterval(a);
+      clearInterval(b);
+    };
+  }, []);
+
   return (
     <div className="glass glow-ring relative rounded-2xl p-3 sm:p-4">
       <div className="flex items-center gap-2 pb-3">
@@ -29,11 +70,7 @@ export function DashboardPreview() {
 
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         {stats.map((s) => (
-          <div key={s.label} className="rounded-xl border border-border bg-secondary/40 p-3">
-            <p className="text-[11px] text-muted-foreground">{s.label}</p>
-            <p className="mt-1 text-sm font-semibold sm:text-base">{s.value}</p>
-            <p className="mt-1 text-[11px] text-brand-cyan">{s.delta}</p>
-          </div>
+          <Metric key={s.label} {...s} />
         ))}
       </div>
 
@@ -76,8 +113,8 @@ export function DashboardPreview() {
             <p className="inline-flex items-center gap-1.5 text-xs font-medium">
               <Sparkles className="h-3.5 w-3.5 text-brand-magenta" /> optera AI
             </p>
-            <p className="mt-1.5 text-[11px] leading-relaxed text-muted-foreground">
-              37 high-value customers haven&apos;t purchased in 60+ days.
+            <p className="mt-1.5 min-h-8 text-[11px] leading-relaxed text-muted-foreground" aria-live="polite">
+              {insights[insight]}
             </p>
             <button className="mt-2 w-full rounded-lg bg-gradient-brand px-2 py-1.5 text-[11px] font-medium text-primary-foreground">
               Create re-engagement campaign
@@ -85,11 +122,19 @@ export function DashboardPreview() {
           </div>
           <div className="rounded-xl border border-border bg-secondary/30 p-3 text-[11px] text-muted-foreground">
             <p className="flex items-center gap-1.5 font-medium text-foreground">
-              <Zap className="h-3.5 w-3.5 text-brand-cyan" /> Automation activity
+              <Zap className="h-3.5 w-3.5 text-brand-cyan" aria-hidden /> Automation activity
             </p>
-            <p className="mt-1.5 flex items-center gap-1.5"><Boxes className="h-3 w-3 shrink-0" /> 8 low-stock alerts routed</p>
-            <p className="mt-1 flex items-center gap-1.5"><FileText className="h-3 w-3 shrink-0" /> 12 invoice reminders sent</p>
-            <p className="mt-1 flex items-center gap-1.5"><Bot className="h-3 w-3 shrink-0" /> 46 leads scored today</p>
+            <ul className="mt-1.5 space-y-1" aria-live="polite">
+              {[0, 1, 2].map((offset) => {
+                const item = activity[(tick + offset) % activity.length]!;
+                const Icon = item.icon;
+                return (
+                  <li key={item.text} className="flex items-center gap-1.5">
+                    <Icon className="h-3 w-3 shrink-0" aria-hidden /> {item.text}
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         </div>
       </div>
