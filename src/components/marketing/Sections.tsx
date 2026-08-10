@@ -520,16 +520,21 @@ export function TestimonialsSection() {
 /* ---------------- FAQ ---------------- */
 
 const faqs = [
-  { q: "What exactly is opteraOS?", a: "opteraOS is an AI business operating system that unifies CRM, sales, invoicing, payments, inventory, marketing, analytics and automation in one platform." },
-  { q: "Can the AI actually do things, or just answer questions?", a: "optera AI uses controlled backend tools to read business data and execute approved actions such as creating campaigns, tasks, invoices and automations. High-impact actions always require your confirmation." },
-  { q: "How are payments handled?", a: "Payments and subscriptions run through Razorpay. Payment state is only ever confirmed on the backend through verified webhook signatures." },
-  { q: "Is my data isolated from other businesses?", a: "Yes. Every record is scoped to your organization and access is enforced by role-based, organization-level authorization." },
-  { q: "Can I migrate from my existing tools?", a: "You can import customers and products during onboarding, and connect existing systems through integrations, webhooks and REST APIs." },
+  { q: "What is opteraOS?", a: "opteraOS is an AI business operating system that unifies CRM, sales, invoicing, payments, inventory, marketing, analytics and automation in one platform." },
+  { q: "How is opteraOS different from a CRM?", a: "A CRM records what happened. opteraOS runs the work: it connects every module to one data model, explains performance with AI and executes the next action automatically." },
+  { q: "Can I connect Razorpay?", a: "Razorpay is on the integrations roadmap. Payment state will always be confirmed on the backend through verified webhook signatures, never in the browser." },
+  { q: "Can I automate customer follow-ups?", a: "Yes. Build follow-up sequences visually with triggers, delays, conditions and AI decisions across WhatsApp and email." },
+  { q: "Can optera AI perform actions?", a: "optera AI recommends a concrete next action and can execute approved actions through permissioned tools. High-impact actions always ask for your confirmation first." },
+  { q: "Can I connect WhatsApp?", a: "WhatsApp is a first-class channel for lead responses, order confirmations and invoice reminders once messaging integrations are enabled." },
+  { q: "Can I start for free?", a: "Yes. The Free plan covers one organization, up to 250 customers and the core CRM and invoicing modules — no card required." },
+  { q: "Is my business data secure?", a: "Every record is scoped to your organization with role-based access, and all logins, record changes, automations and AI actions are logged." },
+  { q: "When will integrations be available?", a: "Integrations roll out progressively as backend connections are enabled. You can explore each one in the app today and connect it when it goes live." },
 ];
 
 export function FaqSection() {
   return (
-    <section id="faq" className="mx-auto max-w-3xl px-4 py-24 sm:px-6">
+    <section id="resources" className="mx-auto max-w-3xl px-4 py-24 sm:px-6">
+      <span id="faq" className="sr-only" />
       <SectionHeading eyebrow="FAQ" title="Questions, answered" />
       <Accordion type="single" collapsible className="mt-10">
         {faqs.map((f) => (
@@ -556,19 +561,52 @@ export function FinalCta() {
         <p className="mt-4 text-muted-foreground">
           Start running your business with optera<span className="text-gradient font-medium">OS</span>.
         </p>
-        <Button size="lg" className="mt-8 bg-gradient-brand animate-sheen text-primary-foreground hover:opacity-90">
-          Start Free
+        <Button asChild size="lg" className="mt-8 bg-gradient-brand animate-sheen text-primary-foreground hover:opacity-90">
+          <Link to="/auth">Start Free</Link>
         </Button>
       </div>
     </section>
   );
 }
 
-const footerCols = [
-  { title: "Product", links: ["Features", "AI Assistant", "Automations", "Integrations", "Pricing"] },
-  { title: "Company", links: ["About", "Careers", "Contact"] },
-  { title: "Resources", links: ["Documentation", "Help Center", "Blog", "Templates"] },
-  { title: "Legal", links: ["Privacy", "Terms", "Security"] },
+type FooterLink = { label: string; href?: string; to?: string };
+
+const footerCols: { title: string; links: FooterLink[] }[] = [
+  {
+    title: "Product",
+    links: [
+      { label: "Platform", href: "#platform" },
+      { label: "AI Assistant", href: "#ai" },
+      { label: "Automations", href: "#automations" },
+      { label: "Integrations", href: "#integrations" },
+      { label: "Pricing", href: "#pricing" },
+    ],
+  },
+  {
+    title: "Resources",
+    links: [
+      { label: "Documentation", to: "/docs" },
+      { label: "Help Center", to: "/help" },
+      { label: "Templates", to: "/templates" },
+      { label: "Blog", to: "/blog" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "About", to: "/about" },
+      { label: "Contact", to: "/contact" },
+      { label: "Careers", to: "/careers" },
+    ],
+  },
+  {
+    title: "Legal",
+    links: [
+      { label: "Privacy", to: "/privacy" },
+      { label: "Terms", to: "/terms" },
+      { label: "Security", to: "/security" },
+    ],
+  },
 ];
 
 export function Footer() {
@@ -581,8 +619,16 @@ export function Footer() {
               <p className="text-sm font-medium">{c.title}</p>
               <ul className="mt-4 space-y-2">
                 {c.links.map((l) => (
-                  <li key={l}>
-                    <a href="#top" className="text-sm text-muted-foreground transition-colors hover:text-foreground">{l}</a>
+                  <li key={l.label}>
+                    {l.to ? (
+                      <Link to={l.to} className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+                        {l.label}
+                      </Link>
+                    ) : (
+                      <a href={l.href} className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+                        {l.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
