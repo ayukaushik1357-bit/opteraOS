@@ -4,10 +4,12 @@ import {
   Plug, Quote, ShieldCheck, Sparkles, Users, Workflow, Zap,
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
+import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from "@/components/ui/accordion";
+import { CampaignModal, CheckoutModal, ConnectModal, type CheckoutPlan } from "@/components/marketing/modals";
 
 export function SectionHeading({
   eyebrow, title, subtitle, align = "center",
@@ -112,6 +114,7 @@ const prompts = [
 
 export function AiSection() {
   const [active, setActive] = useState(0);
+  const [campaign, setCampaign] = useState(false);
 
   return (
     <section id="ai" className="mx-auto max-w-7xl px-4 py-24 sm:px-6">
@@ -164,16 +167,31 @@ export function AiSection() {
               <div className="mt-3 rounded-xl border border-border bg-secondary/40 p-3 text-xs text-muted-foreground">
                 37 high-value customers haven&apos;t purchased in 60+ days · ₹4.2L at risk
               </div>
+              <div className="mt-3 grid gap-1 rounded-xl border border-border bg-card/60 p-3 text-xs">
+                <p className="text-muted-foreground">
+                  Estimated opportunity <span className="font-semibold text-foreground">₹4.8L</span>
+                </p>
+                <p className="text-muted-foreground">
+                  Action <span className="font-medium text-foreground">Create re-engagement campaign</span>
+                </p>
+              </div>
               <div className="mt-3 flex flex-wrap gap-2">
-                <Button size="sm" className="bg-gradient-brand text-primary-foreground hover:opacity-90">
-                  Create re-engagement campaign
+                <Button
+                  size="sm"
+                  onClick={() => setCampaign(true)}
+                  className="bg-gradient-brand text-primary-foreground hover:opacity-90"
+                >
+                  Review Campaign
                 </Button>
-                <Button size="sm" variant="outline">Review customers</Button>
+                <Button asChild size="sm" variant="outline">
+                  <Link to="/auth">Try optera AI</Link>
+                </Button>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <CampaignModal open={campaign} onOpenChange={setCampaign} />
     </section>
   );
 }
