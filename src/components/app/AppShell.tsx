@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 import { Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { BarChart3, Building2, ChevronDown, Contact, FileText, LayoutDashboard, LogOut, TrendingUp, Users } from "lucide-react";
+import { BarChart3, Building2, ChevronDown, Contact, FileText, LayoutDashboard, LogOut, TrendingUp, UserPlus, Users } from "lucide-react";
 import { BrandLockup } from "@/components/brand/Logo";
 import { Button } from "@/components/ui/button";
 import {
@@ -79,6 +79,8 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
 
 const nav = [
   { to: "/dashboard", label: "Overview", icon: LayoutDashboard },
+  { to: "/crm", label: "CRM", icon: BarChart3 },
+  { to: "/leads", label: "Leads", icon: UserPlus },
   { to: "/customers", label: "Customers", icon: Contact },
   { to: "/deals", label: "Pipeline", icon: TrendingUp },
   { to: "/invoices", label: "Invoices", icon: FileText },
@@ -154,12 +156,12 @@ export function AppShell({ children }: { children: ReactNode }) {
             </Button>
           </div>
         </div>
-        <nav className="flex items-center gap-1 border-t border-border/60 px-4 py-2 md:hidden" aria-label="Workspace mobile">
+        <nav className="flex items-center gap-1 overflow-x-auto border-t border-border/60 px-4 py-2 md:hidden" aria-label="Workspace mobile">
           {nav.map((item) => (
             <Link
               key={item.to}
               to={item.to}
-              className="rounded-lg px-3 py-1.5 text-sm text-muted-foreground"
+              className="shrink-0 rounded-lg px-3 py-1.5 text-sm text-muted-foreground"
               activeProps={{ className: "rounded-lg px-3 py-1.5 text-sm bg-secondary text-foreground" }}
             >
               {item.label}

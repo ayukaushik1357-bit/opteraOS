@@ -1,10 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, PlayCircle } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Nav } from "@/components/marketing/Nav";
 import { DashboardPreview } from "@/components/marketing/DashboardPreview";
+import { DemoModal } from "@/components/marketing/modals";
 import {
   AiSection,
+  AnalyticsSection,
   AutomationSection,
   DifferentiatorSection,
   FaqSection,
@@ -16,6 +19,7 @@ import {
   ProblemSection,
   SecuritySection,
   TestimonialsSection,
+  WorkflowExamplesSection,
 } from "@/components/marketing/Sections";
 
 const title = "opteraOS — AI Business Operating System";
@@ -37,6 +41,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Hero() {
+  const [demo, setDemo] = useState(false);
   return (
     <section className="aurora relative overflow-hidden">
       <div className="grid-lines pointer-events-none absolute inset-0" aria-hidden />
@@ -58,7 +63,7 @@ function Hero() {
             <Button asChild size="lg" className="w-full bg-gradient-brand animate-sheen text-primary-foreground hover:opacity-90 sm:w-auto">
               <Link to="/auth">Start Free <ArrowRight className="ml-1 h-4 w-4" /></Link>
             </Button>
-            <Button size="lg" variant="outline" className="w-full sm:w-auto">
+            <Button size="lg" variant="outline" className="w-full sm:w-auto" onClick={() => setDemo(true)}>
               <PlayCircle className="mr-1 h-4 w-4" /> See How It Works
             </Button>
           </div>
@@ -68,6 +73,7 @@ function Hero() {
           <DashboardPreview />
         </div>
       </div>
+      <DemoModal open={demo} onOpenChange={setDemo} />
     </section>
   );
 }
@@ -82,7 +88,9 @@ function Index() {
         <PlatformSection />
         <AiSection />
         <AutomationSection />
+        <WorkflowExamplesSection />
         <DifferentiatorSection />
+        <AnalyticsSection />
         <IntegrationsSection />
         <SecuritySection />
         <PricingSection />

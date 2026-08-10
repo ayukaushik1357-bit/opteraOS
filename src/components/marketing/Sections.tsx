@@ -4,10 +4,12 @@ import {
   Plug, Quote, ShieldCheck, Sparkles, Users, Workflow, Zap,
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
+import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from "@/components/ui/accordion";
+import { CampaignModal, CheckoutModal, ConnectModal, type CheckoutPlan } from "@/components/marketing/modals";
 
 export function SectionHeading({
   eyebrow, title, subtitle, align = "center",
@@ -112,6 +114,7 @@ const prompts = [
 
 export function AiSection() {
   const [active, setActive] = useState(0);
+  const [campaign, setCampaign] = useState(false);
 
   return (
     <section id="ai" className="mx-auto max-w-7xl px-4 py-24 sm:px-6">
@@ -164,16 +167,31 @@ export function AiSection() {
               <div className="mt-3 rounded-xl border border-border bg-secondary/40 p-3 text-xs text-muted-foreground">
                 37 high-value customers haven&apos;t purchased in 60+ days · ₹4.2L at risk
               </div>
+              <div className="mt-3 grid gap-1 rounded-xl border border-border bg-card/60 p-3 text-xs">
+                <p className="text-muted-foreground">
+                  Estimated opportunity <span className="font-semibold text-foreground">₹4.8L</span>
+                </p>
+                <p className="text-muted-foreground">
+                  Action <span className="font-medium text-foreground">Create re-engagement campaign</span>
+                </p>
+              </div>
               <div className="mt-3 flex flex-wrap gap-2">
-                <Button size="sm" className="bg-gradient-brand text-primary-foreground hover:opacity-90">
-                  Create re-engagement campaign
+                <Button
+                  size="sm"
+                  onClick={() => setCampaign(true)}
+                  className="bg-gradient-brand text-primary-foreground hover:opacity-90"
+                >
+                  Review Campaign
                 </Button>
-                <Button size="sm" variant="outline">Review customers</Button>
+                <Button asChild size="sm" variant="outline">
+                  <Link to="/auth">Try optera AI</Link>
+                </Button>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <CampaignModal open={campaign} onOpenChange={setCampaign} />
     </section>
   );
 }
@@ -181,17 +199,18 @@ export function AiSection() {
 /* ---------------- Automation ---------------- */
 
 const flow = [
-  "New website lead",
-  "AI lead scoring",
-  "If score > 70",
-  "Assign sales employee",
-  "Generate personalised message",
-  "Send WhatsApp",
-  "Create follow-up task",
-  "Update CRM & analytics",
+  { step: "New lead", info: "A website form, WhatsApp message or call creates a lead record instantly." },
+  { step: "AI qualification", info: "optera AI analyses the lead and assigns a priority score." },
+  { step: "Lead score", info: "Scores above 70 are treated as sales-ready and fast-tracked." },
+  { step: "Assign sales person", info: "Routed by territory, workload and past win rate." },
+  { step: "Send WhatsApp", info: "A personalised opening message goes out within seconds." },
+  { step: "Create follow-up", info: "A task with a due date lands in the owner's queue." },
+  { step: "Update CRM", info: "Pipeline, activity timeline and analytics all update themselves." },
 ];
 
 export function AutomationSection() {
+  const [selected, setSelected] = useState(0);
+  const node = flow[selected]!;
   return (
     <section id="automations" className="mx-auto max-w-7xl px-4 py-24 sm:px-6">
       <SectionHeading
@@ -221,23 +240,71 @@ export function AutomationSection() {
 
         <div className="glass grid-lines relative rounded-2xl p-6">
           <ol className="grid gap-3 sm:grid-cols-2">
-            {flow.map((step, i) => (
-              <li
-                key={step}
-                className="flex items-center gap-3 rounded-xl border border-border bg-card/70 px-4 py-3 text-sm transition-colors hover:border-brand-violet/60"
-              >
-                <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gradient-brand text-[11px] font-semibold text-primary-foreground">
-                  {i + 1}
-                </span>
-                <span>{step}</span>
-                <GitBranch className="ml-auto h-3.5 w-3.5 text-muted-foreground" />
+            {flow.map((n, i) => (
+              <li key={n.step}>
+                <button
+                  onClick={() => setSelected(i)}
+                  onMouseEnter={() => setSelected(i)}
+                  aria-pressed={selected === i}
+                  className={`flex w-full items-center gap-3 rounded-xl border bg-card/70 px-4 py-3 text-left text-sm transition-colors ${
+                    selected === i ? "border-brand-violet/70" : "border-border hover:border-brand-violet/60"
+                  }`}
+                >
+                  <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gradient-brand text-[11px] font-semibold text-primary-foreground">
+                    {i + 1}
+                  </span>
+                  <span className="min-w-0 truncate">{n.step}</span>
+                  <GitBranch className="ml-auto h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden />
+                </button>
               </li>
             ))}
           </ol>
-          <p className="mt-5 text-xs text-muted-foreground">
+          <div className="mt-5 rounded-xl border border-border bg-secondary/40 p-4" role="status" aria-live="polite">
+            <p className="text-sm font-medium">{node.step}</p>
+            <p className="mt-1 text-xs text-muted-foreground">{node.info}</p>
+          </div>
+          <p className="mt-4 text-xs text-muted-foreground">
             Runs on a managed execution layer with retries, logs and webhook integrations — no infrastructure to babysit.
           </p>
         </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- Business workflow examples ---------------- */
+
+const workflowExamples = [
+  { icon: Users, title: "New lead", steps: ["Website inquiry", "AI qualification", "CRM update", "Personalised message", "Sales notification", "Follow-up"] },
+  { icon: Boxes, title: "New order", steps: ["Order received", "Inventory updated", "Invoice generated", "Payment", "Customer confirmation", "Revenue updated"] },
+  { icon: FileText, title: "Overdue invoice", steps: ["Invoice overdue", "Reminder", "Wait 3 days", "Second reminder", "Manager notification"] },
+];
+
+export function WorkflowExamplesSection() {
+  return (
+    <section id="workflows" className="mx-auto max-w-7xl px-4 py-24 sm:px-6">
+      <SectionHeading
+        eyebrow="In practice"
+        title="What running itself actually looks like"
+        subtitle="Three everyday business events, handled end to end without anyone re-keying data."
+      />
+      <div className="mt-12 grid gap-4 lg:grid-cols-3">
+        {workflowExamples.map(({ icon: Icon, title, steps }) => (
+          <article key={title} className="rounded-2xl border border-border bg-card/40 p-6">
+            <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-brand">
+              <Icon className="h-5 w-5 text-primary-foreground" aria-hidden />
+            </span>
+            <h3 className="mt-4 font-semibold uppercase tracking-wide">{title}</h3>
+            <ol className="mt-4 space-y-2">
+              {steps.map((s, i) => (
+                <li key={s} className="flex items-center gap-3 rounded-lg border border-border bg-secondary/30 px-3 py-2 text-sm text-muted-foreground">
+                  <span className="text-[11px] text-brand-cyan">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="min-w-0">{s}</span>
+                </li>
+              ))}
+            </ol>
+          </article>
+        ))}
       </div>
     </section>
   );
@@ -283,6 +350,7 @@ const integrations = [
 ];
 
 export function IntegrationsSection() {
+  const [connect, setConnect] = useState<string | null>(null);
   return (
     <section id="integrations" className="mx-auto max-w-7xl px-4 py-24 sm:px-6">
       <SectionHeading
@@ -300,10 +368,13 @@ export function IntegrationsSection() {
               <p className="truncate font-medium">{name}</p>
               <p className="text-xs text-muted-foreground">{cat}</p>
             </div>
-            <Button variant="outline" size="sm" className="ml-auto">Connect</Button>
+            <Button variant="outline" size="sm" className="ml-auto shrink-0" onClick={() => setConnect(name)}>
+              Connect
+            </Button>
           </div>
         ))}
       </div>
+      <ConnectModal name={connect} onOpenChange={(v) => !v && setConnect(null)} />
     </section>
   );
 }
@@ -337,15 +408,16 @@ export function SecuritySection() {
 /* ---------------- Pricing ---------------- */
 
 const plans = [
-  { name: "Free", monthly: 0, yearly: 0, desc: "For getting started", features: ["1 organization", "Up to 250 customers", "CRM + invoices", "Community support"] },
-  { name: "Starter", monthly: 1499, yearly: 14990, desc: "For small teams", features: ["5 users", "Sales + inventory", "10 automations", "Email support"] },
-  { name: "Growth", monthly: 3999, yearly: 39990, desc: "Most popular", features: ["20 users", "optera AI assistant", "Unlimited automations", "Analytics suite"], featured: true },
-  { name: "Business", monthly: 8999, yearly: 89990, desc: "For scaling companies", features: ["Unlimited users", "AI actions & agents", "Advanced permissions", "Priority support"] },
-  { name: "Enterprise", monthly: null, yearly: null, desc: "Custom deployment", features: ["SSO & SAML", "Dedicated support", "Custom integrations", "SLA"] },
+  { id: "free", name: "Free", monthly: 0, yearly: 0, desc: "For getting started", features: ["1 organization", "Up to 250 customers", "CRM + invoices", "Community support"] },
+  { id: "starter", name: "Starter", monthly: 1499, yearly: 14390, desc: "For small teams", features: ["5 users", "Sales + inventory", "10 automations", "Email support"] },
+  { id: "growth", name: "Growth", monthly: 3999, yearly: 38390, desc: "Most popular", features: ["20 users", "optera AI assistant", "Unlimited automations", "Analytics suite"], featured: true },
+  { id: "business", name: "Business", monthly: 8999, yearly: 86390, desc: "For scaling companies", features: ["Unlimited users", "AI actions & agents", "Advanced permissions", "Priority support"] },
+  { id: "enterprise", name: "Enterprise", monthly: null, yearly: null, desc: "Custom deployment", features: ["SSO & SAML", "Dedicated support", "Custom integrations", "SLA"] },
 ];
 
 export function PricingSection() {
   const [yearly, setYearly] = useState(false);
+  const [checkout, setCheckout] = useState<CheckoutPlan | null>(null);
 
   return (
     <section id="pricing" className="mx-auto max-w-7xl px-4 py-24 sm:px-6">
@@ -364,7 +436,9 @@ export function PricingSection() {
             style={{ height: 18, width: 18 }}
           />
         </button>
-        <span className={yearly ? "" : "text-muted-foreground"}>Yearly <span className="text-brand-cyan">· 2 months free</span></span>
+        <span className={yearly ? "" : "text-muted-foreground"}>
+          Yearly <span className="text-brand-cyan">· Save 20%</span>
+        </span>
       </div>
 
       <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
@@ -390,15 +464,30 @@ export function PricingSection() {
                 </li>
               ))}
             </ul>
-            <Button
-              className={`mt-6 ${p.featured ? "bg-gradient-brand text-primary-foreground hover:opacity-90" : ""}`}
-              variant={p.featured ? "default" : "outline"}
-            >
-              {p.monthly === null ? "Contact sales" : "Start Free"}
-            </Button>
+            {p.monthly === 0 ? (
+              <Button asChild className="mt-6" variant={p.featured ? "default" : "outline"}>
+                <Link to="/auth">Start Free</Link>
+              </Button>
+            ) : (
+              <Button
+                className={`mt-6 ${p.featured ? "bg-gradient-brand text-primary-foreground hover:opacity-90" : ""}`}
+                variant={p.featured ? "default" : "outline"}
+                onClick={() =>
+                  setCheckout({
+                    id: p.id,
+                    name: p.name,
+                    amount: p.monthly === null ? null : yearly ? p.yearly! : p.monthly,
+                    cycle: yearly ? "yearly" : "monthly",
+                  })
+                }
+              >
+                {p.monthly === null ? "Contact sales" : `Choose ${p.name}`}
+              </Button>
+            )}
           </div>
         ))}
       </div>
+      <CheckoutModal plan={checkout} onOpenChange={(v) => !v && setCheckout(null)} />
     </section>
   );
 }
@@ -431,16 +520,21 @@ export function TestimonialsSection() {
 /* ---------------- FAQ ---------------- */
 
 const faqs = [
-  { q: "What exactly is opteraOS?", a: "opteraOS is an AI business operating system that unifies CRM, sales, invoicing, payments, inventory, marketing, analytics and automation in one platform." },
-  { q: "Can the AI actually do things, or just answer questions?", a: "optera AI uses controlled backend tools to read business data and execute approved actions such as creating campaigns, tasks, invoices and automations. High-impact actions always require your confirmation." },
-  { q: "How are payments handled?", a: "Payments and subscriptions run through Razorpay. Payment state is only ever confirmed on the backend through verified webhook signatures." },
-  { q: "Is my data isolated from other businesses?", a: "Yes. Every record is scoped to your organization and access is enforced by role-based, organization-level authorization." },
-  { q: "Can I migrate from my existing tools?", a: "You can import customers and products during onboarding, and connect existing systems through integrations, webhooks and REST APIs." },
+  { q: "What is opteraOS?", a: "opteraOS is an AI business operating system that unifies CRM, sales, invoicing, payments, inventory, marketing, analytics and automation in one platform." },
+  { q: "How is opteraOS different from a CRM?", a: "A CRM records what happened. opteraOS runs the work: it connects every module to one data model, explains performance with AI and executes the next action automatically." },
+  { q: "Can I connect Razorpay?", a: "Razorpay is on the integrations roadmap. Payment state will always be confirmed on the backend through verified webhook signatures, never in the browser." },
+  { q: "Can I automate customer follow-ups?", a: "Yes. Build follow-up sequences visually with triggers, delays, conditions and AI decisions across WhatsApp and email." },
+  { q: "Can optera AI perform actions?", a: "optera AI recommends a concrete next action and can execute approved actions through permissioned tools. High-impact actions always ask for your confirmation first." },
+  { q: "Can I connect WhatsApp?", a: "WhatsApp is a first-class channel for lead responses, order confirmations and invoice reminders once messaging integrations are enabled." },
+  { q: "Can I start for free?", a: "Yes. The Free plan covers one organization, up to 250 customers and the core CRM and invoicing modules — no card required." },
+  { q: "Is my business data secure?", a: "Every record is scoped to your organization with role-based access, and all logins, record changes, automations and AI actions are logged." },
+  { q: "When will integrations be available?", a: "Integrations roll out progressively as backend connections are enabled. You can explore each one in the app today and connect it when it goes live." },
 ];
 
 export function FaqSection() {
   return (
-    <section id="faq" className="mx-auto max-w-3xl px-4 py-24 sm:px-6">
+    <section id="resources" className="mx-auto max-w-3xl px-4 py-24 sm:px-6">
+      <span id="faq" className="sr-only" />
       <SectionHeading eyebrow="FAQ" title="Questions, answered" />
       <Accordion type="single" collapsible className="mt-10">
         {faqs.map((f) => (
@@ -467,19 +561,52 @@ export function FinalCta() {
         <p className="mt-4 text-muted-foreground">
           Start running your business with optera<span className="text-gradient font-medium">OS</span>.
         </p>
-        <Button size="lg" className="mt-8 bg-gradient-brand animate-sheen text-primary-foreground hover:opacity-90">
-          Start Free
+        <Button asChild size="lg" className="mt-8 bg-gradient-brand animate-sheen text-primary-foreground hover:opacity-90">
+          <Link to="/auth">Start Free</Link>
         </Button>
       </div>
     </section>
   );
 }
 
-const footerCols = [
-  { title: "Product", links: ["Features", "AI Assistant", "Automations", "Integrations", "Pricing"] },
-  { title: "Company", links: ["About", "Careers", "Contact"] },
-  { title: "Resources", links: ["Documentation", "Help Center", "Blog", "Templates"] },
-  { title: "Legal", links: ["Privacy", "Terms", "Security"] },
+type FooterLink = { label: string; href?: string; to?: string };
+
+const footerCols: { title: string; links: FooterLink[] }[] = [
+  {
+    title: "Product",
+    links: [
+      { label: "Platform", href: "#platform" },
+      { label: "AI Assistant", href: "#ai" },
+      { label: "Automations", href: "#automations" },
+      { label: "Integrations", href: "#integrations" },
+      { label: "Pricing", href: "#pricing" },
+    ],
+  },
+  {
+    title: "Resources",
+    links: [
+      { label: "Documentation", to: "/docs" },
+      { label: "Help Center", to: "/help" },
+      { label: "Templates", to: "/templates" },
+      { label: "Blog", to: "/blog" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "About", to: "/about" },
+      { label: "Contact", to: "/contact" },
+      { label: "Careers", to: "/careers" },
+    ],
+  },
+  {
+    title: "Legal",
+    links: [
+      { label: "Privacy", to: "/privacy" },
+      { label: "Terms", to: "/terms" },
+      { label: "Security", to: "/security" },
+    ],
+  },
 ];
 
 export function Footer() {
@@ -492,8 +619,16 @@ export function Footer() {
               <p className="text-sm font-medium">{c.title}</p>
               <ul className="mt-4 space-y-2">
                 {c.links.map((l) => (
-                  <li key={l}>
-                    <a href="#top" className="text-sm text-muted-foreground transition-colors hover:text-foreground">{l}</a>
+                  <li key={l.label}>
+                    {l.to ? (
+                      <Link to={l.to} className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+                        {l.label}
+                      </Link>
+                    ) : (
+                      <a href={l.href} className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+                        {l.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -507,5 +642,47 @@ export function Footer() {
         </div>
       </div>
     </footer>
+  );
+}
+/* ---------------- Analytics ---------------- */
+
+const analyticsHighlights = [
+  { label: "Revenue", value: "₹12.8L", delta: "+18.2% MoM" },
+  { label: "Orders", value: "1,248", delta: "+6.4% MoM" },
+  { label: "New customers", value: "312", delta: "+11.9% MoM" },
+  { label: "Collections", value: "94%", delta: "+3.1 pts" },
+];
+
+export function AnalyticsSection() {
+  return (
+    <section id="analytics" className="mx-auto max-w-7xl px-4 py-24 sm:px-6">
+      <SectionHeading
+        eyebrow="Analytics"
+        title="One number set everyone trusts"
+        subtitle="Revenue, sales, customers, orders, invoices and inventory all read from the same source of truth."
+      />
+      <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {analyticsHighlights.map((h) => (
+          <div key={h.label} className="rounded-2xl border border-border bg-card/40 p-6">
+            <p className="text-xs text-muted-foreground">{h.label}</p>
+            <p className="mt-2 text-2xl font-semibold tracking-tight">{h.value}</p>
+            <p className="mt-1 text-xs text-brand-cyan">{h.delta}</p>
+          </div>
+        ))}
+      </div>
+      <div className="mt-6 grid gap-4 md:grid-cols-3">
+        {[
+          { icon: BarChart3, t: "Live dashboards", d: "Every module reports into shared dashboards, refreshed as work happens." },
+          { icon: Activity, t: "Cohorts & retention", d: "See which customers repeat, which churn and what changed this month." },
+          { icon: Sparkles, t: "AI explanations", d: "Ask why a number moved and get an answer grounded in your data." },
+        ].map(({ icon: Icon, t, d }) => (
+          <div key={t} className="rounded-2xl border border-border bg-card/40 p-6">
+            <Icon className="h-5 w-5 text-brand-cyan" aria-hidden />
+            <h3 className="mt-3 font-medium">{t}</h3>
+            <p className="mt-2 text-sm text-muted-foreground">{d}</p>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
