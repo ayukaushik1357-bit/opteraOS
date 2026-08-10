@@ -199,17 +199,18 @@ export function AiSection() {
 /* ---------------- Automation ---------------- */
 
 const flow = [
-  "New website lead",
-  "AI lead scoring",
-  "If score > 70",
-  "Assign sales employee",
-  "Generate personalised message",
-  "Send WhatsApp",
-  "Create follow-up task",
-  "Update CRM & analytics",
+  { step: "New lead", info: "A website form, WhatsApp message or call creates a lead record instantly." },
+  { step: "AI qualification", info: "optera AI analyses the lead and assigns a priority score." },
+  { step: "Lead score", info: "Scores above 70 are treated as sales-ready and fast-tracked." },
+  { step: "Assign sales person", info: "Routed by territory, workload and past win rate." },
+  { step: "Send WhatsApp", info: "A personalised opening message goes out within seconds." },
+  { step: "Create follow-up", info: "A task with a due date lands in the owner's queue." },
+  { step: "Update CRM", info: "Pipeline, activity timeline and analytics all update themselves." },
 ];
 
 export function AutomationSection() {
+  const [selected, setSelected] = useState(0);
+  const node = flow[selected]!;
   return (
     <section id="automations" className="mx-auto max-w-7xl px-4 py-24 sm:px-6">
       <SectionHeading
@@ -239,23 +240,71 @@ export function AutomationSection() {
 
         <div className="glass grid-lines relative rounded-2xl p-6">
           <ol className="grid gap-3 sm:grid-cols-2">
-            {flow.map((step, i) => (
-              <li
-                key={step}
-                className="flex items-center gap-3 rounded-xl border border-border bg-card/70 px-4 py-3 text-sm transition-colors hover:border-brand-violet/60"
-              >
-                <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gradient-brand text-[11px] font-semibold text-primary-foreground">
-                  {i + 1}
-                </span>
-                <span>{step}</span>
-                <GitBranch className="ml-auto h-3.5 w-3.5 text-muted-foreground" />
+            {flow.map((n, i) => (
+              <li key={n.step}>
+                <button
+                  onClick={() => setSelected(i)}
+                  onMouseEnter={() => setSelected(i)}
+                  aria-pressed={selected === i}
+                  className={`flex w-full items-center gap-3 rounded-xl border bg-card/70 px-4 py-3 text-left text-sm transition-colors ${
+                    selected === i ? "border-brand-violet/70" : "border-border hover:border-brand-violet/60"
+                  }`}
+                >
+                  <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gradient-brand text-[11px] font-semibold text-primary-foreground">
+                    {i + 1}
+                  </span>
+                  <span className="min-w-0 truncate">{n.step}</span>
+                  <GitBranch className="ml-auto h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden />
+                </button>
               </li>
             ))}
           </ol>
-          <p className="mt-5 text-xs text-muted-foreground">
+          <div className="mt-5 rounded-xl border border-border bg-secondary/40 p-4" role="status" aria-live="polite">
+            <p className="text-sm font-medium">{node.step}</p>
+            <p className="mt-1 text-xs text-muted-foreground">{node.info}</p>
+          </div>
+          <p className="mt-4 text-xs text-muted-foreground">
             Runs on a managed execution layer with retries, logs and webhook integrations — no infrastructure to babysit.
           </p>
         </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- Business workflow examples ---------------- */
+
+const workflowExamples = [
+  { icon: Users, title: "New lead", steps: ["Website inquiry", "AI qualification", "CRM update", "Personalised message", "Sales notification", "Follow-up"] },
+  { icon: Boxes, title: "New order", steps: ["Order received", "Inventory updated", "Invoice generated", "Payment", "Customer confirmation", "Revenue updated"] },
+  { icon: FileText, title: "Overdue invoice", steps: ["Invoice overdue", "Reminder", "Wait 3 days", "Second reminder", "Manager notification"] },
+];
+
+export function WorkflowExamplesSection() {
+  return (
+    <section id="workflows" className="mx-auto max-w-7xl px-4 py-24 sm:px-6">
+      <SectionHeading
+        eyebrow="In practice"
+        title="What running itself actually looks like"
+        subtitle="Three everyday business events, handled end to end without anyone re-keying data."
+      />
+      <div className="mt-12 grid gap-4 lg:grid-cols-3">
+        {workflowExamples.map(({ icon: Icon, title, steps }) => (
+          <article key={title} className="rounded-2xl border border-border bg-card/40 p-6">
+            <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-brand">
+              <Icon className="h-5 w-5 text-primary-foreground" aria-hidden />
+            </span>
+            <h3 className="mt-4 font-semibold uppercase tracking-wide">{title}</h3>
+            <ol className="mt-4 space-y-2">
+              {steps.map((s, i) => (
+                <li key={s} className="flex items-center gap-3 rounded-lg border border-border bg-secondary/30 px-3 py-2 text-sm text-muted-foreground">
+                  <span className="text-[11px] text-brand-cyan">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="min-w-0">{s}</span>
+                </li>
+              ))}
+            </ol>
+          </article>
+        ))}
       </div>
     </section>
   );
