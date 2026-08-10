@@ -644,3 +644,45 @@ export function Footer() {
     </footer>
   );
 }
+/* ---------------- Analytics ---------------- */
+
+const analyticsHighlights = [
+  { label: "Revenue", value: "₹12.8L", delta: "+18.2% MoM" },
+  { label: "Orders", value: "1,248", delta: "+6.4% MoM" },
+  { label: "New customers", value: "312", delta: "+11.9% MoM" },
+  { label: "Collections", value: "94%", delta: "+3.1 pts" },
+];
+
+export function AnalyticsSection() {
+  return (
+    <section id="analytics" className="mx-auto max-w-7xl px-4 py-24 sm:px-6">
+      <SectionHeading
+        eyebrow="Analytics"
+        title="One number set everyone trusts"
+        subtitle="Revenue, sales, customers, orders, invoices and inventory all read from the same source of truth."
+      />
+      <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {analyticsHighlights.map((h) => (
+          <div key={h.label} className="rounded-2xl border border-border bg-card/40 p-6">
+            <p className="text-xs text-muted-foreground">{h.label}</p>
+            <p className="mt-2 text-2xl font-semibold tracking-tight">{h.value}</p>
+            <p className="mt-1 text-xs text-brand-cyan">{h.delta}</p>
+          </div>
+        ))}
+      </div>
+      <div className="mt-6 grid gap-4 md:grid-cols-3">
+        {[
+          { icon: BarChart3, t: "Live dashboards", d: "Every module reports into shared dashboards, refreshed as work happens." },
+          { icon: Activity, t: "Cohorts & retention", d: "See which customers repeat, which churn and what changed this month." },
+          { icon: Sparkles, t: "AI explanations", d: "Ask why a number moved and get an answer grounded in your data." },
+        ].map(({ icon: Icon, t, d }) => (
+          <div key={t} className="rounded-2xl border border-border bg-card/40 p-6">
+            <Icon className="h-5 w-5 text-brand-cyan" aria-hidden />
+            <h3 className="mt-3 font-medium">{t}</h3>
+            <p className="mt-2 text-sm text-muted-foreground">{d}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
