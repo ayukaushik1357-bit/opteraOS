@@ -7,12 +7,19 @@ import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { acceptInvite, createOrganization } from "@/lib/workspace.functions";
 import { useWorkspace } from "@/components/app/AppShell";
 
 const title = "Create your workspace — opteraOS";
-const description = "Set up your opteraOS workspace and invite your team to one intelligent business operating system.";
+const description =
+  "Set up your opteraOS workspace and invite your team to one intelligent business operating system.";
 
 export const Route = createFileRoute("/_authenticated/onboarding")({
   head: () => ({
@@ -61,22 +68,31 @@ function Onboarding() {
   });
 
   return (
-    <div className="mx-auto max-w-xl">
-      <h1 className="text-3xl font-semibold tracking-tight">Create your workspace</h1>
-      <p className="mt-2 text-sm text-muted-foreground">
-        Every business runs in its own opteraOS workspace. You'll be the owner and can invite teammates next.
+    <div className="mx-auto max-w-xl py-8">
+      <h1 className="text-2xl font-bold tracking-tight text-gray-900">Create your workspace</h1>
+      <p className="mt-1 text-xs text-gray-500">
+        Every business runs in its own opteraOS workspace. You'll be the owner and can invite
+        teammates next.
       </p>
 
       {invites.length > 0 && (
-        <div className="mt-8 rounded-2xl border border-border bg-card p-5">
-          <h2 className="text-sm font-medium">Pending invitations</h2>
+        <div className="mt-6 rounded-xl border border-[#E5EAF1] bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
+          <h2 className="text-sm font-semibold text-gray-900">Pending invitations</h2>
           <ul className="mt-3 grid gap-2">
             {invites.map((invite) => (
-              <li key={invite.id} className="flex items-center justify-between gap-3 rounded-xl bg-secondary/40 px-3 py-2">
-                <span className="text-sm">
-                  {invite.org_name} <span className="text-muted-foreground">· {invite.role}</span>
+              <li
+                key={invite.id}
+                className="flex items-center justify-between gap-3 rounded-lg bg-[#F8FAFC] border border-[#E5EAF1] px-3 py-2"
+              >
+                <span className="text-xs text-gray-800">
+                  {invite.org_name} <span className="text-gray-500">· {invite.role}</span>
                 </span>
-                <Button size="sm" variant="outline" onClick={() => acceptMutation.mutate(invite.id)}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => acceptMutation.mutate(invite.id)}
+                  className="text-xs h-7"
+                >
                   Join
                 </Button>
               </li>
@@ -86,29 +102,45 @@ function Onboarding() {
       )}
 
       <form
-        className="mt-8 grid gap-5 rounded-2xl border border-border bg-card p-6"
+        className="mt-6 grid gap-4 rounded-xl border border-[#E5EAF1] bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.05)]"
         onSubmit={(e) => {
           e.preventDefault();
           createMutation.mutate();
         }}
       >
-        <div className="grid gap-2">
-          <Label htmlFor="name">Business name</Label>
-          <Input id="name" required minLength={2} value={name} onChange={(e) => setName(e.target.value)} placeholder="Acme Traders" />
+        <div className="grid gap-2 text-xs">
+          <Label htmlFor="name" className="text-gray-700">Business name</Label>
+          <Input
+            id="name"
+            required
+            minLength={2}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Acme Traders"
+          />
         </div>
-        <div className="grid gap-2">
-          <Label htmlFor="currency">Reporting currency</Label>
+        <div className="grid gap-2 text-xs">
+          <Label htmlFor="currency" className="text-gray-700">Reporting currency</Label>
           <Select value={currency} onValueChange={setCurrency}>
-            <SelectTrigger id="currency"><SelectValue /></SelectTrigger>
+            <SelectTrigger id="currency" className="h-9">
+              <SelectValue />
+            </SelectTrigger>
             <SelectContent>
               {["INR", "USD", "EUR", "GBP", "AED", "SGD"].map((c) => (
-                <SelectItem key={c} value={c}>{c}</SelectItem>
+                <SelectItem key={c} value={c}>
+                  {c}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
-        <Button type="submit" disabled={createMutation.isPending} className="bg-gradient-brand text-primary-foreground">
-          {createMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Create workspace
+        <Button
+          type="submit"
+          disabled={createMutation.isPending}
+          className="bg-blue-600 hover:bg-blue-700 text-white font-medium h-9 text-xs mt-2"
+        >
+          {createMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Create
+          workspace
         </Button>
       </form>
     </div>

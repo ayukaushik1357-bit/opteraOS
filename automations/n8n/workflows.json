@@ -1,0 +1,101 @@
+{
+  "name": "opteraOS Automated Lead Qualification & Slack Alert",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead-created-webhook",
+        "options": {}
+      },
+      "name": "Webhook: New Lead",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{$json.body.lead.score}}",
+              "operation": "largerEqual",
+              "value2": 70
+            }
+          ]
+        }
+      },
+      "name": "IF Score >= 70",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "channel": "#sales-leads",
+        "text": "=🔥 *High-Priority Lead Received!*\n*Name:* {{$json.body.lead.name}}\n*Company:* {{$json.body.lead.company}}\n*Score:* {{$json.body.lead.score}}/100\n*Action:* Assigned to Sales Team"
+      },
+      "name": "Send Slack Notification",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [720, 200]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "={{$json.body.callbackUrl}}/tasks",
+        "options": {},
+        "bodyParametersUi": {
+          "parameter": [
+            {
+              "name": "title",
+              "value": "=Follow up with qualified lead {{$json.body.lead.name}}"
+            },
+            {
+              "name": "priority",
+              "value": "HIGH"
+            }
+          ]
+        }
+      },
+      "name": "Create Follow-up Task in opteraOS",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [950, 200]
+    }
+  ],
+  "connections": {
+    "Webhook: New Lead": {
+      "main": [
+        [
+          {
+            "node": "IF Score >= 70",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF Score >= 70": {
+      "main": [
+        [
+          {
+            "node": "Send Slack Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Slack Notification": {
+      "main": [
+        [
+          {
+            "node": "Create Follow-up Task in opteraOS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

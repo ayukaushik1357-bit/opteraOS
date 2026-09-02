@@ -1,142 +1,292 @@
-import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
-import { ArrowUpRight, Bot, Boxes, FileText, Sparkles, Zap } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import {
+  TrendingUp,
+  Activity,
+  Bot,
+  Layers,
+  Sparkles,
+  Zap,
+  FileText,
+  Boxes,
+  ArrowUpRight,
+  ShieldCheck,
+  CheckCircle2,
+} from "lucide-react";
 import { useCountUp } from "@/components/shared/ui-kit";
 
-const revenue = [
-  { m: "Apr", v: 640 },
-  { m: "May", v: 720 },
-  { m: "Jun", v: 690 },
-  { m: "Jul", v: 880 },
-  { m: "Aug", v: 960 },
-  { m: "Sep", v: 1284 },
+const revenueTrend = [
+  { m: "Apr", sales: 480, target: 400 },
+  { m: "May", sales: 620, target: 500 },
+  { m: "Jun", sales: 590, target: 550 },
+  { m: "Jul", sales: 840, target: 700 },
+  { m: "Aug", sales: 980, target: 850 },
+  { m: "Sep", sales: 1284, target: 1100 },
 ];
 
-const stats = [
-  { label: "Revenue", target: 1284500, prefix: "₹", delta: "+18.2%" },
-  { label: "Orders", target: 1248, prefix: "", delta: "+6.4%" },
-  { label: "New customers", target: 312, prefix: "", delta: "+11.9%" },
-  { label: "Pending invoices", target: 248000, prefix: "₹", delta: "12 overdue" },
+const illustrativeMetrics = [
+  {
+    label: "Active Pipeline",
+    target: 1845000,
+    prefix: "₹",
+    delta: "+24.8%",
+    subtext: "6 qualified deals",
+    icon: TrendingUp,
+    iconColor: "text-blue-600 bg-blue-50 border-blue-200",
+  },
+  {
+    label: "Settled Revenue MTD",
+    target: 1284500,
+    prefix: "₹",
+    delta: "+18.2%",
+    subtext: "98.4% on-time",
+    icon: Activity,
+    iconColor: "text-green-600 bg-green-50 border-green-200",
+  },
+  {
+    label: "Autonomous Actions",
+    target: 142,
+    prefix: "",
+    delta: "100% success",
+    subtext: "Zero bottlenecks",
+    icon: Bot,
+    iconColor: "text-purple-600 bg-purple-50 border-purple-200",
+  },
+  {
+    label: "Active Accounts",
+    target: 48,
+    prefix: "",
+    delta: "99.2% retention",
+    subtext: "Enterprise tier",
+    icon: Layers,
+    iconColor: "text-indigo-600 bg-indigo-50 border-indigo-200",
+  },
 ];
 
-function Metric({ label, target, prefix, delta }: { label: string; target: number; prefix: string; delta: string }) {
+const liveEvents = [
+  { icon: Zap, title: "Inbound Lead Qualified", desc: "Automated scoring (88/100) → Assigned to Sales Pod", time: "Just now", color: "text-amber-600 bg-amber-50" },
+  { icon: FileText, title: "Invoice INV-2026-092 Paid", desc: "Invoice Settlement Verified", time: "2m ago", color: "text-green-600 bg-green-50" },
+  { icon: Bot, title: "AI Workflow Executed", desc: "Re-engagement sequence triggered for 14 accounts", time: "5m ago", color: "text-blue-600 bg-blue-50" },
+  { icon: Boxes, title: "Stock Balanced", desc: "Auto-synced inventory across 3 fulfillment hubs", time: "8m ago", color: "text-indigo-600 bg-indigo-50" },
+];
+
+function MetricCard({
+  label,
+  target,
+  prefix,
+  delta,
+  subtext,
+  icon: Icon,
+  iconColor,
+}: (typeof illustrativeMetrics)[0]) {
   const value = useCountUp(target);
   return (
-    <div className="rounded-xl border border-border bg-secondary/40 p-3">
-      <p className="text-[11px] text-muted-foreground">{label}</p>
-      <p className="mt-1 text-sm font-semibold tabular-nums sm:text-base">
+    <div className="rounded-xl border border-[#E5E7EB] bg-white p-4 shadow-xs">
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-semibold uppercase tracking-wider text-[#6B7280]">{label}</span>
+        <div className={`flex h-7 w-7 items-center justify-center rounded-lg border ${iconColor}`}>
+          <Icon className="h-3.5 w-3.5" />
+        </div>
+      </div>
+      <p className="mt-2.5 text-xl font-bold tracking-tight text-[#111827] tabular-nums">
         {prefix}
         {value.toLocaleString("en-IN")}
       </p>
-      <p className="mt-1 text-[11px] text-brand-cyan">{delta}</p>
+      <div className="mt-1.5 flex items-center justify-between text-xs">
+        <span className="font-semibold text-green-700">{delta}</span>
+        <span className="text-[#6B7280]">{subtext}</span>
+      </div>
     </div>
   );
 }
 
-const insights = [
-  "37 high-value customers haven't purchased in 60+ days.",
-  "2 SKUs will stock out this week at current velocity.",
-  "₹2.48L of invoices are more than 7 days past due.",
-];
-
-const activity = [
-  { icon: Boxes, text: "8 low-stock alerts routed" },
-  { icon: FileText, text: "12 invoice reminders sent" },
-  { icon: Bot, text: "46 leads scored today" },
-  { icon: Zap, text: "3 orders auto-invoiced" },
-];
-
 export function DashboardPreview() {
-  const [insight, setInsight] = useState(0);
-  const [tick, setTick] = useState(0);
-
-  useEffect(() => {
-    const a = setInterval(() => setInsight((v) => (v + 1) % insights.length), 4200);
-    const b = setInterval(() => setTick((v) => v + 1), 5200);
-    return () => {
-      clearInterval(a);
-      clearInterval(b);
-    };
-  }, []);
+  const [activeTab, setActiveTab] = useState<"overview" | "crm" | "finance">("overview");
 
   return (
-    <div className="glass glow-ring relative rounded-2xl p-3 sm:p-4">
-      <div className="flex items-center gap-2 pb-3">
-        <span className="h-2.5 w-2.5 rounded-full bg-destructive/70" />
-        <span className="h-2.5 w-2.5 rounded-full bg-brand-violet/70" />
-        <span className="h-2.5 w-2.5 rounded-full bg-brand-cyan/70" />
-        <span className="ml-2 text-xs text-muted-foreground">opteraOS · Overview</span>
-      </div>
-
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-        {stats.map((s) => (
-          <Metric key={s.label} {...s} />
-        ))}
-      </div>
-
-      <div className="mt-3 grid gap-3 lg:grid-cols-5">
-        <div className="rounded-xl border border-border bg-secondary/30 p-3 lg:col-span-3">
-          <div className="flex items-center justify-between">
-            <p className="text-xs font-medium">Revenue trend</p>
-            <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
-              <ArrowUpRight className="h-3 w-3" /> Last 6 months
-            </span>
+    <div className="relative mx-auto w-full max-w-6xl">
+      {/* ── Main Product Preview Shell ── */}
+      <div className="overflow-hidden rounded-2xl border border-[#D1D5DB] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.06)]">
+        
+        {/* ── Console Header Bar ── */}
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#E5E7EB] bg-[#F8FAFC] px-4 py-3 sm:px-6">
+          <div className="flex items-center gap-3">
+            <div className="flex gap-1.5">
+              <span className="h-3 w-3 rounded-full bg-[#EF4444]" />
+              <span className="h-3 w-3 rounded-full bg-[#F59E0B]" />
+              <span className="h-3 w-3 rounded-full bg-[#10B981]" />
+            </div>
+            <div className="ml-2 flex items-center gap-2 rounded-md border border-[#E5E7EB] bg-white px-2.5 py-1 text-xs font-medium text-[#374151] shadow-2xs">
+              <span className="h-2 w-2 rounded-full bg-blue-600 animate-pulse" />
+              <span className="font-semibold text-[#111827]">opteraOS Core Console</span>
+              <span className="text-gray-300">·</span>
+              <span className="text-[#6B7280]">Enterprise Workspace #ORG-9412</span>
+            </div>
           </div>
-          <div className="mt-2 h-32">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={revenue} margin={{ top: 4, right: 0, left: 0, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="rev" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="var(--brand-blue)" stopOpacity={0.7} />
-                    <stop offset="100%" stopColor="var(--brand-magenta)" stopOpacity={0.05} />
-                  </linearGradient>
-                </defs>
-                <XAxis dataKey="m" tickLine={false} axisLine={false} fontSize={10} stroke="currentColor" className="text-muted-foreground" />
-                <Tooltip
-                  cursor={{ stroke: "var(--brand-violet)" }}
-                  contentStyle={{
-                    background: "var(--popover)",
-                    border: "1px solid var(--border)",
-                    borderRadius: 12,
-                    fontSize: 12,
-                    color: "var(--popover-foreground)",
-                  }}
-                />
-                <Area type="monotone" dataKey="v" stroke="var(--brand-violet)" strokeWidth={2} fill="url(#rev)" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
 
-        <div className="space-y-2 lg:col-span-2">
-          <div className="rounded-xl border border-border bg-secondary/30 p-3">
-            <p className="inline-flex items-center gap-1.5 text-xs font-medium">
-              <Sparkles className="h-3.5 w-3.5 text-brand-magenta" /> optera AI
-            </p>
-            <p className="mt-1.5 min-h-8 text-[11px] leading-relaxed text-muted-foreground" aria-live="polite">
-              {insights[insight]}
-            </p>
-            <button className="mt-2 w-full rounded-lg bg-gradient-brand px-2 py-1.5 text-[11px] font-medium text-primary-foreground">
-              Create re-engagement campaign
+          <div className="flex items-center gap-1 rounded-lg border border-[#E5E7EB] bg-white p-1 text-xs font-medium shadow-2xs">
+            <button
+              onClick={() => setActiveTab("overview")}
+              className={`rounded-md px-3 py-1 transition-colors cursor-pointer ${
+                activeTab === "overview" ? "bg-[#EEF4FF] text-blue-700 font-semibold" : "text-[#4B5563] hover:text-[#111827]"
+              }`}
+            >
+              Unified Overview
+            </button>
+            <button
+              onClick={() => setActiveTab("crm")}
+              className={`rounded-md px-3 py-1 transition-colors cursor-pointer ${
+                activeTab === "crm" ? "bg-[#EEF4FF] text-blue-700 font-semibold" : "text-[#4B5563] hover:text-[#111827]"
+              }`}
+            >
+              CRM &amp; Sales
+            </button>
+            <button
+              onClick={() => setActiveTab("finance")}
+              className={`rounded-md px-3 py-1 transition-colors cursor-pointer ${
+                activeTab === "finance" ? "bg-[#EEF4FF] text-blue-700 font-semibold" : "text-[#4B5563] hover:text-[#111827]"
+              }`}
+            >
+              Finance &amp; Invoices
             </button>
           </div>
-          <div className="rounded-xl border border-border bg-secondary/30 p-3 text-[11px] text-muted-foreground">
-            <p className="flex items-center gap-1.5 font-medium text-foreground">
-              <Zap className="h-3.5 w-3.5 text-brand-cyan" aria-hidden /> Automation activity
-            </p>
-            <ul className="mt-1.5 space-y-1" aria-live="polite">
-              {[0, 1, 2].map((offset) => {
-                const item = activity[(tick + offset) % activity.length]!;
-                const Icon = item.icon;
-                return (
-                  <li key={item.text} className="flex items-center gap-1.5">
-                    <Icon className="h-3 w-3 shrink-0" aria-hidden /> {item.text}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
         </div>
+
+        {/* ── Dashboard Canvas Body ── */}
+        <div className="bg-[#F8FAFC] p-4 sm:p-6">
+          
+          {/* Key Metrics Grid */}
+          <div className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
+            {illustrativeMetrics.map((m) => (
+              <MetricCard key={m.label} {...m} />
+            ))}
+          </div>
+
+          {/* Operational Deck: Chart + Live Event Stream & Action Card */}
+          <div className="mt-4 grid gap-4 lg:grid-cols-12">
+            
+            {/* Left Chart Panel (7 cols) */}
+            <div className="rounded-xl border border-[#E5E7EB] bg-white p-5 shadow-xs lg:col-span-7 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-sm font-bold text-[#111827]">Revenue &amp; Pipeline Realization</h2>
+                    <p className="text-xs text-[#6B7280] mt-0.5">Continuous CRM to Cashflow conversion</p>
+                  </div>
+                  <div className="flex items-center gap-3 text-xs">
+                    <span className="flex items-center gap-1.5 font-medium text-blue-700">
+                      <span className="h-2 w-2 rounded-full bg-blue-600" /> Settled
+                    </span>
+                    <span className="flex items-center gap-1.5 font-medium text-indigo-700">
+                      <span className="h-2 w-2 rounded-full bg-indigo-600" /> Target
+                    </span>
+                  </div>
+                </div>
+
+                {/* Area Chart */}
+                <div className="mt-4 h-56 w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={revenueTrend} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id="settledGrad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#2563EB" stopOpacity={0.15} />
+                          <stop offset="95%" stopColor="#2563EB" stopOpacity={0.0} />
+                        </linearGradient>
+                        <linearGradient id="targetGrad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#4F46E5" stopOpacity={0.10} />
+                          <stop offset="95%" stopColor="#4F46E5" stopOpacity={0.0} />
+                        </linearGradient>
+                      </defs>
+                      <XAxis dataKey="m" stroke="#9CA3AF" fontSize={11} tickLine={false} axisLine={{ stroke: "#E5E7EB" }} />
+                      <YAxis stroke="#9CA3AF" fontSize={11} tickLine={false} axisLine={{ stroke: "#E5E7EB" }} />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: "#FFFFFF",
+                          borderColor: "#E5E7EB",
+                          borderRadius: "8px",
+                          boxShadow: "0 4px 6px -1px rgba(0,0,0,0.06)",
+                          fontSize: "12px",
+                          color: "#111827",
+                        }}
+                      />
+                      <Area type="monotone" dataKey="sales" stroke="#2563EB" strokeWidth={2.5} fill="url(#settledGrad)" name="Settled (₹k)" />
+                      <Area type="monotone" dataKey="target" stroke="#4F46E5" strokeWidth={2} strokeDasharray="3 3" fill="url(#targetGrad)" name="Target (₹k)" />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              {/* Bottom Chart Footer */}
+              <div className="mt-4 flex items-center justify-between border-t border-[#E5E7EB] pt-3 text-xs text-[#6B7280]">
+                <span>Automated reconciliation active</span>
+                <span className="font-semibold text-green-700">99.8% match rate</span>
+              </div>
+            </div>
+
+            {/* Right Operational Stream & AI Action Card (5 cols) */}
+            <div className="flex flex-col gap-3.5 lg:col-span-5">
+              
+              {/* Subtle Autonomous Action Card (Integrated Product Component) */}
+              <div className="rounded-xl border border-blue-200 bg-white p-4 shadow-xs">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600 border border-blue-200">
+                    <Sparkles className="h-4 w-4" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-xs font-bold text-[#111827]">AI Autonomous Action</span>
+                      <span className="inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-[10px] font-semibold text-green-700 border border-green-200">
+                        Ready to execute
+                      </span>
+                    </div>
+                    <p className="mt-1 text-xs text-[#4B5563] leading-relaxed">
+                      3 Overdue invoices totaling ₹1.45L queued for automated reminder sequence.
+                    </p>
+                    <div className="mt-3 flex items-center gap-2">
+                      <button className="rounded-md bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-blue-700 cursor-pointer shadow-2xs">
+                        Approve &amp; Send
+                      </button>
+                      <button className="rounded-md border border-[#D1D5DB] bg-white px-2.5 py-1.5 text-xs font-medium text-[#374151] hover:bg-gray-50 cursor-pointer">
+                        Inspect
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Real-time Business Event Log */}
+              <div className="flex-1 rounded-xl border border-[#E5E7EB] bg-white p-4 shadow-xs">
+                <div className="flex items-center justify-between border-b border-[#E5E7EB] pb-2.5">
+                  <span className="text-xs font-bold text-[#111827]">Live Business Events</span>
+                  <span className="flex items-center gap-1.5 text-[11px] font-medium text-green-700">
+                    <span className="h-1.5 w-1.5 rounded-full bg-green-600 animate-pulse" /> Live Feed
+                  </span>
+                </div>
+
+                <div className="mt-3 space-y-2.5">
+                  {liveEvents.map((evt, i) => (
+                    <div key={i} className="flex items-start gap-2.5 rounded-lg border border-[#F3F4F6] bg-[#F8FAFC] p-2.5 transition-colors hover:bg-gray-100/70">
+                      <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md ${evt.color}`}>
+                        <evt.icon className="h-3.5 w-3.5" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center justify-between">
+                          <p className="truncate text-xs font-semibold text-[#111827]">{evt.title}</p>
+                          <span className="text-[10px] text-[#6B7280] font-medium shrink-0 ml-1">{evt.time}</span>
+                        </div>
+                        <p className="truncate text-[11px] text-[#4B5563] mt-0.5">{evt.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
     </div>
   );

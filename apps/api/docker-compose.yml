@@ -1,0 +1,68 @@
+version: '3.9'
+
+services:
+  # ─────────────────────────────────────────────────────
+  # PostgreSQL — Primary Database
+  # ─────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: opteraos_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: opteraos
+      POSTGRES_PASSWORD: opteraos_dev_pass
+      POSTGRES_DB: opteraos_db
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U opteraos -d opteraos_db']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─────────────────────────────────────────────────────
+  # Redis — Caching, Rate Limiting, Sessions
+  # ─────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: opteraos_redis
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─────────────────────────────────────────────────────
+  # n8n — Automation Orchestration Layer
+  # (optional — comment out if not using)
+  # ─────────────────────────────────────────────────────
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: opteraos_n8n
+    restart: unless-stopped
+    ports:
+      - '5678:5678'
+    environment:
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://localhost:5678
+      - GENERIC_TIMEZONE=Asia/Kolkata
+    volumes:
+      - n8n_data:/home/node/.n8n
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  redis_data:
+  n8n_data:

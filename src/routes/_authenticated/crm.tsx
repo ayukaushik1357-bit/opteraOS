@@ -1,68 +1,131 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Contact, TrendingUp, UserPlus, Activity } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { Contact, TrendingUp, UserPlus, FileText, ShoppingCart, Percent, ArrowRight } from "lucide-react";
 import { appHead } from "@/lib/app-head";
-import { PageHeader, StatCard, useMockData, TableSkeleton } from "@/components/shared/ui-kit";
-import { mockCustomers, mockDeals, mockLeads } from "@/lib/mock/data";
+import { PageHeader, StatCard } from "@/components/shared/ui-kit";
+import { crmAnalyticsApi } from "@/lib/api";
+import { useWorkspace } from "@/components/app/AppShell";
 import { money } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/crm")({
-  head: appHead("CRM", "Leads, customers, contacts and deals in one connected workspace."),
+  head: appHead("CRM & Sales Engine", "Enterprise CRM pipelines, leads scoring, quotes, and customer 360."),
   component: CrmPage,
 });
 
 const links = [
-  { to: "/leads", label: "Leads", icon: UserPlus, desc: "Score and route inbound interest." },
-  { to: "/customers", label: "Customers", icon: Contact, desc: "Accounts, contacts and lifetime value." },
-  { to: "/deals", label: "Pipeline", icon: TrendingUp, desc: "Move opportunities through six stages." },
+  {
+    to: "/leads",
+    label: "Leads Engine",
+    icon: UserPlus,
+    desc: "AI scoring, duplicate analysis, and automated assignment.",
+    tag: "Multi-Factor Scoring",
+  },
+  {
+    to: "/deals",
+    label: "Sales Pipelines",
+    icon: TrendingUp,
+    desc: "Multi-pipeline Kanban, probability sync, and weighted forecasting.",
+    tag: "Forecasting",
+  },
+  {
+    to: "/customers",
+    label: "Customer 360°",
+    icon: Contact,
+    desc: "Unified customer account, orders, invoices, and timeline history.",
+    tag: "360° View",
+  },
+  {
+    to: "/quotations",
+    label: "Sales Quotations",
+    icon: FileText,
+    desc: "Vector PDF generation, discount approvals, email delivery, and customer acceptance.",
+    tag: "PDF & Approvals",
+  },
+  {
+    to: "/orders",
+    label: "Sales Orders",
+    icon: ShoppingCart,
+    desc: "Confirmed orders, sequence generation (SO-XXXXX), and fulfillment events.",
+    tag: "Fulfillment",
+  },
+  {
+    to: "/pricelists",
+    label: "Price Lists",
+    icon: Percent,
+    desc: "Dynamic customer tiering, volume breaks, and rule-based pricing engine.",
+    tag: "Pricing Engine",
+  },
 ];
 
 function CrmPage() {
-  const { loading } = useMockData(true);
-  const pipeline = mockDeals.filter((d) => !["won", "lost"].includes(d.stage)).reduce((s, d) => s + d.value, 0);
+  const { current } = useWorkspace();
+
+  const { data: summary, isLoading } = useQuery({
+    queryKey: ["crm_summary", current?.id],
+    queryFn: () => crmAnalyticsApi.getSummary(current!.id),
+    enabled: !!current,
+  });
+
+  const currency = current?.currency ?? "INR";
 
   return (
     <div className="space-y-6">
-      <PageHeader title="CRM" subtitle="One relationship record shared by sales, invoicing and support." />
+      <PageHeader
+        title="Advanced CRM & Sales Engine"
+        subtitle="Enterprise sales pipeline, real-time scoring, multi-tier pricing, quotations with vector PDF, and fulfillment."
+      />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="Open leads" value={mockLeads.filter((l) => l.stage !== "unqualified").length} loading={loading} />
-        <StatCard label="Customers" value={mockCustomers.length} loading={loading} />
-        <StatCard label="Open pipeline" value={money(pipeline, "INR")} loading={loading} />
-        <StatCard label="Active this week" value={6} hint="+2 vs last week" loading={loading} />
+        <StatCard
+          label="Open Leads"
+          value={isLoading ? "—" : (summary?.openLeads ?? 0)}
+          hint={`${summary?.leadConversionRate ?? 0}% qualification rate`}
+          loading={isLoading}
+        />
+        <StatCard
+          label="Active Pipeline"
+          value={isLoading ? "—" : money(summary?.openPipelineValue ?? 0, currency)}
+          hint={`Weighted: ${money(summary?.weightedPipelineValue ?? 0, currency)}`}
+          loading={isLoading}
+        />
+        <StatCard
+          label="Active Sales Orders"
+          value={isLoading ? "—" : money(summary?.activeOrderRevenue ?? 0, currency)}
+          hint={`${summary?.activeOrdersCount ?? 0} confirmed orders`}
+          loading={isLoading}
+        />
+        <StatCard
+          label="Active Accounts"
+          value={isLoading ? "—" : (summary?.customerCount ?? 0)}
+          hint={`${summary?.activeActivitiesThisWeek ?? 0} activities this week`}
+          loading={isLoading}
+        />
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        {links.map(({ to, label, icon: Icon, desc }) => (
-          <Link key={to} to={to} className="rounded-2xl border border-border bg-card/40 p-6 transition-colors hover:border-brand-indigo/50">
-            <Icon className="h-5 w-5 text-brand-cyan" aria-hidden />
-            <p className="mt-3 font-medium">{label}</p>
-            <p className="mt-1 text-sm text-muted-foreground">{desc}</p>
+      <div className="grid gap-5 md:grid-cols-3">
+        {links.map(({ to, label, icon: Icon, desc, tag }) => (
+          <Link
+            key={to}
+            to={to}
+            className="group relative rounded-xl border border-[#E5EAF1] bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.05)] transition-all hover:border-blue-300 hover:shadow-md"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                <Icon className="h-5 w-5" aria-hidden />
+              </div>
+              <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-gray-500 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
+                {tag}
+              </span>
+            </div>
+            <p className="mt-4 font-semibold text-gray-900 text-lg group-hover:text-blue-600 transition-colors">{label}</p>
+            <p className="mt-1 text-sm text-gray-500 leading-relaxed">{desc}</p>
+            <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
+              <span>Open module</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </div>
           </Link>
         ))}
       </div>
-
-      <section className="rounded-2xl border border-border bg-card/40 p-6">
-        <h2 className="inline-flex items-center gap-2 font-medium">
-          <Activity className="h-4 w-4 text-brand-violet" aria-hidden /> Activity timeline
-        </h2>
-        {loading ? (
-          <div className="mt-4"><TableSkeleton rows={4} /></div>
-        ) : (
-          <ol className="mt-4 space-y-3">
-            {[
-              { t: "Ananya Rao replied on WhatsApp", w: "12 min ago" },
-              { t: "Deal “Annual platform rollout” moved to Negotiation", w: "1 hr ago" },
-              { t: "Invoice INV-2026-0141 marked overdue", w: "3 hrs ago" },
-              { t: "6 new website leads scored by optera AI", w: "Today" },
-            ].map((a) => (
-              <li key={a.t} className="flex items-start justify-between gap-4 rounded-xl border border-border bg-secondary/30 px-4 py-3 text-sm">
-                <span className="min-w-0">{a.t}</span>
-                <span className="shrink-0 text-xs text-muted-foreground">{a.w}</span>
-              </li>
-            ))}
-          </ol>
-        )}
-      </section>
     </div>
   );
 }

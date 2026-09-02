@@ -1,0 +1,24 @@
+{
+  "name": "@optera/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./ai": "./src/ai/index.ts",
+    "./payments": "./src/payments/index.ts",
+    "./rag": "./src/rag/index.ts",
+    "./workflows": "./src/workflows/index.ts",
+    "./analytics": "./src/analytics/index.ts",
+    "./db": "./src/db/index.ts",
+    "./workspace": "./src/workspace/index.ts",
+    "./auth": "./src/auth/index.ts"
+  },
+  "dependencies": {
+    "@optera/types": "*",
+    "@optera/validation": "*",
+    "@supabase/supabase-js": "^2.112.2"
+  }
+}
