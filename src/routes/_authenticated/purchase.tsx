@@ -197,7 +197,7 @@ function PurchaseMasterPage() {
           <Button
             size="sm"
             onClick={() => setNewPoOpen(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white gap-1.5 shadow-sm text-xs h-9 font-medium"
+            className="bg-[#008080] hover:bg-[#006666] text-white gap-1.5 shadow-sm text-xs h-9 font-medium"
           >
             <Plus className="h-4 w-4" /> Create Purchase Order
           </Button>
@@ -236,7 +236,7 @@ function PurchaseMasterPage() {
                 <FileText className="h-10 w-10 text-gray-400 mx-auto mb-3" />
                 <p className="text-sm font-medium text-gray-800">No Purchase Orders Issued</p>
                 <p className="text-xs text-gray-500 mt-1">Issue a purchase order to order components or stock from suppliers.</p>
-                <Button size="sm" onClick={() => setNewPoOpen(true)} className="mt-4 bg-blue-600 hover:bg-blue-700 text-white text-xs">
+                <Button size="sm" onClick={() => setNewPoOpen(true)} className="mt-4 bg-[#008080] hover:bg-[#006666] text-white text-xs">
                   Create First PO
                 </Button>
               </div>
@@ -339,7 +339,7 @@ function PurchaseMasterPage() {
           <div className="rounded-xl border border-[#E5EAF1] bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden">
             <div className="p-4 border-b border-[#E5EAF1] flex items-center justify-between">
               <h2 className="text-sm font-semibold text-gray-900">Suppliers &amp; Vendors Directory</h2>
-              <Button size="sm" onClick={() => setNewVendorOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white text-xs">
+              <Button size="sm" onClick={() => setNewVendorOpen(true)} className="bg-[#008080] hover:bg-[#006666] text-white text-xs">
                 <Plus className="h-3.5 w-3.5 mr-1" /> Add Vendor
               </Button>
             </div>
@@ -535,7 +535,7 @@ function PurchaseMasterPage() {
                 });
               }}
               disabled={createPoMutation.isPending}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+              className="bg-[#008080] hover:bg-[#006666] text-white text-xs"
             >
               Issue PO
             </Button>
@@ -601,7 +601,7 @@ function PurchaseMasterPage() {
                 createVendorMutation.mutate({ name: vName, company: vCompany, email: vEmail, phone: vPhone });
               }}
               disabled={createVendorMutation.isPending}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+              className="bg-[#008080] hover:bg-[#006666] text-white text-xs"
             >
               Add Vendor
             </Button>

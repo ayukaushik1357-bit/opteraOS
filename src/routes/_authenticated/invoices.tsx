@@ -91,17 +91,17 @@ function emptyDraft(invoiceCount: number): Draft {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  paid: "bg-green-50 text-green-700 border border-green-200",
-  overdue: "bg-red-50 text-red-700 border border-red-200",
-  sent: "bg-blue-50 text-blue-700 border border-blue-200",
-  draft: "bg-gray-100 text-gray-700 border border-gray-200",
-  void: "bg-gray-100 text-gray-400 border border-gray-200",
+  paid: "bg-emerald-50 text-emerald-700 border border-emerald-200",
+  overdue: "bg-rose-50 text-rose-700 border border-rose-200",
+  sent: "bg-[rgba(0,128,128,0.08)] text-[#008080] border border-[rgba(0,128,128,0.2)]",
+  draft: "bg-[#EDF4F3] text-[#3D5A58] border border-[rgba(0,128,128,0.15)]",
+  void: "bg-[#EDF4F3] text-[#617D7B] border border-[rgba(0,128,128,0.1)]",
 };
 
 function StatusBadge({ status }: { status: string }) {
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${STATUS_COLORS[status] ?? "bg-slate-100 text-slate-600"}`}
+      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${STATUS_COLORS[status] ?? "bg-[#EDF4F3] text-[#3D5A58]"}`}
     >
       {status}
     </span>
@@ -302,39 +302,40 @@ function InvoicesPage() {
     <div className="grid gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Invoices</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {money(collected, currency)} collected · {money(outstanding, currency)} outstanding
+          <h1 className="text-3xl font-bold tracking-tight text-[#0F2423]">Invoices</h1>
+          <p className="mt-1 text-sm text-[#617D7B]">
+            <span className="font-semibold text-[#008080]">{money(collected, currency)}</span> collected &bull; <span className="font-semibold text-amber-600">{money(outstanding, currency)}</span> outstanding
           </p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={openNew}>
+            <Button className="bg-[#008080] hover:bg-[#006666] text-white shadow-teal-sm font-semibold" onClick={openNew}>
               <Plus className="mr-1 h-4 w-4" /> New invoice
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white border border-[rgba(0,128,128,0.2)] shadow-2xl rounded-2xl">
             <DialogHeader>
-              <DialogTitle>{draft.id ? "Edit invoice" : "New invoice"}</DialogTitle>
+              <DialogTitle className="text-[#0F2423] font-bold text-lg">{draft.id ? "Edit invoice" : "New invoice"}</DialogTitle>
             </DialogHeader>
             <div className="grid gap-4">
               {/* Invoice Number + Status */}
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="grid gap-2">
-                  <Label htmlFor="i-number">Invoice Number</Label>
+                  <Label htmlFor="i-number" className="text-xs font-semibold text-[#0F2423]">Invoice Number</Label>
                   <Input
                     id="i-number"
                     value={draft.number}
                     onChange={(e) => setDraft({ ...draft, number: e.target.value })}
+                    className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label>Status</Label>
+                  <Label className="text-xs font-semibold text-[#0F2423]">Status</Label>
                   <Select
                     value={draft.status}
                     onValueChange={(v) => setDraft({ ...draft, status: v as Status })}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -351,21 +352,23 @@ function InvoicesPage() {
               {/* Dates */}
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="grid gap-2">
-                  <Label htmlFor="i-issue">Issue date</Label>
+                  <Label htmlFor="i-issue" className="text-xs font-semibold text-[#0F2423]">Issue date</Label>
                   <Input
                     id="i-issue"
                     type="date"
                     value={draft.issueDate}
                     onChange={(e) => setDraft({ ...draft, issueDate: e.target.value })}
+                    className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="i-due">Due date</Label>
+                  <Label htmlFor="i-due" className="text-xs font-semibold text-[#0F2423]">Due date</Label>
                   <Input
                     id="i-due"
                     type="date"
                     value={draft.dueDate}
                     onChange={(e) => setDraft({ ...draft, dueDate: e.target.value })}
+                    className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
                   />
                 </div>
               </div>
@@ -373,14 +376,14 @@ function InvoicesPage() {
               {/* Customer + Tax Rate */}
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="grid gap-2">
-                  <Label>Customer</Label>
+                  <Label className="text-xs font-semibold text-[#0F2423]">Customer</Label>
                   <Select
                     value={draft.customerId || "none"}
                     onValueChange={(v) =>
                       setDraft({ ...draft, customerId: v === "none" ? "" : v })
                     }
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                       <SelectValue placeholder="Unassigned" />
                     </SelectTrigger>
                     <SelectContent>
@@ -394,7 +397,7 @@ function InvoicesPage() {
                   </Select>
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="i-tax">Tax rate (%)</Label>
+                  <Label htmlFor="i-tax" className="text-xs font-semibold text-[#0F2423]">Tax rate (%)</Label>
                   <Input
                     id="i-tax"
                     type="number"
@@ -404,6 +407,7 @@ function InvoicesPage() {
                     placeholder="e.g. 18 for 18% GST"
                     value={draft.taxRate}
                     onChange={(e) => setDraft({ ...draft, taxRate: e.target.value })}
+                    className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
                   />
                 </div>
               </div>
@@ -411,8 +415,8 @@ function InvoicesPage() {
               {/* Line Items */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <Label>Line Items</Label>
-                  <Button type="button" variant="ghost" size="sm" onClick={addLineItem}>
+                  <Label className="text-xs font-semibold text-[#0F2423]">Line Items</Label>
+                  <Button type="button" variant="ghost" size="sm" onClick={addLineItem} className="text-[#008080] hover:bg-[rgba(0,128,128,0.08)] text-xs">
                     <Plus className="h-3.5 w-3.5 mr-1" /> Add item
                   </Button>
                 </div>
@@ -421,7 +425,7 @@ function InvoicesPage() {
                     <div key={idx} className="flex gap-2 items-center">
                       <Input
                         placeholder="Description"
-                        className="flex-1"
+                        className="flex-1 border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
                         value={item.description}
                         onChange={(e) => updateLineItem(idx, "description", e.target.value)}
                       />
@@ -430,7 +434,7 @@ function InvoicesPage() {
                         min={0.001}
                         step={1}
                         placeholder="Qty"
-                        className="w-20"
+                        className="w-20 border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
                         value={item.quantity}
                         onChange={(e) => updateLineItem(idx, "quantity", Number(e.target.value))}
                       />
@@ -438,7 +442,7 @@ function InvoicesPage() {
                         type="number"
                         min={0}
                         placeholder="Unit price"
-                        className="w-28"
+                        className="w-28 border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
                         value={item.unit_price}
                         onChange={(e) =>
                           updateLineItem(idx, "unit_price", Number(e.target.value))
@@ -451,6 +455,7 @@ function InvoicesPage() {
                         disabled={draft.lineItems.length === 1}
                         onClick={() => removeLineItem(idx)}
                         aria-label="Remove item"
+                        className="text-[#617D7B] hover:text-red-600"
                       >
                         <X className="h-3.5 w-3.5" />
                       </Button>
@@ -460,26 +465,26 @@ function InvoicesPage() {
               </div>
 
               {/* Totals preview */}
-              <div className="rounded-lg bg-[#F8FAFC] border border-[#E5EAF1] p-4 text-sm">
+              <div className="rounded-xl bg-[#EDF4F3]/60 border border-[rgba(0,128,128,0.15)] p-4 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Subtotal</span>
-                  <span className="font-medium text-gray-900">{money(draftSubtotal, currency)}</span>
+                  <span className="text-[#617D7B]">Subtotal</span>
+                  <span className="font-semibold text-[#0F2423]">{money(draftSubtotal, currency)}</span>
                 </div>
                 {draftTax > 0 && (
                   <div className="flex justify-between mt-1">
-                    <span className="text-gray-500">Tax ({draft.taxRate}%)</span>
-                    <span className="font-medium text-gray-900">{money(draftTax, currency)}</span>
+                    <span className="text-[#617D7B]">Tax ({draft.taxRate}%)</span>
+                    <span className="font-semibold text-[#0F2423]">{money(draftTax, currency)}</span>
                   </div>
                 )}
-                <div className="flex justify-between mt-2 border-t border-[#E5EAF1] pt-2 font-bold text-gray-900">
+                <div className="flex justify-between mt-2 border-t border-[rgba(0,128,128,0.15)] pt-2 font-bold text-[#0F2423]">
                   <span>Total</span>
-                  <span>{money(draftTotal, currency)}</span>
+                  <span className="text-[#008080] font-bold text-base">{money(draftTotal, currency)}</span>
                 </div>
               </div>
             </div>
             <DialogFooter>
               <Button
-                className="bg-blue-600 hover:bg-blue-700 text-white"
+                className="bg-[#008080] hover:bg-[#006666] text-white shadow-teal-sm font-semibold"
                 disabled={!draft.number.trim() || saveMutation.isPending}
                 onClick={() => saveMutation.mutate()}
               >
@@ -496,7 +501,7 @@ function InvoicesPage() {
         </Dialog>
       </div>
 
-      <div className="rounded-xl border border-[#E5EAF1] bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden">
+      <div className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-white shadow-teal-xs overflow-hidden">
         {isLoading ? (
           <div className="grid gap-2 p-5">
             {Array.from({ length: 4 }).map((_, i) => (
@@ -510,28 +515,28 @@ function InvoicesPage() {
         ) : (
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead>Number</TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead>Issued</TableHead>
-                <TableHead>Due</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="w-40 text-right">Actions</TableHead>
+              <TableRow className="bg-[rgba(0,128,128,0.03)] border-b border-[rgba(0,128,128,0.1)] hover:bg-transparent">
+                <TableHead className="text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Number</TableHead>
+                <TableHead className="text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Customer</TableHead>
+                <TableHead className="text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Amount</TableHead>
+                <TableHead className="text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Issued</TableHead>
+                <TableHead className="text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Due</TableHead>
+                <TableHead className="text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Status</TableHead>
+                <TableHead className="w-40 text-right text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Actions</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody className="divide-y divide-[rgba(0,128,128,0.08)]">
               {invoices.map((inv) => (
-                <TableRow key={inv.id}>
-                  <TableCell className="font-medium">{inv.number}</TableCell>
-                  <TableCell className="text-muted-foreground">
+                <TableRow key={inv.id} className="hover:bg-[rgba(0,128,128,0.02)] border-b border-[rgba(0,128,128,0.08)] transition-colors">
+                  <TableCell className="font-semibold text-[#0F2423] font-mono">{inv.number}</TableCell>
+                  <TableCell className="text-[#3D5A58] font-medium">
                     {customers.find((c) => c.id === inv.customer_id)?.name ?? "—"}
                   </TableCell>
-                  <TableCell>{money(Number(inv.amount ?? 0), currency)}</TableCell>
-                  <TableCell className="text-muted-foreground">
+                  <TableCell className="font-bold text-[#0F2423] tabular-nums">{money(Number(inv.amount ?? 0), currency)}</TableCell>
+                  <TableCell className="text-[#617D7B]">
                     {shortDate(inv.issue_date)}
                   </TableCell>
-                  <TableCell className="text-muted-foreground">
+                  <TableCell className="text-[#617D7B]">
                     {inv.due_date ? shortDate(inv.due_date) : "—"}
                   </TableCell>
                   <TableCell>
@@ -541,7 +546,7 @@ function InvoicesPage() {
                         statusMutation.mutate({ id: inv.id, status: v as Status })
                       }
                     >
-                      <SelectTrigger className="h-8 w-28 text-xs">
+                      <SelectTrigger className="h-8 w-28 text-xs border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -564,11 +569,12 @@ function InvoicesPage() {
                           onClick={() => handleMarkPaid(inv)}
                           title="Mark as Paid"
                           aria-label={`Mark invoice ${inv.number} as paid`}
+                          className="hover:bg-emerald-50"
                         >
                           {payingInvoiceId === inv.id ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
                           ) : (
-                            <CheckCircle2 className="h-4 w-4 text-green-600" />
+                            <CheckCircle2 className="h-4 w-4 text-emerald-600" />
                           )}
                         </Button>
                       )}
@@ -579,6 +585,7 @@ function InvoicesPage() {
                         onClick={() => handleDownloadPdf(inv)}
                         title="Download PDF"
                         aria-label={`Download PDF for ${inv.number}`}
+                        className="text-[#008080] hover:bg-[rgba(0,128,128,0.08)]"
                       >
                         <Download className="h-4 w-4" />
                       </Button>
@@ -587,6 +594,7 @@ function InvoicesPage() {
                         variant="ghost"
                         size="sm"
                         onClick={() => openEdit(inv)}
+                        className="text-[#3D5A58] hover:text-[#008080] hover:bg-[rgba(0,128,128,0.06)]"
                       >
                         Edit
                       </Button>
@@ -596,6 +604,7 @@ function InvoicesPage() {
                         size="sm"
                         onClick={() => deleteMutation.mutate(inv.id)}
                         aria-label={`Delete ${inv.number}`}
+                        className="text-[#617D7B] hover:text-red-600 hover:bg-rose-50"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>

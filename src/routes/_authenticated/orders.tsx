@@ -136,7 +136,7 @@ export function OrdersPage() {
         subtitle="Manage confirmed customer sales orders, fulfillment commitments, and invoice readiness."
         actions={
           <Button
-            className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
+            className="bg-[#008080] hover:bg-[#006666] text-white shadow-sm"
             onClick={() => setShowAddModal(true)}
           >
             <Plus className="mr-1.5 h-4 w-4" /> Create Sales Order

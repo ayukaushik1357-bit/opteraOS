@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
@@ -5,14 +6,14 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * opteraOS — Global Light Gradient Theme & Enterprise Design System
+ * opteraOS — Luminous Mineral Teal Design System
  *
- * Canvas Background: Palpable, elegant light gradient
- *   (Soft Blue #E8EFFC + Soft Lavender #F4EEFD + Soft Indigo #EEF2FF on #EEF2F8 base)
- * Working Surfaces: Solid Pure White (#FFFFFF) with subtle #E2E8F0 borders
- * Text Hierarchy: #111827 (Primary), #374151 (Secondary), #6B7280 (Muted)
- * Action Gradient: Restrained #2563EB → #4F46E5 → #7C3AED
+ * Canvas:  Mineral Teal Mist (#EDF4F3 → #E6EFEF → #DEE9E8) — NOT dark blue/black, NOT stark white
+ * Surface: Crisp elevated pure white (#FFFFFF) & frosted pearl cards with subtle teal borders
+ * Accent:  Signature Teal #008080 · Emerald-Teal #0D9488 · Soft Indigo #6366F1
+ * Text:    #0F2423 (deep spruce charcoal, ultra-readable) · #3D5A58 (secondary) · #617D7B (muted)
  */
+
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -54,124 +55,131 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --color-brand-blue: var(--brand-blue);
-  --color-brand-indigo: var(--brand-indigo);
-  --color-brand-purple: var(--brand-purple);
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --color-brand-teal: var(--brand-teal);
   --color-brand-cyan: var(--brand-cyan);
+  --color-brand-violet: var(--brand-violet);
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-danger: var(--danger);
-  --color-info: var(--info);
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   GLOBAL LIGHT GRADIENT TOKENS
+   LUMINOUS MINERAL TEAL TOKENS (#008080)
    ───────────────────────────────────────────────────────────────────────────── */
 :root {
   --radius: 0.625rem;
 
-  /* Global Canvas Gradient (Multi-point soft light mesh: ~10% richer than flat white) */
+  /* ── Canvas Gradient — Luminous Mineral Teal & Silk Sage ── */
   --app-gradient:
-    radial-gradient(ellipse 80% 60% at 0% 0%, rgba(219, 234, 254, 0.75) 0%, transparent 65%),
-    radial-gradient(ellipse 70% 55% at 100% 0%, rgba(243, 232, 255, 0.75) 0%, transparent 65%),
-    radial-gradient(ellipse 75% 65% at 50% 100%, rgba(224, 231, 255, 0.65) 0%, transparent 70%),
-    linear-gradient(180deg, #F0F4FA 0%, #EEF2F8 100%);
-  
-  --background: #EEF2F8;
+    radial-gradient(ellipse 70% 50% at 15% 0%, rgba(0, 128, 128, 0.12) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 40% at 85% 15%, rgba(0, 160, 160, 0.08) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(0, 128, 128, 0.06) 0%, transparent 70%),
+    linear-gradient(170deg, #EDF4F3 0%, #E6EFEF 50%, #DEE9E8 100%);
+
+  --background: #EDF4F3;
   --surface: #FFFFFF;
-  --surface-muted: #F8FAFC;
-  --surface-secondary: #F1F5F9;
+  --surface-muted: #F3F8F7;
+  --surface-secondary: #E8F1F0;
+  --surface-elevated: #FFFFFF;
 
-  /* High Contrast Typography */
-  --foreground: #111827;
-  --text-primary: #111827;
-  --text-secondary: #374151;
-  --text-muted: #6B7280;
+  /* ── Typography (Ultra-Clear Deep Spruce Charcoal) ── */
+  --foreground: #0F2423;
+  --text-primary: #0F2423;
+  --text-secondary: #3D5A58;
+  --text-muted: #617D7B;
 
-  /* Business Working Surfaces — Pure White Cards */
+  /* ── Cards ── */
   --card: #FFFFFF;
-  --card-foreground: #111827;
+  --card-foreground: #0F2423;
 
-  /* Popovers / Dropdowns */
+  /* ── Popovers / Dropdowns ── */
   --popover: #FFFFFF;
-  --popover-foreground: #111827;
+  --popover-foreground: #0F2423;
 
-  /* Primary Brand Action */
-  --primary: #2563EB;
-  --primary-hover: #1D4ED8;
+  /* ── Primary Brand — Teal (#008080) ── */
+  --primary: #008080;
+  --primary-hover: #006666;
   --primary-foreground: #FFFFFF;
 
-  /* Secondary */
-  --secondary: #F1F5F9;
-  --secondary-foreground: #374151;
+  /* ── Secondary ── */
+  --secondary: #E2ECEB;
+  --secondary-foreground: #0F2423;
 
-  /* Muted */
-  --muted: #F1F5F9;
-  --muted-foreground: #6B7280;
+  /* ── Muted ── */
+  --muted: #E8F1F0;
+  --muted-foreground: #5A7573;
 
-  /* Accent */
-  --accent: #E8F0FF;
-  --accent-foreground: #2563EB;
+  /* ── Accent — Soft Teal Tint ── */
+  --accent: rgba(0, 128, 128, 0.08);
+  --accent-foreground: #006666;
 
-  /* Destructive */
-  --destructive: #DC2626;
+  /* ── Destructive ── */
+  --destructive: #E11D48;
   --destructive-foreground: #FFFFFF;
 
-  /* Borders & Inputs */
-  --border: #E2E8F0;
-  --border-strong: #CBD5E1;
-  --input: #FFFFFF;
-  --ring: #2563EB;
+  /* ── Borders & Inputs ── */
+  --border: rgba(0, 128, 128, 0.16);
+  --border-strong: rgba(0, 128, 128, 0.28);
+  --border-teal: rgba(0, 128, 128, 0.25);
+  --input: #E2ECEB;
+  --input-bg: #FFFFFF;
+  --ring: #008080;
 
-  /* Semantic Status Badges */
-  --success: #16A34A;
-  --success-bg: #F0FDF4;
-  --success-border: #BBF7D0;
+  /* ── Semantic Status ── */
+  --success: #059669;
+  --success-bg: rgba(5, 150, 105, 0.1);
+  --success-border: rgba(5, 150, 105, 0.25);
   --warning: #D97706;
-  --warning-bg: #FFFBEB;
-  --warning-border: #FDE68A;
-  --danger: #DC2626;
-  --danger-bg: #FEF2F2;
-  --danger-border: #FECACA;
+  --warning-bg: rgba(217, 119, 6, 0.1);
+  --warning-border: rgba(217, 119, 6, 0.25);
+  --danger: #E11D48;
+  --danger-bg: rgba(225, 29, 72, 0.1);
+  --danger-border: rgba(225, 29, 72, 0.25);
   --info: #0284C7;
-  --info-bg: #F0F9FF;
-  --info-border: #BAE6FD;
+  --info-bg: rgba(2, 132, 199, 0.1);
+  --info-border: rgba(2, 132, 199, 0.25);
 
-  /* Brand Accents */
-  --brand-blue: #2563EB;
-  --brand-indigo: #4F46E5;
-  --brand-purple: #7C3AED;
-  --brand-cyan: #0891B2;
+  /* ── Brand Accents ── */
+  --brand-teal: #008080;
+  --brand-cyan: #0D9488;
+  --brand-violet: #6366F1;
 
-  /* Brand Action Gradient (Restrained 5-10% accent only) */
-  --gradient-brand: linear-gradient(135deg, #2563EB 0%, #4F46E5 50%, #7C3AED 100%);
+  /* ── Brand Gradient ── */
+  --gradient-brand: linear-gradient(135deg, #008080 0%, #009999 50%, #0D9488 100%);
+  --gradient-brand-alt: linear-gradient(135deg, #006666 0%, #008080 100%);
+  --gradient-glow-teal: radial-gradient(ellipse at center, rgba(0, 128, 128, 0.18) 0%, transparent 70%);
 
-  /* Subtle Business Shadows */
-  --shadow-xs: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
-  --shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.06), 0 1px 2px -1px rgba(15, 23, 42, 0.06);
-  --shadow-card: 0 1px 3px 0 rgba(15, 23, 42, 0.06), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
-  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
-  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+  /* ── Premium Shadows ── */
+  --shadow-xs: 0 1px 2px 0 rgba(15, 36, 35, 0.04);
+  --shadow-sm: 0 2px 4px 0 rgba(15, 36, 35, 0.05), 0 1px 2px -1px rgba(15, 36, 35, 0.04);
+  --shadow-card: 0 4px 20px -2px rgba(0, 64, 64, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 6px 16px -2px rgba(0, 64, 64, 0.08), 0 2px 6px -2px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 16px 32px -4px rgba(0, 64, 64, 0.1), 0 4px 8px -4px rgba(0, 0, 0, 0.04);
+  --shadow-teal: 0 0 20px rgba(0, 128, 128, 0.2), 0 0 40px rgba(0, 128, 128, 0.08);
+  --shadow-glow: 0 0 28px rgba(0, 128, 128, 0.2);
 
-  /* Charts */
-  --chart-1: #2563EB;
-  --chart-2: #16A34A;
-  --chart-3: #D97706;
-  --chart-4: #7C3AED;
-  --chart-5: #DC2626;
+  /* ── Charts ── */
+  --chart-1: #008080;
+  --chart-2: #0D9488;
+  --chart-3: #6366F1;
+  --chart-4: #D97706;
+  --chart-5: #E11D48;
 
-  /* Sidebar Tokens */
-  --sidebar: #FFFFFF;
-  --sidebar-foreground: #374151;
-  --sidebar-primary: #2563EB;
+  /* ── Sidebar ── */
+  --sidebar: rgba(255, 255, 255, 0.88);
+  --sidebar-foreground: #3D5A58;
+  --sidebar-primary: #008080;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #E8F0FF;
-  --sidebar-accent-foreground: #2563EB;
-  --sidebar-border: #E2E8F0;
-  --sidebar-ring: #2563EB;
+  --sidebar-accent: rgba(0, 128, 128, 0.1);
+  --sidebar-accent-foreground: #006666;
+  --sidebar-border: rgba(0, 128, 128, 0.12);
+  --sidebar-ring: #008080;
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   GLOBAL BASE
+   ───────────────────────────────────────────────────────────────────────────── */
 @layer base {
   * {
     border-color: var(--color-border);
@@ -198,27 +206,76 @@
   }
 
   ::selection {
-    background-color: rgba(37, 99, 235, 0.18);
-    color: #1D4ED8;
+    background-color: rgba(0, 128, 128, 0.25);
+    color: #00CCCC;
   }
 
   :focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 2px;
   }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 128, 128, 0.04);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 128, 128, 0.25);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 128, 128, 0.45);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   KEYFRAME ANIMATIONS
+   ───────────────────────────────────────────────────────────────────────────── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes shimmer {
+  from { background-position: -200% center; }
+  to   { background-position: 200% center; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(0, 128, 128, 0.25); }
+  50%       { box-shadow: 0 0 24px rgba(0, 128, 128, 0.45), 0 0 48px rgba(13, 148, 136, 0.15); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}
+
+@keyframes scan-line {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
    GLOBAL UTILITIES
    ───────────────────────────────────────────────────────────────────────────── */
 
-/* Global canvas gradient utility */
+/* Canvas gradient */
 @utility app-gradient-canvas {
   background: var(--app-gradient);
   background-attachment: fixed;
 }
 
-/* Brand gradient text — for logo "OS" and key headline highlight phrase only */
+/* Brand gradient text */
 @utility text-gradient {
   background-image: var(--gradient-brand);
   background-clip: text;
@@ -226,25 +283,78 @@
   color: transparent;
 }
 
-/* Brand gradient background — for primary CTA buttons, logo accent */
+/* Shimmer text animation */
+@utility text-shimmer {
+  background: linear-gradient(
+    90deg,
+    #3D5A58 0%,
+    #008080 40%,
+    #0D9488 60%,
+    #3D5A58 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+
+/* Brand gradient background */
 @utility bg-gradient-brand {
   background-image: var(--gradient-brand);
 }
 
-/* Working Surface: Pure White Business Card */
+/* Glass card surface */
 @utility card-surface {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 0.75rem;
   box-shadow: var(--shadow-card);
+  backdrop-filter: blur(8px);
 }
 
-/* Light hover surface */
+/* Glass panel — stronger glass effect */
+@utility glass-panel {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(0, 128, 128, 0.14);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Glass panel with teal tint */
+@utility glass-teal {
+  background: rgba(235, 244, 243, 0.85);
+  border: 1px solid rgba(0, 128, 128, 0.2);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Glow effect */
+@utility glow-teal {
+  box-shadow: var(--shadow-teal);
+}
+
+/* Fade up animation */
+@utility animate-fade-up {
+  animation: fade-up 0.5s ease-out both;
+}
+
+/* Float animation */
+@utility animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Glow pulse */
+@utility animate-glow-pulse {
+  animation: glow-pulse 2.5s ease-in-out infinite;
+}
+
+/* Surface hover */
 @utility surface-hover {
-  background: #F8FAFC;
+  background: rgba(0, 128, 128, 0.04);
 }
 
-/* Status badge utilities */
+/* ── Status badges ── */
 @utility status-success {
   background-color: var(--success-bg);
   color: var(--success);
@@ -270,18 +380,18 @@
 }
 
 @utility status-neutral {
-  background-color: #F1F5F9;
-  color: #374151;
-  border: 1px solid #E2E8F0;
+  background-color: #E2ECEB;
+  color: #3D5A58;
+  border: 1px solid rgba(0, 128, 128, 0.15);
 }
 
-/* Sidebar navigation utilities */
+/* ── Sidebar nav utilities ── */
 @utility nav-item {
   display: flex;
   align-items: center;
   gap: 0.625rem;
   padding: 0.4rem 0.75rem;
-  border-radius: 0.375rem;
+  border-radius: 0.5rem;
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--sidebar-foreground);
@@ -289,8 +399,8 @@
   cursor: pointer;
 
   &:hover {
-    background-color: #F8FAFC;
-    color: #111827;
+    background-color: rgba(0, 128, 128, 0.06);
+    color: #0F2423;
   }
 }
 
@@ -299,7 +409,7 @@
   align-items: center;
   gap: 0.625rem;
   padding: 0.4rem 0.75rem;
-  border-radius: 0.375rem;
+  border-radius: 0.5rem;
   font-size: 0.875rem;
   font-weight: 600;
   background-color: var(--sidebar-accent);
@@ -314,31 +424,70 @@
     bottom: 20%;
     width: 2.5px;
     border-radius: 0 2px 2px 0;
-    background: var(--sidebar-primary);
+    background: var(--brand-teal);
+    box-shadow: 0 0 6px rgba(0, 128, 128, 0.8);
   }
 }
 
-/* Table utilities */
+/* ── Table utilities ── */
 @utility table-header {
-  background-color: #F8FAFC;
+  background-color: rgba(235, 244, 243, 0.8);
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #6B7280;
+  color: #5A7573;
   border-bottom: 1px solid var(--border);
 }
 
 @utility table-row-hover {
   &:hover {
-    background-color: #F8FAFC;
+    background-color: rgba(0, 128, 128, 0.03);
   }
 }
 
-/* No scrollbar utility */
+/* ── No scrollbar ── */
 @utility no-scrollbar {
   scrollbar-width: none;
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   COMPONENT OVERRIDES — Luminous Mineral Teal Theme
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* Input fields */
+input, textarea, select {
+  background-color: var(--input-bg) !important;
+  color: var(--foreground) !important;
+  border-color: var(--border) !important;
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--text-muted) !important;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--brand-teal) !important;
+  box-shadow: 0 0 0 2px rgba(0, 128, 128, 0.2) !important;
+}
+
+/* Label */
+label {
+  color: var(--text-secondary) !important;
+}
+
+/* Tabs */
+[role="tablist"] {
+  background-color: rgba(226, 236, 235, 0.8) !important;
+  border-color: var(--border) !important;
+}
+
+/* Badge base override */
+.badge-teal {
+  background: rgba(0, 128, 128, 0.1);
+  color: #008080;
+  border: 1px solid rgba(0, 128, 128, 0.22);
 }

@@ -149,7 +149,7 @@ function KnowledgePage() {
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+            <Button className="bg-[#008080] hover:bg-[#006666] text-white">
               <Upload className="mr-1 h-4 w-4" /> Ingest Document
             </Button>
           </DialogTrigger>
@@ -180,7 +180,7 @@ function KnowledgePage() {
             </div>
             <DialogFooter>
               <Button
-                className="bg-blue-600 hover:bg-blue-700 text-white"
+                className="bg-[#008080] hover:bg-[#006666] text-white"
                 disabled={docForm.name.trim().length < 2 || docForm.content.trim().length < 10 || uploadMutation.isPending}
                 onClick={() => uploadMutation.mutate()}
               >

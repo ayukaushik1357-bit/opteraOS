@@ -212,7 +212,7 @@ function AccountingMasterPage() {
           <Button
             size="sm"
             onClick={() => setNewJournalOpen(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white gap-1.5 shadow-sm"
+            className="bg-[#008080] hover:bg-[#006666] text-white gap-1.5 shadow-sm"
           >
             <Plus className="h-4 w-4" />
             New Journal Entry
@@ -299,7 +299,7 @@ function AccountingMasterPage() {
                 <p className="text-xs text-gray-500 mt-1 max-w-sm mx-auto">
                   Post your first balanced double-entry transaction or generate invoices and bills to automatically create ledger records.
                 </p>
-                <Button size="sm" onClick={() => setNewJournalOpen(true)} className="mt-4 bg-blue-600 hover:bg-blue-700 text-white">
+                <Button size="sm" onClick={() => setNewJournalOpen(true)} className="mt-4 bg-[#008080] hover:bg-[#006666] text-white">
                   Post First Entry
                 </Button>
               </div>
@@ -519,7 +519,7 @@ function AccountingMasterPage() {
                 <h2 className="text-sm font-semibold text-gray-900">Operational Expenses &amp; Reimbursements</h2>
                 <p className="text-xs text-gray-500">Track and categorize company expenditures and employee claims</p>
               </div>
-              <Button size="sm" onClick={() => setNewExpenseOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white text-xs">
+              <Button size="sm" onClick={() => setNewExpenseOpen(true)} className="bg-[#008080] hover:bg-[#006666] text-white text-xs">
                 <Plus className="h-3.5 w-3.5 mr-1" /> Record Expense
               </Button>
             </div>
@@ -651,7 +651,7 @@ function AccountingMasterPage() {
                 });
               }}
               disabled={createJournalMutation.isPending}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+              className="bg-[#008080] hover:bg-[#006666] text-white text-xs"
             >
               {createJournalMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Post to General Ledger"}
             </Button>
@@ -713,7 +713,7 @@ function AccountingMasterPage() {
                 createAccountMutation.mutate({ code: newAccCode, name: newAccName, type: newAccType });
               }}
               disabled={createAccountMutation.isPending}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+              className="bg-[#008080] hover:bg-[#006666] text-white text-xs"
             >
               Create Account
             </Button>
@@ -771,7 +771,7 @@ function AccountingMasterPage() {
                 createExpenseMutation.mutate({ title: expTitle, amount: amt, category: expCategory });
               }}
               disabled={createExpenseMutation.isPending}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+              className="bg-[#008080] hover:bg-[#006666] text-white text-xs"
             >
               Record Expense
             </Button>

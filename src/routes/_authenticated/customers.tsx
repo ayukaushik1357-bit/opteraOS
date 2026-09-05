@@ -93,9 +93,9 @@ export const Route = createFileRoute("/_authenticated/customers")({
 type Status = "active" | "prospect" | "churned";
 
 const STATUS_COLORS: Record<Status, string> = {
-  active: "bg-green-50 text-green-700 border-green-200",
-  prospect: "bg-blue-50 text-blue-700 border-blue-200",
-  churned: "bg-red-50 text-red-700 border-red-200",
+  active: "bg-emerald-50 text-emerald-700 border border-emerald-200",
+  prospect: "bg-[rgba(0,128,128,0.08)] text-[#008080] border border-[rgba(0,128,128,0.2)]",
+  churned: "bg-rose-50 text-rose-700 border border-rose-200",
 };
 
 // ─── Parse CSV rows from a file ─────────────────────────────────────────────
@@ -389,8 +389,8 @@ function CustomersPage() {
       {/* Page header */}
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Customers</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <h1 className="text-3xl font-bold tracking-tight text-[#0F2423]">Customers</h1>
+          <p className="mt-1 text-sm text-[#617D7B]">
             {data?.total != null
               ? `${data.total.toLocaleString()} customer${data.total !== 1 ? "s" : ""} in ${current?.name ?? "your workspace"}`
               : "Your CRM records, shared across the workspace."}
@@ -401,14 +401,14 @@ function CustomersPage() {
           {/* Import */}
           <Dialog open={importOpen} onOpenChange={(v) => { if (!v) resetImport(); else setImportOpen(true); }}>
             <DialogTrigger asChild>
-              <Button variant="outline" className="gap-1.5 border-[#E5EAF1] text-gray-700 hover:bg-gray-50">
-                <Upload className="h-4 w-4" />
+              <Button variant="outline" className="gap-1.5 border-[rgba(0,128,128,0.2)] text-[#0F2423] hover:border-[#008080] hover:bg-[rgba(0,128,128,0.04)]">
+                <Upload className="h-4 w-4 text-[#008080]" />
                 Import CSV
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="max-w-2xl bg-white border border-[rgba(0,128,128,0.2)] shadow-2xl rounded-2xl">
               <DialogHeader>
-                <DialogTitle>Import Customers from CSV</DialogTitle>
+                <DialogTitle className="text-[#0F2423] font-bold text-lg">Import Customers from CSV</DialogTitle>
               </DialogHeader>
 
               {importStep === "upload" && (
@@ -481,9 +481,9 @@ function CustomersPage() {
                     )}
                   </div>
                   <DialogFooter>
-                    <Button variant="outline" onClick={() => setImportStep("upload")}>Back</Button>
+                    <Button variant="outline" onClick={() => setImportStep("upload")} className="border-[rgba(0,128,128,0.2)] text-[#0F2423]">Back</Button>
                     <Button
-                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                      className="bg-[#008080] hover:bg-[#006666] text-white shadow-teal-sm font-semibold"
                       disabled={importMutation.isPending}
                       onClick={() => importMutation.mutate()}
                     >
@@ -501,27 +501,27 @@ function CustomersPage() {
                 <div className="grid gap-4">
                   <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                     {[
-                      { label: "Imported", value: importResult.imported, color: "text-emerald-400" },
-                      { label: "Duplicates skipped", value: importResult.duplicates, color: "text-amber-400" },
-                      { label: "Validation errors", value: importResult.validationErrors, color: "text-red-400" },
-                      { label: "Total rows", value: importResult.total, color: "text-slate-300" },
+                      { label: "Imported", value: importResult.imported, color: "text-emerald-600" },
+                      { label: "Duplicates skipped", value: importResult.duplicates, color: "text-amber-600" },
+                      { label: "Validation errors", value: importResult.validationErrors, color: "text-red-600" },
+                      { label: "Total rows", value: importResult.total, color: "text-[#0F2423]" },
                     ].map((s) => (
-                      <div key={s.label} className="rounded-xl border border-border bg-secondary/30 p-4">
-                        <p className={`text-2xl font-semibold ${s.color}`}>{s.value.toLocaleString()}</p>
-                        <p className="mt-1 text-xs text-muted-foreground">{s.label}</p>
+                      <div key={s.label} className="rounded-xl border border-[rgba(0,128,128,0.15)] bg-[#EDF4F3]/40 p-4">
+                        <p className={`text-2xl font-bold ${s.color}`}>{s.value.toLocaleString()}</p>
+                        <p className="mt-1 text-xs text-[#617D7B]">{s.label}</p>
                       </div>
                     ))}
                   </div>
                   {importResult.errorDetails.length > 0 && (
-                    <div className="max-h-40 overflow-auto rounded-xl border border-destructive/30 bg-destructive/5 p-3">
-                      <p className="mb-2 text-xs font-medium text-destructive">First {importResult.errorDetails.length} errors:</p>
+                    <div className="max-h-40 overflow-auto rounded-xl border border-red-200 bg-red-50 p-3">
+                      <p className="mb-2 text-xs font-semibold text-red-700">First {importResult.errorDetails.length} errors:</p>
                       {importResult.errorDetails.map((e, i) => (
-                        <p key={i} className="text-xs text-muted-foreground">Row {e.row}: {e.reason}</p>
+                        <p key={i} className="text-xs text-red-600">Row {e.row}: {e.reason}</p>
                       ))}
                     </div>
                   )}
                   <DialogFooter>
-                    <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={resetImport}>
+                    <Button className="bg-[#008080] hover:bg-[#006666] text-white shadow-teal-sm font-semibold" onClick={resetImport}>
                       <Check className="mr-2 h-4 w-4" /> Done
                     </Button>
                   </DialogFooter>
@@ -534,14 +534,14 @@ function CustomersPage() {
           {canManage && (
             <Dialog open={linkOpen} onOpenChange={setLinkOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline" className="gap-1.5 border-[#E5EAF1] text-gray-700 hover:bg-gray-50">
-                  <Link2 className="h-4 w-4" />
+                <Button variant="outline" className="gap-1.5 border-[rgba(0,128,128,0.2)] text-[#0F2423] hover:border-[#008080] hover:bg-[rgba(0,128,128,0.04)]">
+                  <Link2 className="h-4 w-4 text-[#008080]" />
                   Registration Link
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-lg">
+              <DialogContent className="max-w-lg bg-white border border-[rgba(0,128,128,0.2)] shadow-2xl rounded-2xl">
                 <DialogHeader>
-                  <DialogTitle>Customer Registration Link</DialogTitle>
+                  <DialogTitle className="text-[#0F2423] font-bold text-lg">Customer Registration Link</DialogTitle>
                 </DialogHeader>
                 <p className="text-sm text-muted-foreground">
                   Share this link with customers so they can submit their details directly.{" "}
@@ -619,63 +619,67 @@ function CustomersPage() {
           {/* Add Customer */}
           <Dialog open={formOpen} onOpenChange={setFormOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white gap-1.5" onClick={openNew}>
+              <Button className="bg-[#008080] hover:bg-[#006666] text-white shadow-teal-sm font-semibold gap-1.5" onClick={openNew}>
                 <Plus className="h-4 w-4" /> Add Customer
               </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="max-w-lg bg-white border border-[rgba(0,128,128,0.2)] shadow-2xl rounded-2xl">
               <DialogHeader>
-                <DialogTitle>{editing.id ? "Edit customer" : "New customer"}</DialogTitle>
+                <DialogTitle className="text-[#0F2423] font-bold text-lg">{editing.id ? "Edit customer" : "New customer"}</DialogTitle>
               </DialogHeader>
               <div className="grid gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="c-name">
-                    Name <span className="text-red-400">*</span>
+                  <Label htmlFor="c-name" className="text-xs font-semibold text-[#0F2423]">
+                    Name <span className="text-red-500">*</span>
                   </Label>
                   <Input
                     id="c-name"
                     placeholder="Full name or business name"
                     value={editing.name}
                     onChange={(e) => setEditing({ ...editing, name: e.target.value })}
+                    className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="c-company">Company</Label>
+                  <Label htmlFor="c-company" className="text-xs font-semibold text-[#0F2423]">Company</Label>
                   <Input
                     id="c-company"
                     placeholder="Company or organisation"
                     value={editing.company}
                     onChange={(e) => setEditing({ ...editing, company: e.target.value })}
+                    className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
                   />
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="grid gap-2">
-                    <Label htmlFor="c-email">Email</Label>
+                    <Label htmlFor="c-email" className="text-xs font-semibold text-[#0F2423]">Email</Label>
                     <Input
                       id="c-email"
                       type="email"
                       placeholder="email@example.com"
                       value={editing.email}
                       onChange={(e) => setEditing({ ...editing, email: e.target.value })}
+                      className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="c-phone">Phone</Label>
+                    <Label htmlFor="c-phone" className="text-xs font-semibold text-[#0F2423]">Phone</Label>
                     <Input
                       id="c-phone"
                       placeholder="+91 98765 43210"
                       value={editing.phone}
                       onChange={(e) => setEditing({ ...editing, phone: e.target.value })}
+                      className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
                     />
                   </div>
                 </div>
                 <div className="grid gap-2">
-                  <Label>Status</Label>
+                  <Label className="text-xs font-semibold text-[#0F2423]">Status</Label>
                   <Select
                     value={editing.status}
                     onValueChange={(v) => setEditing({ ...editing, status: v as Status })}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -688,7 +692,7 @@ function CustomersPage() {
               </div>
               <DialogFooter>
                 <Button
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  className="bg-[#008080] hover:bg-[#006666] text-white shadow-teal-sm font-semibold"
                   disabled={editing.name.trim().length < 2 || saveMutation.isPending}
                   onClick={() => saveMutation.mutate()}
                 >
@@ -753,7 +757,7 @@ function CustomersPage() {
       </div>
 
       {/* ── Table ────────────────────────────────────────────────────────────── */}
-      <div className="rounded-xl border border-[#E5EAF1] bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden">
+      <div className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-white shadow-teal-xs overflow-hidden">
         {isLoading && !data ? (
           <div className="grid gap-2 p-5">
             {Array.from({ length: 6 }).map((_, i) => (
@@ -762,13 +766,13 @@ function CustomersPage() {
           </div>
         ) : error ? (
           <div className="flex flex-col items-center gap-3 p-10 text-center">
-            <p className="text-sm text-destructive">{(error as Error).message}</p>
-            <Button variant="outline" size="sm" onClick={() => refetch()}>
+            <p className="text-sm text-red-600 font-medium">{(error as Error).message}</p>
+            <Button variant="outline" size="sm" onClick={() => refetch()} className="border-[rgba(0,128,128,0.2)] text-[#0F2423]">
               Try again
             </Button>
           </div>
         ) : (data?.rows ?? []).length === 0 ? (
-          <div className="p-10 text-center text-sm text-muted-foreground">
+          <div className="p-10 text-center text-sm text-[#617D7B]">
             {debouncedSearch || statusFilter !== "all"
               ? "No customers match your filters."
               : "No customers yet — add your first one or import a CSV."}
@@ -777,45 +781,46 @@ function CustomersPage() {
           <>
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Company</TableHead>
-                  <TableHead>Contact</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Added</TableHead>
-                  <TableHead className="w-24 text-right">Actions</TableHead>
+                <TableRow className="bg-[rgba(0,128,128,0.03)] border-b border-[rgba(0,128,128,0.1)] hover:bg-transparent">
+                  <TableHead className="text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Name</TableHead>
+                  <TableHead className="text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Company</TableHead>
+                  <TableHead className="text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Contact</TableHead>
+                  <TableHead className="text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Status</TableHead>
+                  <TableHead className="text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Added</TableHead>
+                  <TableHead className="w-24 text-right text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Actions</TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody>
+              <TableBody className="divide-y divide-[rgba(0,128,128,0.08)]">
                 {(data?.rows ?? []).map((c) => (
-                  <TableRow key={c.id} className="group">
-                    <TableCell className="font-medium">{c.name}</TableCell>
-                    <TableCell className="text-muted-foreground">{c.company ?? "—"}</TableCell>
-                    <TableCell className="text-muted-foreground">
+                  <TableRow key={c.id} className="group hover:bg-[rgba(0,128,128,0.02)] border-b border-[rgba(0,128,128,0.08)] transition-colors">
+                    <TableCell className="font-semibold text-[#0F2423]">{c.name}</TableCell>
+                    <TableCell className="text-[#3D5A58] font-medium">{c.company ?? "—"}</TableCell>
+                    <TableCell className="text-[#617D7B]">
                       {c.email ?? c.phone ?? "—"}
                     </TableCell>
                     <TableCell>
                       <span
-                        className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-medium capitalize ${STATUS_COLORS[c.status as Status] ?? ""}`}
+                        className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-semibold capitalize ${STATUS_COLORS[c.status as Status] ?? ""}`}
                       >
                         {c.status}
                       </span>
                     </TableCell>
-                    <TableCell className="text-muted-foreground">{shortDate(c.created_at)}</TableCell>
+                    <TableCell className="text-[#617D7B]">{shortDate(c.created_at)}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                         <Button
                           size="sm"
                           variant="ghost"
                           onClick={() => openAssignTask(c)}
-                          className="h-7 gap-1 text-xs text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/10 px-2"
+                          className="h-7 gap-1 text-xs text-[#008080] hover:text-[#006666] hover:bg-[rgba(0,128,128,0.08)] px-2 font-medium"
                         >
-                          <Zap className="h-3 w-3 text-cyan-400" />
+                          <Zap className="h-3 w-3 text-[#008080]" />
                           <span>Autopilot</span>
                         </Button>
                         <Button
                           variant="ghost"
                           size="sm"
+                          className="text-[#3D5A58] hover:text-[#008080] hover:bg-[rgba(0,128,128,0.06)] h-7 px-2 text-xs"
                           onClick={() => {
                             setEditing({
                               id: c.id,
@@ -833,11 +838,12 @@ function CustomersPage() {
                         <Button
                           variant="ghost"
                           size="sm"
+                          className="text-[#617D7B] hover:text-red-600 hover:bg-rose-50 h-7 w-7 p-0"
                           onClick={() => deleteMutation.mutate(c.id)}
                           disabled={deleteMutation.isPending}
                           aria-label={`Delete ${c.name}`}
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-3.5 w-3.5" />
                         </Button>
                       </div>
                     </TableCell>
@@ -887,23 +893,23 @@ function CustomersPage() {
 
       {/* ── Assign Customer Task & Autopilot Execution Modal ────────────── */}
       <Dialog open={taskModalOpen} onOpenChange={setTaskModalOpen}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-lg bg-white border border-[rgba(0,128,128,0.2)] shadow-2xl rounded-2xl">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Zap className="h-4 w-4 text-cyan-400" />
+            <DialogTitle className="flex items-center gap-2 text-[#0F2423] font-bold text-lg">
+              <Zap className="h-4 w-4 text-[#008080]" />
               <span>Assign Task to {taskCustomer?.name}</span>
             </DialogTitle>
           </DialogHeader>
 
           {taskCustomer && (
-            <div className="rounded-xl border border-white/10 bg-secondary/30 p-3 space-y-1 text-xs">
+            <div className="rounded-xl border border-[rgba(0,128,128,0.18)] bg-[#EDF4F3]/50 p-3 space-y-1 text-xs">
               <div className="flex items-center justify-between">
-                <span className="font-semibold text-foreground">{taskCustomer.name}</span>
-                <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-medium capitalize ${STATUS_COLORS[taskCustomer.status as Status] ?? ""}`}>
+                <span className="font-semibold text-[#0F2423]">{taskCustomer.name}</span>
+                <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold capitalize ${STATUS_COLORS[taskCustomer.status as Status] ?? ""}`}>
                   {taskCustomer.status || "prospect"}
                 </span>
               </div>
-              <p className="text-muted-foreground">
+              <p className="text-[#617D7B]">
                 {taskCustomer.company ? `${taskCustomer.company} · ` : ""}
                 {taskCustomer.email || taskCustomer.phone || "No contact info"}
               </p>
@@ -912,14 +918,14 @@ function CustomersPage() {
 
           <div className="grid gap-4 py-1">
             <div className="grid gap-2">
-              <Label>Action Preset</Label>
+              <Label className="text-xs font-semibold text-[#0F2423]">Action Preset</Label>
               <Select
                 value={taskActionPreset}
                 onValueChange={(val) => {
                   if (taskCustomer) openAssignTask(taskCustomer, val);
                 }}
               >
-                <SelectTrigger>
+                <SelectTrigger className="border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -932,33 +938,35 @@ function CustomersPage() {
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="cust-task-title">Task Title</Label>
+              <Label htmlFor="cust-task-title" className="text-xs font-semibold text-[#0F2423]">Task Title</Label>
               <Input
                 id="cust-task-title"
                 value={taskTitle}
                 onChange={(e) => setTaskTitle(e.target.value)}
                 placeholder="e.g. Outreach regarding contract renewal"
+                className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
               />
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="cust-task-desc">Instructions & Context</Label>
+              <Label htmlFor="cust-task-desc" className="text-xs font-semibold text-[#0F2423]">Instructions & Context</Label>
               <Input
                 id="cust-task-desc"
                 value={taskDescription}
                 onChange={(e) => setTaskDescription(e.target.value)}
                 placeholder="Provide details or guidelines for Autopilot reasoning"
+                className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
               />
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="grid gap-2">
-                <Label>Priority</Label>
+                <Label className="text-xs font-semibold text-[#0F2423]">Priority</Label>
                 <Select
                   value={taskPriority}
                   onValueChange={(v) => setTaskPriority(v as any)}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -971,23 +979,24 @@ function CustomersPage() {
               </div>
 
               <div className="grid gap-2">
-                <Label htmlFor="cust-task-due">Due Date</Label>
+                <Label htmlFor="cust-task-due" className="text-xs font-semibold text-[#0F2423]">Due Date</Label>
                 <Input
                   id="cust-task-due"
                   type="date"
                   value={taskDueDate}
                   onChange={(e) => setTaskDueDate(e.target.value)}
+                  className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
                 />
               </div>
             </div>
 
-            <div className="flex items-center justify-between rounded-xl border border-indigo-500/30 bg-indigo-500/10 p-3">
+            <div className="flex items-center justify-between rounded-xl border border-[rgba(0,128,128,0.25)] bg-[rgba(0,128,128,0.06)] p-3">
               <div className="space-y-0.5">
-                <div className="text-xs font-semibold text-indigo-200 flex items-center gap-1.5">
-                  <Sparkles className="h-3.5 w-3.5 text-cyan-400" />
+                <div className="text-xs font-semibold text-[#0F2423] flex items-center gap-1.5">
+                  <Sparkles className="h-3.5 w-3.5 text-[#008080]" />
                   <span>Execute with Autopilot (Gemini Reasoning)</span>
                 </div>
-                <p className="text-[11px] text-slate-400">
+                <p className="text-[11px] text-[#617D7B]">
                   Queries customer records, reasons via Gemini 1.5 Flash, and creates real execution trace.
                 </p>
               </div>
@@ -997,7 +1006,7 @@ function CustomersPage() {
 
           <DialogFooter>
             <Button
-              className="bg-gradient-brand text-primary-foreground"
+              className="bg-[#008080] hover:bg-[#006666] text-white shadow-teal-sm font-semibold"
               disabled={taskTitle.trim().length < 2 || assignTaskMutation.isPending}
               onClick={() => assignTaskMutation.mutate()}
             >

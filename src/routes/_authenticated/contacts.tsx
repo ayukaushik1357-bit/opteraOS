@@ -227,7 +227,7 @@ function ContactsPage() {
               resetForm();
               setIsCreateOpen(true);
             }}
-            className="bg-blue-600 hover:bg-blue-700 text-white text-xs gap-1.5 h-9 font-medium shadow-sm"
+            className="bg-[#008080] hover:bg-[#006666] text-white text-xs gap-1.5 h-9 font-medium shadow-sm"
           >
             <Plus className="h-4 w-4" /> Add Contact
           </Button>
@@ -417,7 +417,7 @@ function ContactsPage() {
                     <Button
                       size="sm"
                       onClick={() => setIsEmailOpen(true)}
-                      className="h-8 text-xs bg-blue-600 hover:bg-blue-700 text-white gap-1 px-2.5"
+                      className="h-8 text-xs bg-[#008080] hover:bg-[#006666] text-white gap-1 px-2.5"
                     >
                       <Send className="h-3.5 w-3.5" /> Email
                     </Button>
@@ -507,7 +507,7 @@ function ContactsPage() {
                     size="sm"
                     disabled={!newComment.trim() || addCommentMutation.isPending}
                     onClick={() => addCommentMutation.mutate(newComment)}
-                    className="h-8 text-xs bg-blue-600 hover:bg-blue-700 text-white px-3"
+                    className="h-8 text-xs bg-[#008080] hover:bg-[#006666] text-white px-3"
                   >
                     Add
                   </Button>
@@ -644,7 +644,7 @@ function ContactsPage() {
                   type="submit"
                   size="sm"
                   disabled={createMutation.isPending}
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  className="bg-[#008080] hover:bg-[#006666] text-white"
                 >
                   Save Contact
                 </Button>
@@ -714,7 +714,7 @@ function ContactsPage() {
                   type="submit"
                   size="sm"
                   disabled={sendingEmail}
-                  className="bg-blue-600 hover:bg-blue-700 text-white gap-1.5"
+                  className="bg-[#008080] hover:bg-[#006666] text-white gap-1.5"
                 >
                   {sendingEmail ? "Dispatching..." : "Send Email"}
                 </Button>

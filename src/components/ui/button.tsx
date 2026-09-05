@@ -5,24 +5,24 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium cursor-pointer transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium cursor-pointer transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#008080] focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default:
-          "bg-blue-600 text-white shadow-xs hover:bg-blue-700 active:bg-blue-800",
+          "bg-[#008080] text-white shadow-xs hover:bg-[#006666] active:bg-[#004d4d]",
         destructive:
           "bg-red-600 text-white shadow-xs hover:bg-red-700 active:bg-red-800",
         outline:
-          "border border-[#D1D5DB] bg-white text-[#374151] font-medium shadow-xs hover:bg-[#F9FAFB] hover:text-[#111827] hover:border-[#9CA3AF] active:bg-[#F3F4F6]",
+          "border border-[rgba(0,128,128,0.22)] bg-white text-[#0F2423] font-medium shadow-xs hover:bg-[#EDF4F3] hover:text-[#008080] hover:border-[#008080] active:bg-[#E2ECEB]",
         secondary:
-          "bg-[#F3F4F6] text-[#374151] font-medium hover:bg-[#E5E7EB] hover:text-[#111827] active:bg-[#D1D5DB]",
+          "bg-[#E8F1F0] text-[#0F2423] font-medium hover:bg-[#DEE9E8] hover:text-[#006666] active:bg-[#D1E0DE]",
         ghost:
-          "text-[#374151] hover:bg-[#F3F4F6] hover:text-[#111827] active:bg-[#E5E7EB]",
+          "text-[#0F2423] hover:bg-[rgba(0,128,128,0.08)] hover:text-[#008080] active:bg-[rgba(0,128,128,0.14)]",
         link:
-          "text-blue-600 underline-offset-4 hover:underline",
+          "text-[#008080] underline-offset-4 hover:underline hover:text-[#006666]",
         brand:
-          "bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-semibold shadow-xs hover:opacity-95 active:opacity-90",
+          "bg-gradient-to-r from-[#008080] via-[#0D9488] to-[#14B8A6] text-white font-semibold shadow-xs hover:opacity-95 active:opacity-90",
       },
       size: {
         default: "h-9 px-4 py-2",

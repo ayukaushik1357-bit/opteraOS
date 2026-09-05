@@ -147,7 +147,7 @@ function IntegrationsPage() {
                     setActiveModal(item);
                     setConfigValues({});
                   }}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs gap-1.5 rounded-lg h-9 font-medium"
+                  className="w-full bg-[#008080] hover:bg-[#006666] text-white text-xs gap-1.5 rounded-lg h-9 font-medium"
                 >
                   Connect Integration <ArrowRight className="w-3.5 h-3.5" />
                 </Button>
@@ -199,7 +199,7 @@ function IntegrationsPage() {
 
               <div className="flex justify-end gap-2 pt-3 border-t border-[#E5EAF1]">
                 <Button type="button" variant="outline" onClick={() => setActiveModal(null)}>Cancel</Button>
-                <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white">Save &amp; Connect</Button>
+                <Button type="submit" className="bg-[#008080] hover:bg-[#006666] text-white">Save &amp; Connect</Button>
               </div>
             </form>
           </div>

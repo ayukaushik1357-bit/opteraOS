@@ -137,7 +137,7 @@ function Onboarding() {
         <Button
           type="submit"
           disabled={createMutation.isPending}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-medium h-9 text-xs mt-2"
+          className="bg-[#008080] hover:bg-[#006666] text-white font-medium h-9 text-xs mt-2"
         >
           {createMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Create
           workspace

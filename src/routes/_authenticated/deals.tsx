@@ -155,7 +155,7 @@ export function DealsPage() {
           <div className="flex items-center gap-3">
             {pipelines && pipelines.length > 1 && (
               <Select value={activePipelineId} onValueChange={setSelectedPipelineId}>
-                <SelectTrigger className="w-52 bg-white border-[#E5EAF1]">
+                <SelectTrigger className="w-52 bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                   <SelectValue placeholder="Select Pipeline" />
                 </SelectTrigger>
                 <SelectContent>
@@ -169,7 +169,7 @@ export function DealsPage() {
             )}
 
             <Button
-              className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
+              className="bg-[#008080] hover:bg-[#006666] text-white shadow-teal-sm font-semibold"
               onClick={() => setOpenCreate(true)}
             >
               <Plus className="mr-1.5 h-4 w-4" /> New Opportunity
@@ -180,28 +180,28 @@ export function DealsPage() {
 
       {/* Forecast Banner */}
       {forecastData?.periods && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-5 rounded-xl bg-white border border-[#E5EAF1] shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-5 rounded-xl bg-white border border-[rgba(0,128,128,0.14)] shadow-teal-xs">
           <div>
-            <span className="text-xs font-semibold text-gray-500">This Month Forecast</span>
-            <p className="text-xl font-bold text-gray-900 mt-0.5">
+            <span className="text-xs font-semibold text-[#617D7B]">This Month Forecast</span>
+            <p className="text-xl font-bold text-[#0F2423] mt-0.5">
               {money(forecastData.periods.currentMonth.weightedRevenue, currency)}
             </p>
           </div>
           <div>
-            <span className="text-xs font-semibold text-gray-500">Next Month Forecast</span>
-            <p className="text-xl font-bold text-gray-900 mt-0.5">
+            <span className="text-xs font-semibold text-[#617D7B]">Next Month Forecast</span>
+            <p className="text-xl font-bold text-[#0F2423] mt-0.5">
               {money(forecastData.periods.nextMonth.weightedRevenue, currency)}
             </p>
           </div>
           <div>
-            <span className="text-xs font-semibold text-gray-500">This Quarter Forecast</span>
-            <p className="text-xl font-bold text-blue-600 mt-0.5">
+            <span className="text-xs font-semibold text-[#617D7B]">This Quarter Forecast</span>
+            <p className="text-xl font-bold text-[#008080] mt-0.5">
               {money(forecastData.periods.thisQuarter.weightedRevenue, currency)}
             </p>
           </div>
           <div>
-            <span className="text-xs font-semibold text-gray-500">Weighted Pipeline Total</span>
-            <p className="text-xl font-bold text-green-600 mt-0.5">
+            <span className="text-xs font-semibold text-[#617D7B]">Weighted Pipeline Total</span>
+            <p className="text-xl font-bold text-emerald-700 mt-0.5">
               {money(forecastData.periods.pipelineTotal.weightedRevenue, currency)}
             </p>
           </div>
@@ -225,25 +225,25 @@ export function DealsPage() {
           {stages.map((stage: any) => (
             <div
               key={stage.id}
-              className="flex flex-col rounded-xl border border-[#E5EAF1] bg-[#F8FAFC] p-3.5 min-w-[250px] shadow-xs"
+              className="flex flex-col rounded-xl border border-[rgba(0,128,128,0.12)] bg-[#EDF4F3]/40 p-3.5 min-w-[250px] shadow-teal-xs"
             >
               {/* Stage Header */}
-              <div className="flex flex-col gap-1 pb-3 mb-3 border-b border-[#E5EAF1]">
+              <div className="flex flex-col gap-1 pb-3 mb-3 border-b border-[rgba(0,128,128,0.12)]">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase tracking-wider text-gray-800 flex items-center gap-1.5">
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#0F2423] flex items-center gap-1.5">
                     <span
                       className="h-2 w-2 rounded-full"
-                      style={{ backgroundColor: stage.color || '#2563EB' }}
+                      style={{ backgroundColor: stage.color || '#008080' }}
                     />
                     {stage.name}
                   </span>
-                  <span className="rounded-full bg-white border border-[#E5EAF1] px-2 py-0.5 text-[11px] font-semibold text-gray-600">
+                  <span className="rounded-full bg-white border border-[rgba(0,128,128,0.2)] px-2 py-0.5 text-[11px] font-semibold text-[#0F2423]">
                     {stage.count}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-xs text-gray-500 mt-1">
+                <div className="flex items-center justify-between text-xs text-[#617D7B] mt-1">
                   <span>{stage.probability}% win prob</span>
-                  <span className="font-semibold text-gray-800">
+                  <span className="font-semibold text-[#0F2423]">
                     {money(stage.totalValue, currency)}
                   </span>
                 </div>
@@ -254,31 +254,31 @@ export function DealsPage() {
                 {stage.deals.map((deal: any) => (
                   <div
                     key={deal.id}
-                    className="group rounded-lg border border-[#E5EAF1] bg-white p-3.5 shadow-xs hover:border-blue-300 hover:shadow-sm transition-all"
+                    className="group rounded-xl border border-[rgba(0,128,128,0.14)] bg-white p-3.5 shadow-teal-xs hover:border-[#008080] hover:shadow-teal-sm transition-all"
                   >
-                    <p className="font-semibold text-sm text-gray-900 leading-snug">{deal.title}</p>
-                    <p className="text-xs text-gray-500 mt-0.5">
+                    <p className="font-semibold text-sm text-[#0F2423] leading-snug">{deal.title}</p>
+                    <p className="text-xs text-[#617D7B] mt-0.5">
                       {deal.customer?.name || deal.company?.displayName || "Direct Customer"}
                     </p>
 
                     <div className="mt-3 flex items-center justify-between">
-                      <span className="text-sm font-bold text-foreground">
+                      <span className="text-sm font-bold text-[#008080]">
                         {money(Number(deal.value || 0), currency)}
                       </span>
-                      <span className="text-[11px] font-semibold text-muted-foreground">
+                      <span className="text-[11px] font-semibold text-[#617D7B]">
                         Wt: {money(Number(deal.weightedRevenue || 0), currency)}
                       </span>
                     </div>
 
                     {/* Stage quick move & close buttons */}
-                    <div className="mt-3 pt-2.5 border-t border-border/60 flex items-center justify-between opacity-80 group-hover:opacity-100 transition-opacity">
+                    <div className="mt-3 pt-2.5 border-t border-[rgba(0,128,128,0.1)] flex items-center justify-between opacity-80 group-hover:opacity-100 transition-opacity">
                       <Select
                         value={deal.stageId || stage.id}
                         onValueChange={(newStageId) =>
                           moveStageMutation.mutate({ dealId: deal.id, stageId: newStageId })
                         }
                       >
-                        <SelectTrigger className="h-7 text-[11px] w-28 px-2 bg-muted/40">
+                        <SelectTrigger className="h-7 text-[11px] w-28 px-2 bg-[#EDF4F3]/70 border-[rgba(0,128,128,0.18)] text-[#0F2423]">
                           <SelectValue placeholder="Move Stage" />
                         </SelectTrigger>
                         <SelectContent>
@@ -295,7 +295,7 @@ export function DealsPage() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="h-7 w-7 p-0 text-emerald-600 hover:bg-emerald-500/10"
+                            className="h-7 w-7 p-0 text-emerald-600 hover:bg-emerald-50"
                             onClick={() => markWonMutation.mutate(deal.id)}
                             title="Mark as Won"
                           >
@@ -306,7 +306,7 @@ export function DealsPage() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="h-7 w-7 p-0 text-rose-500 hover:bg-rose-500/10"
+                            className="h-7 w-7 p-0 text-rose-500 hover:bg-rose-50"
                             onClick={() => setOpenLostModal(deal)}
                             title="Mark as Lost"
                           >
@@ -316,7 +316,7 @@ export function DealsPage() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-7 w-7 p-0 text-muted-foreground hover:text-rose-600"
+                          className="h-7 w-7 p-0 text-[#617D7B] hover:text-rose-600 hover:bg-rose-50"
                           onClick={() => deleteMutation.mutate(deal.id)}
                           title="Delete"
                         >
@@ -334,45 +334,48 @@ export function DealsPage() {
 
       {/* Create Deal Modal */}
       <Dialog open={openCreate} onOpenChange={setOpenCreate}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-md bg-white border border-[rgba(0,128,128,0.2)] shadow-2xl rounded-2xl">
           <DialogHeader>
-            <DialogTitle>Create Sales Opportunity</DialogTitle>
+            <DialogTitle className="text-[#0F2423] font-bold text-lg">Create Sales Opportunity</DialogTitle>
           </DialogHeader>
           <div className="grid gap-3.5 py-2">
             <div className="grid gap-1.5">
-              <Label>Opportunity Title *</Label>
+              <Label className="text-xs font-semibold text-[#0F2423]">Opportunity Title *</Label>
               <Input
                 value={draft.title}
                 onChange={(e) => setDraft({ ...draft, title: e.target.value })}
                 placeholder="Enterprise Subscription & Deployment"
+                className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="grid gap-1.5">
-                <Label>Deal Value ({currency}) *</Label>
+                <Label className="text-xs font-semibold text-[#0F2423]">Deal Value ({currency}) *</Label>
                 <Input
                   type="number"
                   value={draft.value}
                   onChange={(e) => setDraft({ ...draft, value: Number(e.target.value) })}
+                  className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
                 />
               </div>
               <div className="grid gap-1.5">
-                <Label>Target Close Date</Label>
+                <Label className="text-xs font-semibold text-[#0F2423]">Target Close Date</Label>
                 <Input
                   type="date"
                   value={draft.expectedCloseDate}
                   onChange={(e) => setDraft({ ...draft, expectedCloseDate: e.target.value })}
+                  className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
                 />
               </div>
             </div>
 
             <div className="grid gap-1.5">
-              <Label>Customer Account</Label>
+              <Label className="text-xs font-semibold text-[#0F2423]">Customer Account</Label>
               <Select
                 value={draft.customerId}
                 onValueChange={(v) => setDraft({ ...draft, customerId: v })}
               >
-                <SelectTrigger>
+                <SelectTrigger className="border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                   <SelectValue placeholder="Select Customer (optional)" />
                 </SelectTrigger>
                 <SelectContent>
@@ -386,12 +389,12 @@ export function DealsPage() {
             </div>
 
             <div className="grid gap-1.5">
-              <Label>Initial Pipeline Stage</Label>
+              <Label className="text-xs font-semibold text-[#0F2423]">Initial Pipeline Stage</Label>
               <Select
                 value={draft.stageId || stages[0]?.id || ""}
                 onValueChange={(v) => setDraft({ ...draft, stageId: v })}
               >
-                <SelectTrigger>
+                <SelectTrigger className="border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                   <SelectValue placeholder="Select Stage" />
                 </SelectTrigger>
                 <SelectContent>
@@ -405,11 +408,11 @@ export function DealsPage() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setOpenCreate(false)}>
+            <Button variant="outline" onClick={() => setOpenCreate(false)} className="border-[rgba(0,128,128,0.2)] text-[#0F2423]">
               Cancel
             </Button>
             <Button
-              className="bg-brand-indigo text-white hover:bg-brand-indigo/90"
+              className="bg-[#008080] text-white hover:bg-[#006666] shadow-teal-sm font-semibold"
               disabled={draft.title.trim().length < 2 || createMutation.isPending}
               onClick={() => createMutation.mutate()}
             >
@@ -421,15 +424,15 @@ export function DealsPage() {
 
       {/* Mark Lost Reason Modal */}
       <Dialog open={!!openLostModal} onOpenChange={() => setOpenLostModal(null)}>
-        <DialogContent className="max-w-sm">
+        <DialogContent className="max-w-sm bg-white border border-[rgba(0,128,128,0.2)] shadow-2xl rounded-2xl">
           <DialogHeader>
-            <DialogTitle className="text-rose-600">Close Opportunity as Lost</DialogTitle>
+            <DialogTitle className="text-rose-600 font-bold text-lg">Close Opportunity as Lost</DialogTitle>
           </DialogHeader>
           <div className="grid gap-3 py-2">
             <div className="grid gap-1.5">
-              <Label>Loss Reason</Label>
+              <Label className="text-xs font-semibold text-[#0F2423]">Loss Reason</Label>
               <Select value={lostReason} onValueChange={setLostReason}>
-                <SelectTrigger>
+                <SelectTrigger className="border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -443,7 +446,7 @@ export function DealsPage() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setOpenLostModal(null)}>
+            <Button variant="outline" onClick={() => setOpenLostModal(null)} className="border-[rgba(0,128,128,0.2)] text-[#0F2423]">
               Cancel
             </Button>
             <Button

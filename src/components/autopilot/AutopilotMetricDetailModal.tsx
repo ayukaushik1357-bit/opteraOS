@@ -336,22 +336,22 @@ export function AutopilotMetricDetailModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[92vh] flex flex-col border-[#E2E8F0] bg-[#0a0e1a] text-white shadow-2xl backdrop-blur-2xl">
+      <DialogContent className="max-w-4xl max-h-[92vh] flex flex-col border-[rgba(0,128,128,0.2)] bg-white text-[#0F2423] shadow-2xl">
         {/* ── Dialog Header ────────────────────────────────────────────── */}
-        <DialogHeader className="border-b border-[#E2E8F0] pb-3">
+        <DialogHeader className="border-b border-[rgba(0,128,128,0.14)] pb-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className={`p-2 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] ${meta.color}`}>
+              <div className="p-2 rounded-xl bg-[rgba(0,128,128,0.08)] border border-[rgba(0,128,128,0.2)] text-[#008080]">
                 <Icon className="h-5 w-5" />
               </div>
               <div>
-                <DialogTitle className="text-base font-bold text-white flex items-center gap-2">
+                <DialogTitle className="text-base font-bold text-[#0F2423] flex items-center gap-2">
                   <span>{meta.title}</span>
-                  <Badge variant="outline" className="text-[10px] font-mono border-[#E2E8F0] text-[#374151]">
+                  <Badge variant="outline" className="text-[10px] font-mono border-[rgba(0,128,128,0.25)] text-[#008080] bg-[rgba(0,128,128,0.06)] font-semibold">
                     Live Real DB
                   </Badge>
                 </DialogTitle>
-                <DialogDescription className="text-xs text-[#6B7280] mt-0.5">
+                <DialogDescription className="text-xs text-[#617D7B] mt-0.5">
                   {meta.subtitle}
                 </DialogDescription>
               </div>
@@ -367,16 +367,16 @@ export function AutopilotMetricDetailModal({
           {metricType === "active_autopilots" && (
             <div className="space-y-4">
               {/* Status Filter Tabs */}
-              <div className="flex flex-wrap items-center justify-between gap-2 bg-[#F8FAFC] p-2.5 rounded-xl border border-[#E2E8F0]">
+              <div className="flex flex-wrap items-center justify-between gap-2 bg-[#F8FAFC] p-2.5 rounded-xl border border-[rgba(0,128,128,0.14)]">
                 <div className="flex items-center gap-1.5 text-xs">
-                  <span className="text-[#6B7280] mr-1 text-[11px] uppercase font-semibold">Status:</span>
+                  <span className="text-[#617D7B] mr-1 text-[11px] uppercase font-semibold">Status:</span>
                   <button
                     type="button"
                     onClick={() => setAutopilotStatusFilter("all")}
                     className={`px-2.5 py-1 rounded-lg font-medium transition-colors ${
                       autopilotStatusFilter === "all"
-                        ? "bg-indigo-600 text-white font-semibold shadow-sm"
-                        : "bg-[#F8FAFC] text-[#6B7280] hover:text-white"
+                        ? "bg-[#008080] text-white font-semibold shadow-teal-sm"
+                        : "bg-white text-[#617D7B] hover:text-[#0F2423] border border-[rgba(0,128,128,0.12)]"
                     }`}
                   >
                     All ({autopilots.length})
@@ -387,7 +387,7 @@ export function AutopilotMetricDetailModal({
                     className={`px-2.5 py-1 rounded-lg font-medium transition-colors ${
                       autopilotStatusFilter === "active"
                         ? "bg-emerald-600 text-white font-semibold shadow-sm"
-                        : "bg-[#F8FAFC] text-[#6B7280] hover:text-white"
+                        : "bg-white text-[#617D7B] hover:text-[#0F2423] border border-[rgba(0,128,128,0.12)]"
                     }`}
                   >
                     🟢 Active ({autopilots.filter((a) => a.active).length})
@@ -398,7 +398,7 @@ export function AutopilotMetricDetailModal({
                     className={`px-2.5 py-1 rounded-lg font-medium transition-colors ${
                       autopilotStatusFilter === "paused"
                         ? "bg-amber-600 text-white font-semibold shadow-sm"
-                        : "bg-[#F8FAFC] text-[#6B7280] hover:text-white"
+                        : "bg-white text-[#617D7B] hover:text-[#0F2423] border border-[rgba(0,128,128,0.12)]"
                     }`}
                   >
                     🟡 Paused ({autopilots.filter((a) => !a.active).length})
@@ -413,16 +413,16 @@ export function AutopilotMetricDetailModal({
 
                 if (displayedAutopilots.length === 0) {
                   return (
-                    <div className="rounded-2xl border border-dashed border-[#E2E8F0] p-8 text-center space-y-3">
-                      <Zap className="h-8 w-8 text-slate-600 mx-auto" />
-                      <p className="text-[#374151] font-semibold text-sm">
+                    <div className="rounded-2xl border border-dashed border-[rgba(0,128,128,0.25)] p-8 text-center space-y-3">
+                      <Zap className="h-8 w-8 text-[#008080] mx-auto" />
+                      <p className="text-[#0F2423] font-bold text-sm">
                         {autopilotStatusFilter === "active"
                           ? "No Autopilots are currently active."
                           : autopilotStatusFilter === "paused"
                           ? "No Autopilots are currently paused."
                           : "No Autopilots configured yet."}
                       </p>
-                      <p className="text-[#6B7280] text-xs max-w-md mx-auto">
+                      <p className="text-[#617D7B] text-xs max-w-md mx-auto">
                         Tell opteraOS what work needs to happen using the command bar, or enable pre-built capabilities from the Discovery catalog.
                       </p>
                       <Button
@@ -431,7 +431,7 @@ export function AutopilotMetricDetailModal({
                           onOpenChange(false);
                           onNavigateTab("discovery");
                         }}
-                        className="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs"
+                        className="bg-[#008080] hover:bg-[#006666] text-white font-bold text-xs shadow-teal-sm"
                       >
                         Browse Capabilities →
                       </Button>
@@ -451,28 +451,28 @@ export function AutopilotMetricDetailModal({
                           key={ap.id}
                           className={`rounded-2xl border p-4 transition-all space-y-3 ${
                             ap.active
-                              ? "border-[#E2E8F0] bg-[#F8FAFC] hover:border-indigo-500/40 hover:bg-[#F8FAFC]"
-                              : "border-amber-500/20 bg-amber-500/[0.02] opacity-85 hover:opacity-100 hover:border-amber-500/40"
+                              ? "border-[rgba(0,128,128,0.14)] bg-white shadow-card hover:border-[#008080]"
+                              : "border-amber-200 bg-amber-50/30 opacity-90 hover:opacity-100 hover:border-amber-300"
                           }`}
                         >
                           <div className="flex flex-wrap items-start justify-between gap-3">
                             <div className="min-w-0 flex-1">
                               <div className="flex items-center gap-2 flex-wrap">
-                                <span className="text-sm font-bold text-white">{ap.name}</span>
+                                <span className="text-sm font-bold text-[#0F2423]">{ap.name}</span>
                                 {ap.active ? (
-                                  <Badge variant="outline" className="text-[10px] uppercase font-mono border-emerald-500/30 text-emerald-400 bg-emerald-500/10">
+                                  <Badge variant="outline" className="text-[10px] uppercase font-mono border-emerald-500/30 text-emerald-700 bg-emerald-50 font-bold">
                                     🟢 ACTIVE
                                   </Badge>
                                 ) : (
-                                  <Badge variant="outline" className="text-[10px] uppercase font-mono border-amber-500/30 text-amber-400 bg-amber-500/10">
+                                  <Badge variant="outline" className="text-[10px] uppercase font-mono border-amber-500/30 text-amber-700 bg-amber-50 font-bold">
                                     🟡 PAUSED
                                   </Badge>
                                 )}
-                                <Badge variant="outline" className="text-[10px] uppercase font-mono border-indigo-500/30 text-indigo-300">
+                                <Badge variant="outline" className="text-[10px] uppercase font-mono border-[rgba(0,128,128,0.25)] text-[#008080] bg-[rgba(0,128,128,0.06)] font-semibold">
                                   {ap.category}
                                 </Badge>
                               </div>
-                              <p className="mt-1 text-xs text-[#374151] leading-relaxed">{ap.description}</p>
+                              <p className="mt-1 text-xs text-[#3D5A58] leading-relaxed">{ap.description}</p>
                             </div>
 
                             {/* Operational Controls: Run Now, Pause/Resume, Delete */}
@@ -485,16 +485,16 @@ export function AutopilotMetricDetailModal({
                                     variant="outline"
                                     onClick={() => runMutation.mutate(ap.id)}
                                     disabled={isRunningThis || isTogglingThis || deleteMutation.isPending}
-                                    className="h-8 text-xs border-emerald-500/30 bg-emerald-500/[0.06] text-emerald-300 hover:bg-emerald-500/15 gap-1.5 font-medium"
+                                    className="h-8 text-xs border-[rgba(0,128,128,0.25)] bg-white text-[#008080] hover:bg-[rgba(0,128,128,0.08)] gap-1.5 font-semibold"
                                   >
                                     {isRunningThis ? (
                                       <>
-                                        <Loader2 className="h-3 w-3 animate-spin text-emerald-400" />
+                                        <Loader2 className="h-3 w-3 animate-spin text-[#008080]" />
                                         <span>Running...</span>
                                       </>
                                     ) : (
                                       <>
-                                        <Play className="h-3 w-3 text-emerald-400" />
+                                        <Play className="h-3 w-3 text-[#008080] fill-[#008080]" />
                                         <span>Run Now</span>
                                       </>
                                     )}
@@ -506,12 +506,12 @@ export function AutopilotMetricDetailModal({
                                     variant="outline"
                                     onClick={() => toggleMutation.mutate({ id: ap.id, active: false })}
                                     disabled={isRunningThis || isTogglingThis || deleteMutation.isPending}
-                                    className="h-8 text-xs border-amber-500/30 bg-amber-500/[0.06] text-amber-300 hover:bg-amber-500/15 gap-1.5 font-medium"
+                                    className="h-8 text-xs border-amber-300 bg-amber-50 text-amber-700 hover:bg-amber-100 gap-1.5 font-semibold"
                                   >
                                     {isTogglingThis ? (
-                                      <Loader2 className="h-3 w-3 animate-spin text-amber-400" />
+                                      <Loader2 className="h-3 w-3 animate-spin text-amber-600" />
                                     ) : (
-                                      <Pause className="h-3 w-3 text-amber-400" />
+                                      <Pause className="h-3 w-3 text-amber-600" />
                                     )}
                                     <span>Pause</span>
                                   </Button>
@@ -523,12 +523,12 @@ export function AutopilotMetricDetailModal({
                                   variant="outline"
                                   onClick={() => toggleMutation.mutate({ id: ap.id, active: true })}
                                   disabled={isTogglingThis || deleteMutation.isPending}
-                                  className="h-8 text-xs border-emerald-500/40 bg-emerald-500/[0.1] text-emerald-300 hover:bg-emerald-500/20 gap-1.5 font-bold shadow-sm"
+                                  className="h-8 text-xs border-emerald-300 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 gap-1.5 font-bold shadow-xs"
                                 >
                                   {isTogglingThis ? (
-                                    <Loader2 className="h-3 w-3 animate-spin text-emerald-400" />
+                                    <Loader2 className="h-3 w-3 animate-spin text-emerald-600" />
                                   ) : (
-                                    <Play className="h-3 w-3 text-emerald-400 fill-emerald-400" />
+                                    <Play className="h-3 w-3 text-emerald-600 fill-emerald-600" />
                                   )}
                                   <span>Continue</span>
                                 </Button>
@@ -540,32 +540,32 @@ export function AutopilotMetricDetailModal({
                                 variant="outline"
                                 onClick={() => setDeletingAutopilot(ap)}
                                 disabled={isRunningThis || isTogglingThis || deleteMutation.isPending}
-                                className="h-8 text-xs border-red-500/30 bg-red-500/[0.05] text-red-300 hover:bg-red-500/15 hover:text-red-200 gap-1.5 font-medium"
+                                className="h-8 text-xs border-rose-200 bg-rose-50 text-rose-700 hover:bg-rose-100 gap-1.5 font-medium"
                                 title="Delete Autopilot"
                               >
-                                <Trash2 className="h-3 w-3 text-red-400" />
+                                <Trash2 className="h-3 w-3 text-rose-600" />
                                 <span>Delete</span>
                               </Button>
                             </div>
                           </div>
 
                           {/* Responsibility & Routing Pipeline */}
-                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 border-t border-[#E2E8F0] pt-2.5 text-[11px]">
-                            <div className="bg-black/30 rounded-lg p-2 border border-[#E2E8F0]">
-                              <span className="text-[#6B7280] font-semibold block text-[10px] uppercase">Work Group</span>
-                              <span className="text-white font-medium">{ap.target_work_group?.name || "All Workspace Members"}</span>
+                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 border-t border-[rgba(0,128,128,0.14)] pt-2.5 text-[11px]">
+                            <div className="bg-[#F8FAFC] rounded-lg p-2 border border-[rgba(0,128,128,0.14)]">
+                              <span className="text-[#617D7B] font-semibold block text-[10px] uppercase">Work Group</span>
+                              <span className="text-[#0F2423] font-bold">{ap.target_work_group?.name || "All Workspace Members"}</span>
                             </div>
-                            <div className="bg-black/30 rounded-lg p-2 border border-[#E2E8F0]">
-                              <span className="text-[#6B7280] font-semibold block text-[10px] uppercase">Routing Strategy</span>
-                              <span className="text-emerald-400 font-mono font-medium">{ap.assignment_strategy?.replace("_", " ") || "Round Robin"}</span>
+                            <div className="bg-[#F8FAFC] rounded-lg p-2 border border-[rgba(0,128,128,0.14)]">
+                              <span className="text-[#617D7B] font-semibold block text-[10px] uppercase">Routing Strategy</span>
+                              <span className="text-[#008080] font-mono font-bold">{ap.assignment_strategy?.replace("_", " ") || "Round Robin"}</span>
                             </div>
-                            <div className="bg-black/30 rounded-lg p-2 border border-[#E2E8F0]">
-                              <span className="text-[#6B7280] font-semibold block text-[10px] uppercase">Trigger</span>
-                              <span className="text-[#374151]">{ap.trigger_type}</span>
+                            <div className="bg-[#F8FAFC] rounded-lg p-2 border border-[rgba(0,128,128,0.14)]">
+                              <span className="text-[#617D7B] font-semibold block text-[10px] uppercase">Trigger</span>
+                              <span className="text-[#3D5A58] font-medium">{ap.trigger_type}</span>
                             </div>
-                            <div className="bg-black/30 rounded-lg p-2 border border-[#E2E8F0]">
-                              <span className="text-[#6B7280] font-semibold block text-[10px] uppercase">Total Executions</span>
-                              <span className="text-indigo-300 font-bold font-mono">{stats.total ?? 0} runs</span>
+                            <div className="bg-[#F8FAFC] rounded-lg p-2 border border-[rgba(0,128,128,0.14)]">
+                              <span className="text-[#617D7B] font-semibold block text-[10px] uppercase">Total Executions</span>
+                              <span className="text-[#008080] font-bold font-mono">{stats.total ?? 0} runs</span>
                             </div>
                           </div>
                         </div>
@@ -582,16 +582,16 @@ export function AutopilotMetricDetailModal({
           ───────────────────────────────────────────────────────────── */}
           {metricType === "work_created_today" && (
             <div className="space-y-4">
-              <div className="flex flex-wrap items-center justify-between gap-2 bg-[#F8FAFC] p-2.5 rounded-xl border border-[#E2E8F0]">
-                <div className="flex items-center gap-2 text-xs text-[#374151] font-medium">
+              <div className="flex flex-wrap items-center justify-between gap-2 bg-[#F8FAFC] p-2.5 rounded-xl border border-[rgba(0,128,128,0.14)]">
+                <div className="flex items-center gap-2 text-xs text-[#0F2423] font-bold">
                   <span>Filtered: {workCreatedTodayList.length} items created today</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Select value={filterWorkGroupId} onValueChange={setFilterWorkGroupId}>
-                    <SelectTrigger className="h-8 text-xs bg-white border-[#CBD5E1] text-[#111827] w-40">
+                    <SelectTrigger className="h-8 text-xs bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423] w-40">
                       <SelectValue placeholder="All Work Groups" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-[#CBD5E1] text-[#111827]">
+                    <SelectContent className="bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                       <SelectItem value="all">All Work Groups</SelectItem>
                       {workGroups.map((w) => (
                         <SelectItem key={w.id} value={w.id}>
@@ -604,31 +604,31 @@ export function AutopilotMetricDetailModal({
               </div>
 
               {workCreatedTodayList.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-[#E2E8F0] p-8 text-center space-y-2">
-                  <Sparkles className="h-8 w-8 text-slate-600 mx-auto" />
-                  <p className="text-[#374151] font-semibold text-sm">No work items have been created today yet.</p>
-                  <p className="text-[#6B7280] text-xs">Run an Autopilot or create a work item to begin tracking.</p>
+                <div className="rounded-2xl border border-dashed border-[rgba(0,128,128,0.25)] p-8 text-center space-y-2">
+                  <Sparkles className="h-8 w-8 text-[#008080] mx-auto" />
+                  <p className="text-[#0F2423] font-bold text-sm">No work items have been created today yet.</p>
+                  <p className="text-[#617D7B] text-xs">Run an Autopilot or create a work item to begin tracking.</p>
                 </div>
               ) : (
                 <div className="space-y-2">
                   {workCreatedTodayList.map((item) => (
                     <div
                       key={item.id}
-                      className="flex items-center justify-between rounded-xl border border-[#E2E8F0] bg-secondary/20 p-3 text-xs hover:border-[#E2E8F0] transition-all"
+                      className="flex items-center justify-between rounded-xl border border-[rgba(0,128,128,0.14)] bg-white p-3 text-xs shadow-xs hover:border-[#008080] transition-all"
                     >
                       <div className="space-y-1 min-w-0 flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="font-semibold text-white truncate max-w-sm">{item.title}</span>
-                          <Badge variant="outline" className="text-[10px] font-mono border-[#E2E8F0] text-[#374151]">
+                          <span className="font-bold text-[#0F2423] truncate max-w-sm">{item.title}</span>
+                          <Badge variant="outline" className="text-[10px] font-mono border-[rgba(0,128,128,0.2)] text-[#3D5A58]">
                             {item.work_type}
                           </Badge>
-                          <Badge variant={item.priority === "Urgent" || item.priority === "High" ? "destructive" : "secondary"} className="text-[10px] py-0">
+                          <Badge variant={item.priority === "Urgent" || item.priority === "High" ? "destructive" : "secondary"} className="text-[10px] py-0 font-bold">
                             {item.priority}
                           </Badge>
                         </div>
-                        <div className="flex items-center gap-3 text-[11px] text-[#6B7280]">
-                          <span>👤 Assigned: <strong className="text-[#1F2937]">{item.assignee_name}</strong></span>
-                          {item.work_group_name && <span>👥 Group: <strong className="text-[#1F2937]">{item.work_group_name}</strong></span>}
+                        <div className="flex items-center gap-3 text-[11px] text-[#617D7B]">
+                          <span>👤 Assigned: <strong className="text-[#0F2423]">{item.assignee_name}</strong></span>
+                          {item.work_group_name && <span>👥 Group: <strong className="text-[#0F2423]">{item.work_group_name}</strong></span>}
                           <span>⏱ {formatDistanceToNow(new Date(item.created_at), { addSuffix: true })}</span>
                         </div>
                       </div>
@@ -643,7 +643,7 @@ export function AutopilotMetricDetailModal({
                             setNewWorkGroupId(item.work_group_id || "");
                             setNewPriority(item.priority);
                           }}
-                          className="h-7 text-[11px] border-white/20 bg-[#F8FAFC] text-[#1F2937] hover:bg-white/[0.1] hover:text-white"
+                          className="h-7 text-[11px] border-[rgba(0,128,128,0.2)] bg-white text-[#3D5A58] hover:bg-[#F4F9F8] font-medium"
                         >
                           Reassign
                         </Button>
@@ -661,32 +661,32 @@ export function AutopilotMetricDetailModal({
           {metricType === "completed_today" && (
             <div className="space-y-4">
               {completedTodayList.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-[#E2E8F0] p-8 text-center space-y-2">
-                  <CheckCircle2 className="h-8 w-8 text-slate-600 mx-auto" />
-                  <p className="text-[#374151] font-semibold text-sm">No work items have been marked complete today yet.</p>
-                  <p className="text-[#6B7280] text-xs">As specialists complete work and record outcome notes, verified results will appear here.</p>
+                <div className="rounded-2xl border border-dashed border-[rgba(0,128,128,0.25)] p-8 text-center space-y-2">
+                  <CheckCircle2 className="h-8 w-8 text-emerald-600 mx-auto" />
+                  <p className="text-[#0F2423] font-bold text-sm">No work items have been marked complete today yet.</p>
+                  <p className="text-[#617D7B] text-xs">As specialists complete work and record outcome notes, verified results will appear here.</p>
                 </div>
               ) : (
                 <div className="space-y-2">
                   {completedTodayList.map((item) => (
                     <div
                       key={item.id}
-                      className="rounded-xl border border-emerald-500/20 bg-emerald-500/[0.03] p-3 text-xs space-y-2"
+                      className="rounded-xl border border-emerald-500/20 bg-emerald-50/40 p-3 text-xs space-y-2 shadow-xs"
                     >
                       <div className="flex items-center justify-between">
-                        <span className="font-bold text-white text-sm">{item.title}</span>
-                        <Badge variant="outline" className="text-[10px] border-emerald-400 text-emerald-300 font-mono">
+                        <span className="font-bold text-[#0F2423] text-sm">{item.title}</span>
+                        <Badge variant="outline" className="text-[10px] border-emerald-500/40 text-emerald-700 bg-emerald-50 font-mono font-bold">
                           ✓ Completed
                         </Badge>
                       </div>
                       {item.outcome_notes && (
-                        <p className="text-[11px] text-emerald-300 font-mono bg-black/40 p-2 rounded-lg border border-emerald-500/20">
+                        <p className="text-[11px] text-emerald-900 font-mono bg-emerald-100/70 p-2 rounded-lg border border-emerald-300">
                           Outcome: {item.outcome_notes}
                         </p>
                       )}
-                      <div className="flex items-center gap-3 text-[11px] text-[#6B7280] pt-1 border-t border-[#E2E8F0]">
-                        <span>Resolved by: <strong className="text-white">{item.assignee_name}</strong></span>
-                        {item.work_group_name && <span>Department: <strong className="text-white">{item.work_group_name}</strong></span>}
+                      <div className="flex items-center gap-3 text-[11px] text-[#617D7B] pt-1 border-t border-emerald-200">
+                        <span>Resolved by: <strong className="text-[#0F2423]">{item.assignee_name}</strong></span>
+                        {item.work_group_name && <span>Department: <strong className="text-[#0F2423]">{item.work_group_name}</strong></span>}
                         <span>Finished: {item.completed_at ? new Date(item.completed_at).toLocaleTimeString() : "Today"}</span>
                       </div>
                     </div>
@@ -701,32 +701,32 @@ export function AutopilotMetricDetailModal({
           ───────────────────────────────────────────────────────────── */}
           {metricType === "automated_actions" && (
             <div className="space-y-4">
-              <div className="rounded-xl border border-indigo-500/30 bg-indigo-950/30 p-3 text-xs text-[#374151] flex items-center justify-between">
+              <div className="rounded-xl border border-[rgba(0,128,128,0.2)] bg-[rgba(0,128,128,0.06)] p-3 text-xs text-[#0F2423] flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-cyan-400" />
-                  <span>Showing live automated action traces executed across all configured Autopilots.</span>
+                  <Sparkles className="h-4 w-4 text-[#008080]" />
+                  <span className="font-semibold">Showing live automated action traces executed across all configured Autopilots.</span>
                 </div>
               </div>
 
               <div className="space-y-2">
                 {activeAutopilotsList.length === 0 ? (
-                  <p className="text-[#6B7280] text-center py-6">No active autopilots to generate automated actions.</p>
+                  <p className="text-[#617D7B] text-center py-6">No active autopilots to generate automated actions.</p>
                 ) : (
                   activeAutopilotsList.flatMap((ap) => ap.actions || []).map((act: any, idx: number) => (
                     <div
                       key={idx}
-                      className="flex items-center justify-between rounded-xl border border-[#E2E8F0] bg-secondary/20 p-3 text-xs"
+                      className="flex items-center justify-between rounded-xl border border-[rgba(0,128,128,0.14)] bg-white p-3 text-xs shadow-xs"
                     >
                       <div className="space-y-0.5">
                         <div className="flex items-center gap-2">
-                          <span className="font-semibold text-white">{act.title}</span>
-                          <Badge variant="outline" className="text-[10px] font-mono border-indigo-400/40 text-indigo-300">
+                          <span className="font-bold text-[#0F2423]">{act.title}</span>
+                          <Badge variant="outline" className="text-[10px] font-mono border-[rgba(0,128,128,0.2)] text-[#008080] bg-[rgba(0,128,128,0.06)] font-semibold">
                             {act.tool || "ai_action"}
                           </Badge>
                         </div>
-                        <p className="text-[11px] text-[#6B7280]">{act.description}</p>
+                        <p className="text-[11px] text-[#617D7B]">{act.description}</p>
                       </div>
-                      <Badge variant="secondary" className="text-[10px] font-mono uppercase">
+                      <Badge variant="outline" className="text-[10px] font-mono uppercase border-emerald-500/30 text-emerald-700 bg-emerald-50 font-bold">
                         AI Autonomous
                       </Badge>
                     </div>
@@ -743,31 +743,31 @@ export function AutopilotMetricDetailModal({
             <div className="space-y-4">
               {/* Summary KPIs */}
               <div className="grid grid-cols-4 gap-2 text-center text-xs">
-                <div className="rounded-xl border border-[#E2E8F0] bg-black/40 p-2.5">
-                  <span className="text-[#6B7280] text-[10px] uppercase font-semibold block">Total Pending</span>
-                  <span className="text-lg font-bold text-white font-mono">{pendingWorkList.length}</span>
+                <div className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-[#F8FAFC] p-2.5">
+                  <span className="text-[#617D7B] text-[10px] uppercase font-semibold block">Total Pending</span>
+                  <span className="text-lg font-bold text-[#0F2423] font-mono">{pendingWorkList.length}</span>
                 </div>
-                <div className="rounded-xl border border-amber-500/20 bg-amber-500/[0.05] p-2.5">
-                  <span className="text-amber-400 text-[10px] uppercase font-semibold block">Overdue</span>
-                  <span className="text-lg font-bold text-amber-400 font-mono">{overduePendingList.length}</span>
+                <div className="rounded-xl border border-amber-300 bg-amber-50/60 p-2.5">
+                  <span className="text-amber-700 text-[10px] uppercase font-semibold block">Overdue</span>
+                  <span className="text-lg font-bold text-amber-800 font-mono">{overduePendingList.length}</span>
                 </div>
-                <div className="rounded-xl border border-[#E2E8F0] bg-black/40 p-2.5">
-                  <span className="text-[#6B7280] text-[10px] uppercase font-semibold block">Unassigned</span>
-                  <span className="text-lg font-bold text-cyan-400 font-mono">{unassignedPendingList.length}</span>
+                <div className="rounded-xl border border-[rgba(0,128,128,0.2)] bg-[rgba(0,128,128,0.06)] p-2.5">
+                  <span className="text-[#008080] text-[10px] uppercase font-semibold block">Unassigned</span>
+                  <span className="text-lg font-bold text-[#008080] font-mono">{unassignedPendingList.length}</span>
                 </div>
-                <div className="rounded-xl border border-[#E2E8F0] bg-black/40 p-2.5">
-                  <span className="text-[#6B7280] text-[10px] uppercase font-semibold block">Active Groups</span>
-                  <span className="text-lg font-bold text-purple-400 font-mono">{workGroups.length}</span>
+                <div className="rounded-xl border border-purple-200 bg-purple-50/60 p-2.5">
+                  <span className="text-purple-700 text-[10px] uppercase font-semibold block">Active Groups</span>
+                  <span className="text-lg font-bold text-purple-800 font-mono">{workGroups.length}</span>
                 </div>
               </div>
 
               {/* Workload Imbalance Alert Banner */}
               {overloadedMember && (
-                <div className="flex items-center justify-between rounded-xl border border-amber-500/40 bg-amber-500/[0.08] p-3 text-xs">
-                  <div className="flex items-center gap-2 text-amber-300">
-                    <AlertTriangle className="h-4 w-4 shrink-0" />
+                <div className="flex items-center justify-between rounded-xl border border-amber-300 bg-amber-50 p-3 text-xs">
+                  <div className="flex items-center gap-2 text-amber-800">
+                    <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600" />
                     <span>
-                      <strong>Workload Imbalance Detected:</strong> {overloadedMember.name} has {overloadedMember.count} active pending tasks (significantly higher than team average).
+                      <strong className="font-bold">Workload Imbalance Detected:</strong> {overloadedMember.name} has {overloadedMember.count} active pending tasks (significantly higher than team average).
                     </span>
                   </div>
                   {workGroups.length > 0 && (
@@ -775,7 +775,7 @@ export function AutopilotMetricDetailModal({
                       size="sm"
                       onClick={() => redistributeMutation.mutate(workGroups[0]!.id)}
                       disabled={redistributeMutation.isPending}
-                      className="shrink-0 text-xs bg-amber-600 hover:bg-amber-500 text-white font-semibold gap-1.5 shadow-sm"
+                      className="shrink-0 text-xs bg-amber-600 hover:bg-amber-700 text-white font-semibold gap-1.5 shadow-sm"
                     >
                       {redistributeMutation.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sliders className="h-3.5 w-3.5" />}
                       <span>Redistribute Work</span>
@@ -786,22 +786,22 @@ export function AutopilotMetricDetailModal({
 
               {/* Work Breakdown by Group */}
               <div className="space-y-3">
-                <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#6B7280]">
+                <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#617D7B]">
                   Active Department Workloads:
                 </h4>
 
                 {workGroups.length === 0 ? (
-                  <p className="text-[#6B7280] text-center py-4">No work groups configured.</p>
+                  <p className="text-[#617D7B] text-center py-4">No work groups configured.</p>
                 ) : (
                   workGroups.map((wg) => {
                     const groupTasks = pendingWorkList.filter((t) => t.work_group_id === wg.id);
                     return (
-                      <div key={wg.id} className="rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3 space-y-2.5">
+                      <div key={wg.id} className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-white p-3 space-y-2.5 shadow-xs">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: wg.color || "#8B5CF6" }} />
-                            <span className="font-bold text-white text-sm">{wg.name}</span>
-                            <Badge variant="outline" className="text-[10px] font-mono">
+                            <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: wg.color || "#008080" }} />
+                            <span className="font-bold text-[#0F2423] text-sm">{wg.name}</span>
+                            <Badge variant="outline" className="text-[10px] font-mono border-[rgba(0,128,128,0.2)] text-[#3D5A58]">
                               {groupTasks.length} pending items
                             </Badge>
                           </div>
@@ -811,7 +811,7 @@ export function AutopilotMetricDetailModal({
                             variant="outline"
                             onClick={() => redistributeMutation.mutate(wg.id)}
                             disabled={redistributeMutation.isPending || groupTasks.length === 0}
-                            className="h-7 text-[11px] border-white/20 bg-[#F8FAFC] text-[#1F2937] hover:bg-white/[0.1] hover:text-white"
+                            className="h-7 text-[11px] border-[rgba(0,128,128,0.2)] bg-white text-[#3D5A58] hover:bg-[#F4F9F8] font-medium"
                           >
                             Rebalance Group
                           </Button>
@@ -822,9 +822,9 @@ export function AutopilotMetricDetailModal({
                           {(wg.members ?? []).map((m) => {
                             const memberTasks = groupTasks.filter((t) => t.assignee_id === m.user_id);
                             return (
-                              <div key={m.id} className="bg-black/40 rounded-lg p-2 border border-[#E2E8F0] flex items-center justify-between text-[11px]">
-                                <span className="text-[#374151] truncate">{m.full_name || m.user_email}</span>
-                                <span className={`font-mono font-bold ${memberTasks.length >= 5 ? "text-amber-400" : "text-[#374151]"}`}>
+                              <div key={m.id} className="bg-[#F8FAFC] rounded-lg p-2 border border-[rgba(0,128,128,0.14)] flex items-center justify-between text-[11px]">
+                                <span className="text-[#0F2423] font-medium truncate">{m.full_name || m.user_email}</span>
+                                <span className={`font-mono font-bold ${memberTasks.length >= 5 ? "text-amber-700" : "text-[#008080]"}`}>
                                   {memberTasks.length}
                                 </span>
                               </div>
@@ -845,10 +845,10 @@ export function AutopilotMetricDetailModal({
           {metricType === "attention_items" && (
             <div className="space-y-4">
               {overduePendingList.length === 0 && unassignedPendingList.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-emerald-500/30 bg-emerald-500/[0.02] p-8 text-center space-y-2">
-                  <CheckCircle2 className="h-8 w-8 text-emerald-400 mx-auto" />
-                  <p className="text-white font-bold text-sm">Everything looks optimal!</p>
-                  <p className="text-[#6B7280] text-xs">Zero overdue tasks or unassigned escalations require your attention right now.</p>
+                <div className="rounded-2xl border border-dashed border-emerald-500/30 bg-emerald-50/50 p-8 text-center space-y-2">
+                  <CheckCircle2 className="h-8 w-8 text-emerald-600 mx-auto" />
+                  <p className="text-[#0F2423] font-bold text-sm">Everything looks optimal!</p>
+                  <p className="text-[#617D7B] text-xs">Zero overdue tasks or unassigned escalations require your attention right now.</p>
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -856,17 +856,17 @@ export function AutopilotMetricDetailModal({
                   {overduePendingList.map((item) => (
                     <div
                       key={item.id}
-                      className="flex items-center justify-between rounded-xl border border-amber-500/30 bg-amber-500/[0.05] p-3 text-xs"
+                      className="flex items-center justify-between rounded-xl border border-amber-300 bg-amber-50/70 p-3 text-xs shadow-xs"
                     >
                       <div className="space-y-1 min-w-0 flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-white truncate max-w-md">🚨 Overdue: {item.title}</span>
-                          <Badge variant="destructive" className="text-[10px] py-0 font-mono">
+                          <span className="font-bold text-amber-950 truncate max-w-md">🚨 Overdue: {item.title}</span>
+                          <Badge variant="destructive" className="text-[10px] py-0 font-mono font-bold">
                             Due {item.due_date}
                           </Badge>
                         </div>
-                        <p className="text-[11px] text-[#374151]">
-                          Assigned to <strong>{item.assignee_name}</strong> · Work Group: {item.work_group_name || "Workspace"}
+                        <p className="text-[11px] text-[#3D5A58]">
+                          Assigned to <strong className="text-[#0F2423]">{item.assignee_name}</strong> · Work Group: {item.work_group_name || "Workspace"}
                         </p>
                       </div>
 
@@ -879,7 +879,7 @@ export function AutopilotMetricDetailModal({
                             setNewWorkGroupId(item.work_group_id || "");
                             setNewPriority("Urgent");
                           }}
-                          className="h-7 text-xs bg-amber-600 hover:bg-amber-500 text-white font-semibold"
+                          className="h-7 text-xs bg-amber-600 hover:bg-amber-700 text-white font-semibold"
                         >
                           Escalate & Reassign
                         </Button>
@@ -891,16 +891,16 @@ export function AutopilotMetricDetailModal({
                   {unassignedPendingList.map((item) => (
                     <div
                       key={item.id}
-                      className="flex items-center justify-between rounded-xl border border-cyan-500/30 bg-cyan-500/[0.05] p-3 text-xs"
+                      className="flex items-center justify-between rounded-xl border border-[rgba(0,128,128,0.2)] bg-[rgba(0,128,128,0.04)] p-3 text-xs shadow-xs"
                     >
                       <div className="space-y-1 min-w-0 flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-white truncate max-w-md">⚠️ Unassigned Work: {item.title}</span>
-                          <Badge variant="outline" className="text-[10px] border-cyan-400 text-cyan-300 font-mono">
+                          <span className="font-bold text-[#0F2423] truncate max-w-md">⚠️ Unassigned Work: {item.title}</span>
+                          <Badge variant="outline" className="text-[10px] border-[rgba(0,128,128,0.3)] text-[#008080] bg-white font-mono font-bold">
                             Needs Owner
                           </Badge>
                         </div>
-                        <p className="text-[11px] text-[#374151]">Priority: {item.priority} · Created {formatDistanceToNow(new Date(item.created_at), { addSuffix: true })}</p>
+                        <p className="text-[11px] text-[#3D5A58]">Priority: {item.priority} · Created {formatDistanceToNow(new Date(item.created_at), { addSuffix: true })}</p>
                       </div>
 
                       <div className="flex items-center gap-2 shrink-0 ml-3">
@@ -912,7 +912,7 @@ export function AutopilotMetricDetailModal({
                             setNewWorkGroupId(item.work_group_id || "");
                             setNewPriority(item.priority);
                           }}
-                          className="h-7 text-xs bg-cyan-600 hover:bg-cyan-500 text-white font-semibold"
+                          className="h-7 text-xs bg-[#008080] hover:bg-[#006666] text-white font-semibold shadow-teal-sm"
                         >
                           Assign Now
                         </Button>
@@ -926,12 +926,12 @@ export function AutopilotMetricDetailModal({
         </div>
 
         {/* ── Dialog Footer with Accessible High-Contrast Buttons ────── */}
-        <DialogFooter className="flex items-center justify-between border-t border-[#E2E8F0] pt-3">
+        <DialogFooter className="flex items-center justify-between border-t border-[rgba(0,128,128,0.14)] pt-3">
           <Button
             variant="outline"
             size="sm"
             onClick={() => onOpenChange(false)}
-            className="border-white/20 bg-[#F8FAFC] text-[#1F2937] hover:bg-white/[0.1] hover:text-white font-medium text-xs shadow-sm"
+            className="border-[rgba(0,128,128,0.2)] bg-white text-[#3D5A58] hover:bg-[#F4F9F8] font-medium text-xs"
           >
             Close
           </Button>
@@ -942,7 +942,7 @@ export function AutopilotMetricDetailModal({
               onOpenChange(false);
               onNavigateTab("work");
             }}
-            className="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold"
+            className="bg-[#008080] hover:bg-[#006666] text-white text-xs font-semibold shadow-teal-sm"
           >
             Open Unified Work Manager →
           </Button>
@@ -951,25 +951,25 @@ export function AutopilotMetricDetailModal({
 
       {/* ── Sub-Dialog: Reassign Work Item ─────────────────────────────── */}
       <Dialog open={!!reassignItem} onOpenChange={(open) => !open && setReassignItem(null)}>
-        <DialogContent className="max-w-md border-[#E2E8F0] bg-white text-[#111827] shadow-2xl">
+        <DialogContent className="max-w-md border-[rgba(0,128,128,0.2)] bg-white text-[#0F2423] shadow-2xl">
           <DialogHeader>
-            <DialogTitle className="text-sm font-bold text-white">Reassign Work Item</DialogTitle>
-            <DialogDescription className="text-xs text-[#6B7280]">
+            <DialogTitle className="text-sm font-bold text-[#0F2423]">Reassign Work Item</DialogTitle>
+            <DialogDescription className="text-xs text-[#617D7B]">
               Update assignee, department work group, or priority.
             </DialogDescription>
           </DialogHeader>
 
           {reassignItem && (
             <div className="space-y-3 py-2 text-xs">
-              <p className="font-semibold text-white bg-[#F8FAFC] p-2.5 rounded-lg border border-[#E2E8F0]">{reassignItem.title}</p>
+              <p className="font-bold text-[#0F2423] bg-[#F8FAFC] p-2.5 rounded-lg border border-[rgba(0,128,128,0.14)]">{reassignItem.title}</p>
 
               <div>
-                <label className="text-[11px] font-semibold text-[#374151] block mb-1">Assignee</label>
+                <label className="text-[11px] font-semibold text-[#0F2423] block mb-1">Assignee</label>
                 <Select value={newAssigneeId} onValueChange={setNewAssigneeId}>
-                  <SelectTrigger className="h-9 text-xs bg-white border-[#CBD5E1] text-[#111827]">
+                  <SelectTrigger className="h-9 text-xs bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                     <SelectValue placeholder="Select team member..." />
                   </SelectTrigger>
-                  <SelectContent className="bg-white border-[#CBD5E1] text-[#111827]">
+                  <SelectContent className="bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                     {allMembers.map((m) => (
                       <SelectItem key={m.user_id} value={m.user_id}>
                         {m.full_name || m.email} ({m.role})
@@ -980,12 +980,12 @@ export function AutopilotMetricDetailModal({
               </div>
 
               <div>
-                <label className="text-[11px] font-semibold text-[#374151] block mb-1">Target Work Group</label>
+                <label className="text-[11px] font-semibold text-[#0F2423] block mb-1">Target Work Group</label>
                 <Select value={newWorkGroupId} onValueChange={setNewWorkGroupId}>
-                  <SelectTrigger className="h-9 text-xs bg-white border-[#CBD5E1] text-[#111827]">
+                  <SelectTrigger className="h-9 text-xs bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                     <SelectValue placeholder="Optional Work Group" />
                   </SelectTrigger>
-                  <SelectContent className="bg-white border-[#CBD5E1] text-[#111827]">
+                  <SelectContent className="bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                     <SelectItem value="none">None</SelectItem>
                     {workGroups.map((w) => (
                       <SelectItem key={w.id} value={w.id}>
@@ -997,12 +997,12 @@ export function AutopilotMetricDetailModal({
               </div>
 
               <div>
-                <label className="text-[11px] font-semibold text-[#374151] block mb-1">Priority</label>
+                <label className="text-[11px] font-semibold text-[#0F2423] block mb-1">Priority</label>
                 <Select value={newPriority} onValueChange={(v) => setNewPriority(v as any)}>
-                  <SelectTrigger className="h-9 text-xs bg-white border-[#CBD5E1] text-[#111827]">
+                  <SelectTrigger className="h-9 text-xs bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-white border-[#CBD5E1] text-[#111827]">
+                  <SelectContent className="bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                     <SelectItem value="Low">Low</SelectItem>
                     <SelectItem value="Medium">Medium</SelectItem>
                     <SelectItem value="High">High</SelectItem>
@@ -1013,12 +1013,12 @@ export function AutopilotMetricDetailModal({
             </div>
           )}
 
-          <DialogFooter className="gap-2 sm:gap-0">
+          <DialogFooter className="gap-2 sm:gap-0 border-t border-[rgba(0,128,128,0.14)] pt-3">
             <Button
               variant="outline"
               size="sm"
               onClick={() => setReassignItem(null)}
-              className="text-xs border-white/20 bg-[#F8FAFC] text-[#1F2937] hover:bg-white/[0.1] hover:text-white font-medium"
+              className="text-xs border-[rgba(0,128,128,0.2)] bg-white text-[#3D5A58] hover:bg-[#F4F9F8] font-medium"
             >
               Cancel
             </Button>
@@ -1026,7 +1026,7 @@ export function AutopilotMetricDetailModal({
               size="sm"
               disabled={reassignMutation.isPending}
               onClick={() => reassignMutation.mutate()}
-              className="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold"
+              className="bg-[#008080] hover:bg-[#006666] text-white text-xs font-semibold shadow-teal-sm"
             >
               {reassignMutation.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Save Changes"}
             </Button>
@@ -1041,44 +1041,44 @@ export function AutopilotMetricDetailModal({
           if (!open && !deleteMutation.isPending) setDeletingAutopilot(null);
         }}
       >
-        <DialogContent className="max-w-md border-red-500/30 bg-[#0b0813] text-white shadow-2xl backdrop-blur-2xl z-[100]">
+        <DialogContent className="max-w-md border-rose-300 bg-white text-[#0F2423] shadow-2xl z-[100]">
           <DialogHeader className="text-center items-center space-y-2">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-red-500/10 border border-red-500/30 text-red-400">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-50 border border-rose-200 text-rose-600">
               <AlertTriangle className="h-6 w-6" />
             </div>
-            <DialogTitle className="text-base font-bold text-white">
+            <DialogTitle className="text-base font-bold text-[#0F2423]">
               Delete Autopilot?
             </DialogTitle>
-            <DialogDescription className="text-xs text-[#374151]">
+            <DialogDescription className="text-xs text-[#617D7B]">
               You are about to permanently delete:
             </DialogDescription>
           </DialogHeader>
 
-          <div className="rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3 text-center my-1">
-            <p className="font-bold text-white text-xs">{deletingAutopilot?.name}</p>
-            <p className="text-[11px] text-[#6B7280] mt-1">
-              Category: <span className="uppercase font-mono text-indigo-300">{deletingAutopilot?.category}</span>
+          <div className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-[#F8FAFC] p-3 text-center my-1">
+            <p className="font-bold text-[#0F2423] text-xs">{deletingAutopilot?.name}</p>
+            <p className="text-[11px] text-[#617D7B] mt-1">
+              Category: <span className="uppercase font-mono text-[#008080] font-semibold">{deletingAutopilot?.category}</span>
             </p>
           </div>
 
-          <div className="text-[11px] text-[#6B7280] space-y-1.5 leading-relaxed bg-black/40 p-3 rounded-xl border border-[#E2E8F0]">
-            <p className="text-[#374151] font-medium">This will:</p>
-            <ul className="list-disc list-inside space-y-0.5 text-[#6B7280] text-[11px]">
+          <div className="text-[11px] text-[#617D7B] space-y-1.5 leading-relaxed bg-[#F8FAFC] p-3 rounded-xl border border-[rgba(0,128,128,0.14)]">
+            <p className="text-[#0F2423] font-semibold">This will:</p>
+            <ul className="list-disc list-inside space-y-0.5 text-[#3D5A58] text-[11px]">
               <li>Stop future automatic executions</li>
               <li>Remove this Autopilot configuration</li>
               <li>Preserve historical work items, tasks, and audit logs</li>
             </ul>
-            <p className="text-red-400 font-semibold pt-1">This action cannot be undone.</p>
+            <p className="text-rose-600 font-bold pt-1">This action cannot be undone.</p>
           </div>
 
-          <DialogFooter className="flex items-center justify-end gap-2 border-t border-[#E2E8F0] pt-3">
+          <DialogFooter className="flex items-center justify-end gap-2 border-t border-[rgba(0,128,128,0.14)] pt-3">
             <Button
               type="button"
               variant="outline"
               size="sm"
               disabled={deleteMutation.isPending}
               onClick={() => setDeletingAutopilot(null)}
-              className="border-white/20 bg-[#F8FAFC] text-[#1F2937] hover:bg-white/[0.1] hover:text-white text-xs font-medium"
+              className="border-[rgba(0,128,128,0.2)] bg-white text-[#3D5A58] hover:bg-[#F4F9F8] text-xs font-medium"
             >
               Cancel
             </Button>
@@ -1088,7 +1088,7 @@ export function AutopilotMetricDetailModal({
               variant="destructive"
               disabled={deleteMutation.isPending}
               onClick={() => deletingAutopilot && deleteMutation.mutate(deletingAutopilot.id)}
-              className="bg-red-600 hover:bg-red-500 text-white font-bold text-xs gap-1.5 shadow-lg shadow-red-600/20"
+              className="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs gap-1.5 shadow-sm"
             >
               {deleteMutation.isPending ? (
                 <>

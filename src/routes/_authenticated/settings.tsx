@@ -158,23 +158,23 @@ function SettingsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#E2E8F0] pb-5">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[rgba(0,128,128,0.14)] pb-5">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-[#111827]">Organization Settings</h1>
-          <p className="text-xs text-[#4B5563] mt-1">
+          <h1 className="text-2xl font-bold tracking-tight text-[#0F2423]">Organization Settings</h1>
+          <p className="text-xs text-[#617D7B] mt-1">
             Manage organization profile, team members, roles, and security credentials.
           </p>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-[#E2E8F0] pb-px">
+      <div className="flex items-center gap-2 border-b border-[rgba(0,128,128,0.14)] pb-px">
         <button
           onClick={() => setActiveTab("general")}
           className={`flex items-center gap-2 px-4 py-2.5 text-xs font-semibold border-b-2 transition-all cursor-pointer ${
             activeTab === "general"
-              ? "border-blue-600 text-blue-600 bg-white"
-              : "border-transparent text-[#4B5563] hover:text-[#111827]"
+              ? "border-[#008080] text-[#008080] bg-white font-bold"
+              : "border-transparent text-[#617D7B] hover:text-[#0F2423]"
           }`}
         >
           <Building2 className="w-3.5 h-3.5" /> General Profile
@@ -183,8 +183,8 @@ function SettingsPage() {
           onClick={() => setActiveTab("team")}
           className={`flex items-center gap-2 px-4 py-2.5 text-xs font-semibold border-b-2 transition-all cursor-pointer ${
             activeTab === "team"
-              ? "border-blue-600 text-blue-600 bg-white"
-              : "border-transparent text-[#4B5563] hover:text-[#111827]"
+              ? "border-[#008080] text-[#008080] bg-white font-bold"
+              : "border-transparent text-[#617D7B] hover:text-[#0F2423]"
           }`}
         >
           <Users className="w-3.5 h-3.5" /> Members &amp; Roles
@@ -193,8 +193,8 @@ function SettingsPage() {
           onClick={() => setActiveTab("security")}
           className={`flex items-center gap-2 px-4 py-2.5 text-xs font-semibold border-b-2 transition-all cursor-pointer ${
             activeTab === "security"
-              ? "border-blue-600 text-blue-600 bg-white"
-              : "border-transparent text-[#4B5563] hover:text-[#111827]"
+              ? "border-[#008080] text-[#008080] bg-white font-bold"
+              : "border-transparent text-[#617D7B] hover:text-[#0F2423]"
           }`}
         >
           <Shield className="w-3.5 h-3.5" /> Tenant Security
@@ -203,95 +203,141 @@ function SettingsPage() {
 
       {/* Tab: General */}
       {activeTab === "general" && (
-        <form onSubmit={handleSaveGeneral} className="p-6 rounded-2xl bg-white border border-[#E2E8F0] space-y-6 shadow-xs">
+        <form onSubmit={handleSaveGeneral} className="p-6 rounded-2xl bg-white border border-[rgba(0,128,128,0.14)] space-y-6 shadow-teal-xs">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="text-xs font-semibold text-[#374151] block mb-1">Company Name</label>
+              <label className="text-xs font-semibold text-[#0F2423] block mb-1">Company Name</label>
               <Input
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="e.g. Acme Corp"
-                className="h-9 text-xs"
+                className="h-9 text-xs border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
               />
             </div>
             <div>
-              <label className="text-xs font-semibold text-[#374151] block mb-1">Legal Entity Name</label>
+              <label className="text-xs font-semibold text-[#0F2423] block mb-1">Legal Entity Name</label>
               <Input
                 value={legalName}
                 onChange={(e) => setLegalName(e.target.value)}
                 placeholder="Acme Technologies Pvt Ltd"
-                className="h-9 text-xs"
+                className="h-9 text-xs border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="text-xs font-semibold text-[#374151] block mb-1">Industry</label>
+              <label className="text-xs font-semibold text-[#0F2423] block mb-1">Industry</label>
               <Input
                 value={industry}
                 onChange={(e) => setIndustry(e.target.value)}
                 placeholder="SaaS / Manufacturing"
-                className="h-9 text-xs"
+                className="h-9 text-xs border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
               />
             </div>
             <div>
-              <label className="text-xs font-semibold text-[#374151] block mb-1">Currency</label>
-              <Input
+              <label className="text-xs font-semibold text-[#0F2423] block mb-1">Currency</label>
+              <select
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value)}
-                placeholder="INR"
-                className="h-9 text-xs font-mono uppercase"
-              />
+                className="w-full h-9 px-3 rounded-md bg-white border border-[rgba(0,128,128,0.2)] text-[#0F2423] text-xs focus:outline-none focus:ring-1 focus:ring-[#008080]"
+              >
+                <option value="INR">INR (₹)</option>
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (€)</option>
+                <option value="GBP">GBP (£)</option>
+                <option value="AED">AED</option>
+                <option value="SGD">SGD</option>
+              </select>
             </div>
             <div>
-              <label className="text-xs font-semibold text-[#374151] block mb-1">Timezone</label>
+              <label className="text-xs font-semibold text-[#0F2423] block mb-1">Company Size</label>
               <Input
-                value={timezone}
-                onChange={(e) => setTimezone(e.target.value)}
-                placeholder="Asia/Kolkata"
-                className="h-9 text-xs"
+                value={companySize}
+                onChange={(e) => setCompanySize(e.target.value)}
+                placeholder="10-50 employees"
+                className="h-9 text-xs border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="text-xs font-semibold text-[#374151] block mb-1">Contact Email</label>
+              <label className="text-xs font-semibold text-[#0F2423] block mb-1">Primary Email</label>
               <Input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="ops@acme.com"
-                className="h-9 text-xs"
+                placeholder="contact@acme.com"
+                className="h-9 text-xs border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
               />
             </div>
             <div>
-              <label className="text-xs font-semibold text-[#374151] block mb-1">Phone</label>
+              <label className="text-xs font-semibold text-[#0F2423] block mb-1">Phone</label>
               <Input
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="+91 98765 43210"
-                className="h-9 text-xs"
+                placeholder="+91 9876543210"
+                className="h-9 text-xs border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
               />
             </div>
             <div>
-              <label className="text-xs font-semibold text-[#374151] block mb-1">Website</label>
+              <label className="text-xs font-semibold text-[#0F2423] block mb-1">Website</label>
               <Input
                 value={website}
                 onChange={(e) => setWebsite(e.target.value)}
                 placeholder="https://acme.com"
-                className="h-9 text-xs"
+                className="h-9 text-xs border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
               />
             </div>
           </div>
 
-          <div className="flex justify-end pt-4 border-t border-[#E2E8F0]">
+          <div>
+            <label className="text-xs font-semibold text-[#0F2423] block mb-1">Registered Address</label>
+            <Input
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Suite 400, Innovation Tower"
+              className="h-9 text-xs border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="text-xs font-semibold text-[#0F2423] block mb-1">City</label>
+              <Input
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                placeholder="Bengaluru"
+                className="h-9 text-xs border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
+              />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-[#0F2423] block mb-1">State / Province</label>
+              <Input
+                value={state}
+                onChange={(e) => setState(e.target.value)}
+                placeholder="Karnataka"
+                className="h-9 text-xs border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
+              />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-[#0F2423] block mb-1">Postal Code</label>
+              <Input
+                value={postalCode}
+                onChange={(e) => setPostalCode(e.target.value)}
+                placeholder="560001"
+                className="h-9 text-xs border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-end pt-4 border-t border-[rgba(0,128,128,0.14)]">
             <Button
               type="submit"
               disabled={updateOrgMutation.isPending}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-xs gap-1.5 h-9"
+              className="bg-[#008080] hover:bg-[#006666] text-white font-semibold text-xs gap-1.5 h-9 shadow-teal-sm"
             >
               <Save className="w-3.5 h-3.5" /> Save Organization Profile
             </Button>
@@ -302,8 +348,8 @@ function SettingsPage() {
       {/* Tab: Members & Roles */}
       {activeTab === "team" && (
         <div className="space-y-6">
-          <form onSubmit={handleInvite} className="p-6 rounded-2xl bg-white border border-[#E2E8F0] space-y-4 shadow-xs">
-            <h2 className="text-sm font-bold text-[#111827]">Invite Team Member</h2>
+          <form onSubmit={handleInvite} className="p-6 rounded-2xl bg-white border border-[rgba(0,128,128,0.14)] space-y-4 shadow-teal-xs">
+            <h2 className="text-sm font-bold text-[#0F2423]">Invite Team Member</h2>
             <div className="flex flex-col md:flex-row items-center gap-3">
               <Input
                 required
@@ -311,12 +357,12 @@ function SettingsPage() {
                 placeholder="colleague@yourcompany.com"
                 value={inviteEmail}
                 onChange={(e) => setInviteEmail(e.target.value)}
-                className="h-9 text-xs flex-1"
+                className="h-9 text-xs flex-1 border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
               />
               <select
                 value={inviteRole}
                 onChange={(e) => setInviteRole(e.target.value)}
-                className="h-9 px-3 rounded-md bg-white border border-[#E2E8F0] text-[#111827] text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="h-9 px-3 rounded-md bg-white border border-[rgba(0,128,128,0.2)] text-[#0F2423] text-xs focus:outline-none focus:ring-1 focus:ring-[#008080]"
               >
                 <option value="ADMIN">Admin</option>
                 <option value="MANAGER">Manager</option>
@@ -326,23 +372,23 @@ function SettingsPage() {
               <Button
                 type="submit"
                 disabled={inviteMutation.isPending}
-                className="h-9 bg-blue-600 hover:bg-blue-700 text-white text-xs shrink-0"
+                className="h-9 bg-[#008080] hover:bg-[#006666] text-white shadow-teal-sm font-semibold text-xs shrink-0"
               >
                 Send Invite
               </Button>
             </div>
           </form>
 
-          <div className="rounded-2xl border border-[#E2E8F0] bg-white p-6 space-y-4 shadow-xs">
-            <h2 className="text-sm font-bold text-[#111827]">Organization Members ({members.length})</h2>
-            <div className="divide-y divide-[#E2E8F0]">
+          <div className="rounded-2xl border border-[rgba(0,128,128,0.14)] bg-white p-6 space-y-4 shadow-teal-xs">
+            <h2 className="text-sm font-bold text-[#0F2423]">Organization Members ({members.length})</h2>
+            <div className="divide-y divide-[rgba(0,128,128,0.08)]">
               {members.map((m: any) => (
                 <div key={m.id} className="py-3.5 flex items-center justify-between gap-3 text-xs">
                   <div>
-                    <div className="font-semibold text-[#111827]">
+                    <div className="font-semibold text-[#0F2423]">
                       {m.user?.firstName} {m.user?.lastName}
                     </div>
-                    <div className="text-[#6B7280] text-[11px] font-mono mt-0.5">{m.user?.email}</div>
+                    <div className="text-[#617D7B] text-[11px] font-mono mt-0.5">{m.user?.email}</div>
                   </div>
 
                   <div className="flex items-center gap-3">
@@ -350,7 +396,7 @@ function SettingsPage() {
                       disabled={m.role === "OWNER"}
                       value={m.role}
                       onChange={(e) => updateRoleMutation.mutate({ userId: m.userId, role: e.target.value })}
-                      className="h-7 px-2 rounded bg-white border border-[#E2E8F0] text-[#111827] text-xs disabled:opacity-60 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      className="h-7 px-2 rounded bg-white border border-[rgba(0,128,128,0.2)] text-[#0F2423] text-xs disabled:opacity-60 focus:outline-none focus:ring-1 focus:ring-[#008080]"
                     >
                       <option value="OWNER">Owner</option>
                       <option value="ADMIN">Admin</option>
@@ -363,10 +409,10 @@ function SettingsPage() {
                       variant="outline"
                       className={`text-[10px] uppercase font-mono ${
                         m.status === "ACTIVE"
-                          ? "text-green-700 border-green-200 bg-green-50"
+                          ? "text-emerald-700 border-emerald-200 bg-emerald-50"
                           : m.status === "SUSPENDED"
                           ? "text-amber-700 border-amber-200 bg-amber-50"
-                          : "text-gray-500 border-gray-200"
+                          : "text-[#617D7B] border-[rgba(0,128,128,0.2)] bg-[#EDF4F3]"
                       }`}
                     >
                       {m.status || "ACTIVE"}
@@ -381,16 +427,16 @@ function SettingsPage() {
 
       {/* Tab: Security */}
       {activeTab === "security" && (
-        <div className="p-6 rounded-2xl bg-white border border-[#E2E8F0] space-y-4 shadow-xs text-xs">
-          <h2 className="text-sm font-bold text-[#111827]">Multi-Tenant Isolation &amp; Access Credentials</h2>
-          <p className="text-[#4B5563] leading-relaxed">
+        <div className="p-6 rounded-2xl bg-white border border-[rgba(0,128,128,0.14)] space-y-4 shadow-teal-xs text-xs">
+          <h2 className="text-sm font-bold text-[#0F2423]">Multi-Tenant Isolation &amp; Access Credentials</h2>
+          <p className="text-[#617D7B] leading-relaxed">
             Every database query and API mutation is isolated by tenant organization ID with Row-Level Security (RLS) database enforcement.
           </p>
 
-          <div className="p-4 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] flex items-center justify-between gap-3">
+          <div className="p-4 rounded-xl bg-[#EDF4F3]/50 border border-[rgba(0,128,128,0.14)] flex items-center justify-between gap-3">
             <div>
-              <div className="font-semibold text-[#111827]">Tenant Organization ID</div>
-              <div className="font-mono text-[#6B7280] text-[11px] mt-1">{current?.id}</div>
+              <div className="font-semibold text-[#0F2423]">Tenant Organization ID</div>
+              <div className="font-mono text-[#617D7B] text-[11px] mt-1">{current?.id}</div>
             </div>
             <Button
               size="sm"
@@ -399,9 +445,9 @@ function SettingsPage() {
                 if (current?.id) navigator.clipboard.writeText(current.id);
                 toast.success("Organization ID copied to clipboard");
               }}
-              className="h-8 text-xs gap-1.5 bg-white"
+              className="h-8 text-xs gap-1.5 bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423] hover:border-[#008080]"
             >
-              <Copy className="w-3.5 h-3.5" /> Copy ID
+              <Copy className="w-3.5 h-3.5 text-[#008080]" /> Copy ID
             </Button>
           </div>
         </div>

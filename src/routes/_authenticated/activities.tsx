@@ -144,7 +144,7 @@ function ActivitiesPage() {
             resetForm();
             setIsLogOpen(true);
           }}
-          className="bg-blue-600 hover:bg-blue-700 text-white text-xs gap-1.5 h-9 font-medium shadow-sm"
+          className="bg-[#008080] hover:bg-[#006666] text-white text-xs gap-1.5 h-9 font-medium shadow-sm"
         >
           <Plus className="h-4 w-4" /> Log Activity
         </Button>
@@ -361,7 +361,7 @@ function ActivitiesPage() {
                   type="submit"
                   size="sm"
                   disabled={createMutation.isPending}
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  className="bg-[#008080] hover:bg-[#006666] text-white"
                 >
                   Record Activity
                 </Button>

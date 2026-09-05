@@ -131,7 +131,7 @@ function HelpdeskMasterPage() {
         <Button
           size="sm"
           onClick={() => setNewTicketOpen(true)}
-          className="bg-blue-600 hover:bg-blue-700 text-white gap-1.5 shadow-sm text-xs h-9 font-medium"
+          className="bg-[#008080] hover:bg-[#006666] text-white gap-1.5 shadow-sm text-xs h-9 font-medium"
         >
           <Plus className="h-4 w-4" /> New Ticket
         </Button>
@@ -215,7 +215,7 @@ function HelpdeskMasterPage() {
             <LifeBuoy className="h-10 w-10 text-gray-400 mx-auto mb-3" />
             <p className="text-sm font-medium text-gray-800">No Support Tickets Found</p>
             <p className="text-xs text-gray-500 mt-1">Open support tickets will appear here with automated SLA tracking.</p>
-            <Button size="sm" onClick={() => setNewTicketOpen(true)} className="mt-4 bg-blue-600 hover:bg-blue-700 text-white text-xs">
+            <Button size="sm" onClick={() => setNewTicketOpen(true)} className="mt-4 bg-[#008080] hover:bg-[#006666] text-white text-xs">
               Create First Ticket
             </Button>
           </div>
@@ -360,7 +360,7 @@ function HelpdeskMasterPage() {
                 });
               }}
               disabled={createTicketMutation.isPending}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+              className="bg-[#008080] hover:bg-[#006666] text-white text-xs"
             >
               Submit Ticket
             </Button>

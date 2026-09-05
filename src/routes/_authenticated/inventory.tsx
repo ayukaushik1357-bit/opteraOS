@@ -118,7 +118,7 @@ function InventoryPage() {
           </Button>
           <Button
             onClick={() => setShowAddModal(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white text-xs gap-1.5 h-9 font-medium shadow-sm"
+            className="bg-[#008080] hover:bg-[#006666] text-white text-xs gap-1.5 h-9 font-medium shadow-sm"
           >
             <Plus className="w-4 h-4" />
             Add Product
@@ -375,7 +375,7 @@ function InventoryPage() {
                 </Button>
                 <Button
                   type="submit"
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  className="bg-[#008080] hover:bg-[#006666] text-white"
                 >
                   Create Product
                 </Button>
@@ -437,7 +437,7 @@ function InventoryPage() {
 
               <div className="flex justify-end gap-2 pt-3 border-t border-[#E5EAF1]">
                 <Button variant="outline" onClick={() => setShowStockModal(null)}>Cancel</Button>
-                <Button onClick={handleAdjustStock} className="bg-blue-600 hover:bg-blue-700 text-white">Save Movement</Button>
+                <Button onClick={handleAdjustStock} className="bg-[#008080] hover:bg-[#006666] text-white">Save Movement</Button>
               </div>
             </div>
           </div>

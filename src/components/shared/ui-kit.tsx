@@ -21,13 +21,13 @@ export function PageHeader({
   return (
     <div className="mb-6">
       {breadcrumb && (
-        <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-gray-500">{breadcrumb}</p>
+        <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-[#008080]">{breadcrumb}</p>
       )}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="min-w-0">
-          <h1 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">{title}</h1>
+          <h1 className="text-xl font-bold tracking-tight text-[#0F2423] sm:text-2xl">{title}</h1>
           {subtitle && (
-            <p className="mt-0.5 text-sm text-gray-600 leading-relaxed">{subtitle}</p>
+            <p className="mt-0.5 text-sm text-[#617D7B] leading-relaxed">{subtitle}</p>
           )}
         </div>
         {actions && (
@@ -58,18 +58,18 @@ export function StatCard({
   trend?: { value: string; positive?: boolean };
 }) {
   const iconBg: Record<string, string> = {
-    blue: "bg-blue-50 text-blue-600 border border-blue-200",
-    green: "bg-green-50 text-green-700 border border-green-200",
+    blue: "bg-[rgba(0,128,128,0.08)] text-[#008080] border border-[rgba(0,128,128,0.2)]",
+    green: "bg-emerald-50 text-emerald-700 border border-emerald-200",
     amber: "bg-amber-50 text-amber-700 border border-amber-200",
-    red: "bg-red-50 text-red-700 border border-red-200",
-    purple: "bg-purple-50 text-purple-700 border border-purple-200",
-    cyan: "bg-cyan-50 text-cyan-700 border border-cyan-200",
+    red: "bg-rose-50 text-rose-700 border border-rose-200",
+    purple: "bg-[rgba(0,128,128,0.08)] text-[#008080] border border-[rgba(0,128,128,0.2)]",
+    cyan: "bg-teal-50 text-[#008080] border border-teal-200",
   };
 
   return (
-    <div className="rounded-xl border border-[#E5E7EB] bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
+    <div className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-white p-5 shadow-teal-xs hover:border-[#008080] hover:shadow-teal-sm transition-all">
       <div className="flex items-start justify-between">
-        <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">{label}</p>
+        <p className="text-xs font-semibold uppercase tracking-wider text-[#617D7B]">{label}</p>
         {icon && (
           <div className={cn("flex h-8 w-8 items-center justify-center rounded-lg", iconBg[iconColor])}>
             {icon}
@@ -83,13 +83,13 @@ export function StatCard({
         </>
       ) : (
         <>
-          <p className="mt-2.5 text-2xl font-bold tracking-tight text-gray-900">{value}</p>
+          <p className="mt-2.5 text-2xl font-bold tracking-tight text-[#0F2423]">{value}</p>
           {trend && (
-            <p className={cn("mt-1 text-xs font-semibold", trend.positive ? "text-green-700" : "text-red-600")}>
+            <p className={cn("mt-1 text-xs font-semibold", trend.positive ? "text-emerald-700" : "text-rose-600")}>
               {trend.value}
             </p>
           )}
-          {hint && <p className="mt-1 text-xs text-gray-500">{hint}</p>}
+          {hint && <p className="mt-1 text-xs text-[#617D7B]">{hint}</p>}
         </>
       )}
     </div>
@@ -100,42 +100,42 @@ export function StatCard({
 
 const statusStyles: Record<string, string> = {
   // Positive / success
-  paid: "bg-green-50 text-green-700 border border-green-200",
-  active: "bg-green-50 text-green-700 border border-green-200",
-  won: "bg-green-50 text-green-700 border border-green-200",
-  qualified: "bg-green-50 text-green-700 border border-green-200",
-  converted: "bg-green-50 text-green-700 border border-green-200",
-  completed: "bg-green-50 text-green-700 border border-green-200",
-  instock: "bg-green-50 text-green-700 border border-green-200",
-  in_stock: "bg-green-50 text-green-700 border border-green-200",
+  paid: "bg-emerald-50 text-emerald-700 border border-emerald-200",
+  active: "bg-emerald-50 text-emerald-700 border border-emerald-200",
+  won: "bg-emerald-50 text-emerald-700 border border-emerald-200",
+  qualified: "bg-emerald-50 text-emerald-700 border border-emerald-200",
+  converted: "bg-emerald-50 text-emerald-700 border border-emerald-200",
+  completed: "bg-emerald-50 text-emerald-700 border border-emerald-200",
+  instock: "bg-emerald-50 text-emerald-700 border border-emerald-200",
+  in_stock: "bg-emerald-50 text-emerald-700 border border-emerald-200",
+  // Teal Brand / Active states
+  sent: "bg-[rgba(0,128,128,0.08)] text-[#008080] border border-[rgba(0,128,128,0.2)]",
+  contacted: "bg-[rgba(0,128,128,0.08)] text-[#008080] border border-[rgba(0,128,128,0.2)]",
+  new: "bg-[rgba(0,128,128,0.08)] text-[#008080] border border-[rgba(0,128,128,0.2)]",
+  running: "bg-[rgba(0,128,128,0.08)] text-[#008080] border border-[rgba(0,128,128,0.2)]",
+  prospect: "bg-[rgba(0,128,128,0.08)] text-[#008080] border border-[rgba(0,128,128,0.2)]",
+  brand: "bg-[rgba(0,128,128,0.08)] text-[#008080] border border-[rgba(0,128,128,0.2)]",
   // Warning
   pending: "bg-amber-50 text-amber-700 border border-amber-200",
-  sent: "bg-blue-50 text-blue-700 border border-blue-200",
-  contacted: "bg-blue-50 text-blue-700 border border-blue-200",
-  new: "bg-blue-50 text-blue-700 border border-blue-200",
-  running: "bg-blue-50 text-blue-700 border border-blue-200",
-  prospect: "bg-blue-50 text-blue-700 border border-blue-200",
   lowstock: "bg-amber-50 text-amber-700 border border-amber-200",
   low_stock: "bg-amber-50 text-amber-700 border border-amber-200",
-  // Danger
-  overdue: "bg-red-50 text-red-700 border border-red-200",
-  lost: "bg-red-50 text-red-700 border border-red-200",
-  failed: "bg-red-50 text-red-700 border border-red-200",
-  cancelled: "bg-red-50 text-red-700 border border-red-200",
-  unqualified: "bg-red-50 text-red-700 border border-red-200",
-  urgent: "bg-red-50 text-red-700 border border-red-200",
-  churned: "bg-red-50 text-red-700 border border-red-200",
-  // Neutral / default
-  draft: "bg-gray-100 text-gray-700 border border-gray-200",
-  paused: "bg-gray-100 text-gray-700 border border-gray-200",
-  inactive: "bg-gray-100 text-gray-700 border border-gray-200",
-  void: "bg-gray-100 text-gray-700 border border-gray-200",
-  // Legacy tone keys
-  positive: "bg-green-50 text-green-700 border border-green-200",
   warning: "bg-amber-50 text-amber-700 border border-amber-200",
-  danger: "bg-red-50 text-red-700 border border-red-200",
-  neutral: "bg-gray-100 text-gray-700 border border-gray-200",
-  brand: "bg-blue-50 text-blue-700 border border-blue-200",
+  // Danger
+  overdue: "bg-rose-50 text-rose-700 border border-rose-200",
+  lost: "bg-rose-50 text-rose-700 border border-rose-200",
+  failed: "bg-rose-50 text-rose-700 border border-rose-200",
+  cancelled: "bg-rose-50 text-rose-700 border border-rose-200",
+  unqualified: "bg-rose-50 text-rose-700 border border-rose-200",
+  urgent: "bg-rose-50 text-rose-700 border border-rose-200",
+  churned: "bg-rose-50 text-rose-700 border border-rose-200",
+  danger: "bg-rose-50 text-rose-700 border border-rose-200",
+  // Neutral / default
+  draft: "bg-[#EDF4F3] text-[#3D5A58] border border-[rgba(0,128,128,0.15)]",
+  paused: "bg-[#EDF4F3] text-[#3D5A58] border border-[rgba(0,128,128,0.15)]",
+  inactive: "bg-[#EDF4F3] text-[#617D7B] border border-[rgba(0,128,128,0.12)]",
+  void: "bg-[#EDF4F3] text-[#617D7B] border border-[rgba(0,128,128,0.12)]",
+  neutral: "bg-[#EDF4F3] text-[#3D5A58] border border-[rgba(0,128,128,0.15)]",
+  positive: "bg-emerald-50 text-emerald-700 border border-emerald-200",
 };
 
 export function StatusBadge({
@@ -173,7 +173,7 @@ export function SearchInput({
   return (
     <div className="relative w-full sm:max-w-xs">
       <Search
-        className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400"
+        className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#008080]"
         aria-hidden
       />
       <Input
@@ -181,7 +181,7 @@ export function SearchInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="h-9 pl-9 text-sm text-gray-900 border-[#D1D5DB]"
+        className="h-9 pl-9 text-sm text-[#0F2423] border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] bg-white placeholder:text-[#617D7B]/60"
       />
     </div>
   );
@@ -199,12 +199,12 @@ export function EmptyState({
   action?: ReactNode;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 bg-white px-6 py-14 text-center shadow-xs">
-      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-gray-500">
+    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[rgba(0,128,128,0.25)] bg-[#EDF4F3]/30 px-6 py-14 text-center shadow-xs">
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[rgba(0,128,128,0.1)] text-[#008080]">
         <Inbox className="h-6 w-6" aria-hidden />
       </div>
-      <h3 className="mt-3 text-sm font-bold text-gray-900">{title}</h3>
-      <p className="mt-1 text-sm text-gray-600 max-w-sm">{description}</p>
+      <h3 className="mt-3 text-sm font-bold text-[#0F2423]">{title}</h3>
+      <p className="mt-1 text-sm text-[#617D7B] max-w-sm">{description}</p>
       {action && <div className="mt-5">{action}</div>}
     </div>
   );
@@ -237,18 +237,18 @@ export function ErrorState({ message, onRetry }: { message: string; onRetry?: ()
 
 export function TableSkeleton({ rows = 5, cols = 4 }: { rows?: number; cols?: number }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-[#E5E7EB] bg-white shadow-xs" aria-hidden>
+    <div className="overflow-hidden rounded-xl border border-[rgba(0,128,128,0.14)] bg-white shadow-teal-xs" aria-hidden>
       {/* Header skeleton */}
-      <div className="flex gap-4 border-b border-[#E5E7EB] bg-[#F8FAFC] px-4 py-3.5">
+      <div className="flex gap-4 border-b border-[rgba(0,128,128,0.1)] bg-[rgba(0,128,128,0.03)] px-4 py-3.5">
         {Array.from({ length: cols }).map((_, i) => (
-          <Skeleton key={i} className="h-4 flex-1 rounded bg-gray-200" />
+          <Skeleton key={i} className="h-4 flex-1 rounded bg-[rgba(0,128,128,0.08)]" />
         ))}
       </div>
       {/* Row skeletons */}
       {Array.from({ length: rows }).map((_, i) => (
-        <div key={i} className="flex gap-4 border-b border-[#E5E7EB] px-4 py-4 last:border-b-0">
+        <div key={i} className="flex gap-4 border-b border-[rgba(0,128,128,0.06)] px-4 py-4 last:border-b-0">
           {Array.from({ length: cols }).map((_, j) => (
-            <Skeleton key={j} className="h-4 flex-1 rounded bg-gray-100" style={{ opacity: 1 - j * 0.1 }} />
+            <Skeleton key={j} className="h-4 flex-1 rounded bg-[rgba(0,128,128,0.04)]" style={{ opacity: 1 - j * 0.1 }} />
           ))}
         </div>
       ))}
@@ -271,8 +271,8 @@ export function Pager({
 }) {
   if (pages <= 1) return null;
   return (
-    <nav className="flex items-center justify-between border-t border-[#E5E7EB] bg-white px-4 py-3" aria-label="Pagination">
-      <p className="text-xs text-gray-600 font-medium">
+    <nav className="flex items-center justify-between border-t border-[rgba(0,128,128,0.1)] bg-white px-4 py-3" aria-label="Pagination">
+      <p className="text-xs text-[#617D7B] font-medium">
         {total !== undefined ? `${total} total` : `Page ${page} of ${pages}`}
       </p>
       <div className="flex items-center gap-1.5">
@@ -281,12 +281,12 @@ export function Pager({
           size="sm"
           onClick={() => onPage(Math.max(1, page - 1))}
           disabled={page === 1}
-          className="h-8 px-2.5 text-xs"
+          className="h-8 px-2.5 text-xs border-[rgba(0,128,128,0.2)] text-[#0F2423] hover:border-[#008080] hover:bg-[rgba(0,128,128,0.04)]"
         >
           <ChevronLeft className="h-3.5 w-3.5" />
           Previous
         </Button>
-        <span className="min-w-[2.5rem] text-center text-xs font-semibold text-gray-700">
+        <span className="min-w-[2.5rem] text-center text-xs font-semibold text-[#0F2423]">
           {page} / {pages}
         </span>
         <Button
@@ -294,7 +294,7 @@ export function Pager({
           size="sm"
           onClick={() => onPage(Math.min(pages, page + 1))}
           disabled={page === pages}
-          className="h-8 px-2.5 text-xs"
+          className="h-8 px-2.5 text-xs border-[rgba(0,128,128,0.2)] text-[#0F2423] hover:border-[#008080] hover:bg-[rgba(0,128,128,0.04)]"
         >
           Next
           <ChevronRight className="h-3.5 w-3.5" />
@@ -338,7 +338,7 @@ export function SectionCard({
 }) {
   return (
     <div className={cn(
-      "rounded-xl border border-[#E5E7EB] bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05)]",
+      "rounded-xl border border-[rgba(0,128,128,0.14)] bg-white shadow-teal-xs",
       padding && "p-5",
       className,
     )}>
@@ -361,8 +361,8 @@ export function SectionHeader({
   return (
     <div className="flex items-center justify-between mb-4">
       <div>
-        <h2 className="text-sm font-bold text-gray-900">{title}</h2>
-        {subtitle && <p className="text-xs text-gray-500 mt-0.5">{subtitle}</p>}
+        <h2 className="text-sm font-bold text-[#0F2423]">{title}</h2>
+        {subtitle && <p className="text-xs text-[#617D7B] mt-0.5">{subtitle}</p>}
       </div>
       {action}
     </div>

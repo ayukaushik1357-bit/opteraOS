@@ -174,17 +174,17 @@ function AutopilotMasterPage() {
   return (
     <div className="space-y-6 pb-12">
       {/* ── Top Header ────────────────────────────────────────────────── */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#E5EAF1] pb-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[rgba(0,128,128,0.14)] pb-4">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-lg bg-blue-50 text-blue-600 border border-blue-200">
+            <div className="p-2 rounded-lg bg-[rgba(0,128,128,0.12)] text-[#008080] border border-[rgba(0,128,128,0.22)]">
               <Zap className="h-5 w-5" />
             </div>
             <div>
-              <h1 className="text-xl font-bold tracking-tight text-gray-900">
+              <h1 className="text-xl font-bold tracking-tight text-[#0F2423]">
                 opteraOS Autopilot
               </h1>
-              <p className="mt-0.5 text-xs text-gray-500">
+              <p className="mt-0.5 text-xs text-[#5A7573]">
                 The autonomous business core. AI understands requests, assigns work to teams, executes actions, and reports results.
               </p>
             </div>
@@ -196,9 +196,9 @@ function AutopilotMasterPage() {
             variant="outline"
             size="sm"
             onClick={() => setDailyReportOpen(true)}
-            className="h-9 gap-1.5 text-xs font-medium"
+            className="h-9 gap-1.5 text-xs font-medium border-[rgba(0,128,128,0.2)] bg-white text-[#0F2423] hover:bg-[rgba(0,128,128,0.06)] hover:text-[#008080] shadow-xs"
           >
-            <BarChart3 className="h-3.5 w-3.5 text-blue-600" />
+            <BarChart3 className="h-3.5 w-3.5 text-[#008080]" />
             <span>Executive Briefing</span>
           </Button>
 
@@ -206,9 +206,9 @@ function AutopilotMasterPage() {
             variant="outline"
             size="sm"
             onClick={() => setHistoryOpen(true)}
-            className="h-9 gap-1.5 text-xs"
+            className="h-9 gap-1.5 text-xs font-medium border-[rgba(0,128,128,0.2)] bg-white text-[#0F2423] hover:bg-[rgba(0,128,128,0.06)] hover:text-[#008080] shadow-xs"
           >
-            <Clock className="h-3.5 w-3.5 text-gray-500" />
+            <Clock className="h-3.5 w-3.5 text-[#5A7573]" />
             <span>Execution Logs</span>
           </Button>
         </div>
@@ -216,39 +216,39 @@ function AutopilotMasterPage() {
 
       {/* ── Master Platform Navigation Tabs ───────────────────────────── */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="h-10 w-full justify-start overflow-x-auto rounded-lg border border-[#E5EAF1] bg-[#F8FAFC] p-1">
-          <TabsTrigger value="command" className="gap-2 text-xs rounded-md data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-xs">
-            <Sparkles className="h-3.5 w-3.5 text-blue-600" />
+        <TabsList className="h-10 w-full justify-start overflow-x-auto rounded-lg border border-[rgba(0,128,128,0.15)] bg-[#E8F1F0] p-1">
+          <TabsTrigger value="command" className="gap-2 text-xs rounded-md text-[#5A7573] data-[state=active]:bg-white data-[state=active]:text-[#008080] data-[state=active]:font-semibold data-[state=active]:shadow-xs">
+            <Sparkles className="h-3.5 w-3.5 text-[#008080]" />
             <span>Command Center</span>
           </TabsTrigger>
 
-          <TabsTrigger value="discovery" className="gap-2 text-xs rounded-md data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-xs">
-            <Zap className="h-3.5 w-3.5 text-amber-500" />
+          <TabsTrigger value="discovery" className="gap-2 text-xs rounded-md text-[#5A7573] data-[state=active]:bg-white data-[state=active]:text-[#008080] data-[state=active]:font-semibold data-[state=active]:shadow-xs">
+            <Zap className="h-3.5 w-3.5 text-[#D97706]" />
             <span>Capabilities Catalog</span>
           </TabsTrigger>
 
-          <TabsTrigger value="workgroups" className="gap-2 text-xs rounded-md data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-xs">
-            <Briefcase className="h-3.5 w-3.5 text-purple-600" />
+          <TabsTrigger value="workgroups" className="gap-2 text-xs rounded-md text-[#5A7573] data-[state=active]:bg-white data-[state=active]:text-[#008080] data-[state=active]:font-semibold data-[state=active]:shadow-xs">
+            <Briefcase className="h-3.5 w-3.5 text-[#6366F1]" />
             <span>Employee Work Groups</span>
           </TabsTrigger>
 
-          <TabsTrigger value="customergroups" className="gap-2 text-xs rounded-md data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-xs">
-            <Users className="h-3.5 w-3.5 text-blue-600" />
+          <TabsTrigger value="customergroups" className="gap-2 text-xs rounded-md text-[#5A7573] data-[state=active]:bg-white data-[state=active]:text-[#008080] data-[state=active]:font-semibold data-[state=active]:shadow-xs">
+            <Users className="h-3.5 w-3.5 text-[#008080]" />
             <span>Customer Segments</span>
           </TabsTrigger>
 
-          <TabsTrigger value="rules" className="gap-2 text-xs rounded-md data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-xs">
-            <Sliders className="h-3.5 w-3.5 text-emerald-600" />
+          <TabsTrigger value="rules" className="gap-2 text-xs rounded-md text-[#5A7573] data-[state=active]:bg-white data-[state=active]:text-[#008080] data-[state=active]:font-semibold data-[state=active]:shadow-xs">
+            <Sliders className="h-3.5 w-3.5 text-[#059669]" />
             <span>Routing Rules</span>
           </TabsTrigger>
 
-          <TabsTrigger value="work" className="gap-2 text-xs rounded-md data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-xs">
-            <CheckSquare className="h-3.5 w-3.5 text-rose-500" />
+          <TabsTrigger value="work" className="gap-2 text-xs rounded-md text-[#5A7573] data-[state=active]:bg-white data-[state=active]:text-[#008080] data-[state=active]:font-semibold data-[state=active]:shadow-xs">
+            <CheckSquare className="h-3.5 w-3.5 text-[#E11D48]" />
             <span>Unified Work Items</span>
           </TabsTrigger>
 
-          <TabsTrigger value="advanced" className="gap-2 text-xs rounded-md data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-xs ml-auto">
-            <Layers className="h-3.5 w-3.5 text-gray-500" />
+          <TabsTrigger value="advanced" className="gap-2 text-xs rounded-md text-[#5A7573] data-[state=active]:bg-white data-[state=active]:text-[#008080] data-[state=active]:font-semibold data-[state=active]:shadow-xs ml-auto">
+            <Layers className="h-3.5 w-3.5 text-[#5A7573]" />
             <span>Advanced Builder</span>
           </TabsTrigger>
         </TabsList>
@@ -323,7 +323,7 @@ function AutopilotMasterPage() {
               <Button
                 asChild
                 size="sm"
-                className="gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs"
+                className="gap-1.5 bg-[#008080] hover:bg-[#006666] text-white text-xs shadow-teal-xs"
               >
                 <Link to="/workflows/new">
                   <Plus className="h-3.5 w-3.5" />

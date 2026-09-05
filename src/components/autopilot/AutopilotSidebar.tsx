@@ -61,12 +61,12 @@ export function AutopilotSidebar({
     color: string;
     count?: number | undefined;
   }> = [
-    { id: "all_work", label: "All Work", icon: Briefcase, color: "text-blue-600", count: counts?.allWork },
+    { id: "all_work", label: "All Work", icon: Briefcase, color: "text-[#008080]", count: counts?.allWork },
     { id: "running", label: "Running", icon: Play, color: "text-emerald-600", count: counts?.running },
-    { id: "scheduled", label: "Scheduled", icon: Clock, color: "text-cyan-600", count: counts?.scheduled },
+    { id: "scheduled", label: "Scheduled", icon: Clock, color: "text-teal-600", count: counts?.scheduled },
     { id: "paused", label: "Paused", icon: PauseCircle, color: "text-amber-600", count: counts?.paused },
     { id: "failed", label: "Failed", icon: AlertOctagon, color: "text-rose-600", count: counts?.failed },
-    { id: "completed", label: "Completed", icon: CheckCircle2, color: "text-blue-600", count: counts?.completed },
+    { id: "completed", label: "Completed", icon: CheckCircle2, color: "text-[#008080]", count: counts?.completed },
   ];
 
   const categories: Array<{
@@ -76,11 +76,11 @@ export function AutopilotSidebar({
     accent: string;
   }> = [
     { id: "sales", title: "SALES", icon: TrendingUp, accent: "text-emerald-600" },
-    { id: "customers", title: "CUSTOMERS", icon: Users, accent: "text-blue-600" },
-    { id: "team", title: "TEAM", icon: UserCheck, accent: "text-purple-600" },
-    { id: "communication", title: "COMMUNICATION", icon: Mail, accent: "text-cyan-600" },
+    { id: "customers", title: "CUSTOMERS", icon: Users, accent: "text-[#008080]" },
+    { id: "team", title: "TEAM", icon: UserCheck, accent: "text-teal-700" },
+    { id: "communication", title: "COMMUNICATION", icon: Mail, accent: "text-[#0D9488]" },
     { id: "finance", title: "FINANCE", icon: Receipt, accent: "text-amber-600" },
-    { id: "ai", title: "AI", icon: Brain, accent: "text-rose-600" },
+    { id: "ai", title: "AI", icon: Brain, accent: "text-[#008080]" },
   ];
 
   function renderStatusDot(status: CapabilityStatus) {
@@ -100,15 +100,15 @@ export function AutopilotSidebar({
   }
 
   return (
-    <aside className="w-full lg:w-64 shrink-0 rounded-2xl border border-[#E2E8F0] bg-white/90 p-3.5 shadow-sm space-y-6 select-none">
+    <aside className="w-full lg:w-64 shrink-0 rounded-2xl border border-[rgba(0,128,128,0.18)] bg-white p-3.5 shadow-teal-xs space-y-6 select-none">
       {/* ── SECTION 1: AUTOPILOT (WORK VIEWS) ───────────────────────── */}
       <div className="space-y-1.5">
         <div className="flex items-center justify-between px-2.5 py-1">
-          <span className="text-[11px] font-bold tracking-wider text-[#6B7280] uppercase flex items-center gap-1.5">
-            <Zap className="h-3.5 w-3.5 text-blue-600" />
+          <span className="text-[11px] font-bold tracking-wider text-[#3D5A58] uppercase flex items-center gap-1.5">
+            <Zap className="h-3.5 w-3.5 text-[#008080]" />
             <span>Autopilot</span>
           </span>
-          <Badge variant="outline" className="text-[9px] font-mono border-[#E2E8F0] text-[#6B7280] bg-slate-50">
+          <Badge variant="outline" className="text-[9px] font-mono border-[rgba(0,128,128,0.2)] text-[#008080] bg-[#EDF4F3]">
             Work
           </Badge>
         </div>
@@ -123,8 +123,8 @@ export function AutopilotSidebar({
                 onClick={() => onSelectFilter(item.id)}
                 className={`group flex w-full items-center justify-between rounded-xl px-2.5 py-2 text-xs font-medium transition-all ${
                   isActive
-                    ? "bg-blue-50 text-blue-700 font-semibold border border-blue-200 shadow-xs"
-                    : "text-[#4B5563] hover:bg-slate-50 hover:text-[#111827]"
+                    ? "bg-[rgba(0,128,128,0.12)] text-[#008080] font-semibold border border-[rgba(0,128,128,0.25)] shadow-xs"
+                    : "text-[#3D5A58] hover:bg-[#EDF4F3] hover:text-[#0F2423]"
                 }`}
               >
                 <div className="flex items-center gap-2.5">
@@ -135,8 +135,8 @@ export function AutopilotSidebar({
                   <span
                     className={`rounded-md px-1.5 py-0.5 font-mono text-[10px] ${
                       isActive
-                        ? "bg-blue-100/80 text-blue-800"
-                        : "bg-slate-100 text-[#6B7280] group-hover:text-[#111827]"
+                        ? "bg-[rgba(0,128,128,0.2)] text-[#006666] font-bold"
+                        : "bg-[#E8F1F0] text-[#5A7573] group-hover:text-[#0F2423]"
                     }`}
                   >
                     {item.count}
@@ -149,10 +149,10 @@ export function AutopilotSidebar({
       </div>
 
       {/* ── SECTION 2: WHAT OPTERAOS CAN DO ─────────────────────────── */}
-      <div className="space-y-4 pt-3 border-t border-[#E2E8F0]">
+      <div className="space-y-4 pt-3 border-t border-[rgba(0,128,128,0.14)]">
         <div className="flex items-center justify-between px-2.5">
-          <span className="text-[11px] font-bold tracking-wider text-[#6B7280] uppercase flex items-center gap-1.5">
-            <Sparkles className="h-3.5 w-3.5 text-blue-600" />
+          <span className="text-[11px] font-bold tracking-wider text-[#3D5A58] uppercase flex items-center gap-1.5">
+            <Sparkles className="h-3.5 w-3.5 text-[#008080]" />
             <span>What opteraOS Can Do</span>
           </span>
         </div>
@@ -164,7 +164,7 @@ export function AutopilotSidebar({
 
             return (
               <div key={cat.id} className="space-y-1">
-                <div className="flex items-center gap-1.5 px-2.5 py-0.5 text-[10px] font-bold tracking-widest text-[#9CA3AF] uppercase">
+                <div className="flex items-center gap-1.5 px-2.5 py-0.5 text-[10px] font-bold tracking-widest text-[#617D7B] uppercase">
                   <CatIcon className={`h-3 w-3 ${cat.accent}`} />
                   <span>{cat.title}</span>
                 </div>
@@ -178,14 +178,14 @@ export function AutopilotSidebar({
                         onClick={() => onSelectCapability(cap)}
                         className={`group flex w-full items-center justify-between rounded-xl px-2.5 py-1.5 text-xs transition-all text-left ${
                           isSelected
-                            ? "bg-blue-50 text-blue-700 font-semibold border border-blue-200"
-                            : "text-[#374151] hover:bg-slate-50 hover:text-[#111827]"
+                            ? "bg-[rgba(0,128,128,0.12)] text-[#008080] font-semibold border border-[rgba(0,128,128,0.25)]"
+                            : "text-[#3D5A58] hover:bg-[#EDF4F3] hover:text-[#0F2423]"
                         }`}
                       >
                         <span className="truncate pr-1 leading-snug">{cap.name}</span>
                         <div className="flex items-center gap-1.5 shrink-0">
                           {renderStatusDot(cap.status)}
-                          <ChevronRight className="h-3 w-3 text-[#9CA3AF] group-hover:text-[#4B5563] group-hover:translate-x-0.5 transition-transform" />
+                          <ChevronRight className="h-3 w-3 text-[#617D7B] group-hover:text-[#008080] group-hover:translate-x-0.5 transition-transform" />
                         </div>
                       </button>
                     );

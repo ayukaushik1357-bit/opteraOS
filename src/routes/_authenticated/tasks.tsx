@@ -231,7 +231,7 @@ function TasksPage() {
 
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={openNew}>
+              <Button className="bg-[#008080] hover:bg-[#006666] text-white" onClick={openNew}>
                 <Plus className="mr-1 h-4 w-4" /> New task
               </Button>
             </DialogTrigger>
@@ -364,7 +364,7 @@ function TasksPage() {
               </div>
               <DialogFooter>
                 <Button
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  className="bg-[#008080] hover:bg-[#006666] text-white"
                   disabled={editing.title.trim().length < 2 || saveMutation.isPending}
                   onClick={() => saveMutation.mutate()}
                 >

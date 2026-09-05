@@ -154,7 +154,7 @@ function AiAssistantPage() {
           <Button
             size="sm"
             onClick={handleNewChat}
-            className="bg-blue-600 hover:bg-blue-700 text-white text-xs gap-1 h-8 rounded-lg font-medium shadow-xs"
+            className="bg-[#008080] hover:bg-[#006666] text-white text-xs gap-1 h-8 rounded-lg font-medium shadow-xs"
           >
             <Plus className="w-3.5 h-3.5" /> New
           </Button>
@@ -267,7 +267,7 @@ function AiAssistantPage() {
             <Button
               type="submit"
               disabled={!inputMessage.trim() || loading}
-              className="bg-blue-600 hover:bg-blue-700 text-white h-10 w-10 rounded-xl p-0 shrink-0 shadow-sm"
+              className="bg-[#008080] hover:bg-[#006666] text-white h-10 w-10 rounded-xl p-0 shrink-0 shadow-sm"
             >
               <Send className="w-4 h-4" />
             </Button>

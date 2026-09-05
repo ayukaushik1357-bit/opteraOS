@@ -162,7 +162,7 @@ function ProjectsMasterPage() {
           <Button
             size="sm"
             onClick={() => setNewProjectOpen(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white gap-1.5 shadow-sm text-xs h-9 font-medium"
+            className="bg-[#008080] hover:bg-[#006666] text-white gap-1.5 shadow-sm text-xs h-9 font-medium"
           >
             <Plus className="h-4 w-4" /> New Project
           </Button>
@@ -201,7 +201,7 @@ function ProjectsMasterPage() {
                 <FolderKanban className="h-10 w-10 text-gray-400 mx-auto mb-3" />
                 <p className="text-sm font-medium text-gray-800">No Projects Created Yet</p>
                 <p className="text-xs text-gray-500 mt-1">Create a project workspace to track deliverables, milestones, and billable hours.</p>
-                <Button size="sm" onClick={() => setNewProjectOpen(true)} className="mt-4 bg-blue-600 hover:bg-blue-700 text-white text-xs">
+                <Button size="sm" onClick={() => setNewProjectOpen(true)} className="mt-4 bg-[#008080] hover:bg-[#006666] text-white text-xs">
                   Create First Project
                 </Button>
               </div>
@@ -250,7 +250,7 @@ function ProjectsMasterPage() {
                 <h2 className="text-sm font-semibold text-gray-900">Employee &amp; Resource Timesheets</h2>
                 <p className="text-xs text-gray-500">Track billable operational hours against active projects</p>
               </div>
-              <Button size="sm" onClick={() => setNewTimesheetOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white text-xs">
+              <Button size="sm" onClick={() => setNewTimesheetOpen(true)} className="bg-[#008080] hover:bg-[#006666] text-white text-xs">
                 <Plus className="h-3.5 w-3.5 mr-1" /> Log Hours
               </Button>
             </div>
@@ -376,7 +376,7 @@ function ProjectsMasterPage() {
                 });
               }}
               disabled={createProjectMutation.isPending}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+              className="bg-[#008080] hover:bg-[#006666] text-white text-xs"
             >
               Create Project
             </Button>
@@ -444,7 +444,7 @@ function ProjectsMasterPage() {
                 });
               }}
               disabled={logTimesheetMutation.isPending}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+              className="bg-[#008080] hover:bg-[#006666] text-white text-xs"
             >
               Save Timesheet
             </Button>

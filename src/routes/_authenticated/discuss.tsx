@@ -193,7 +193,7 @@ function DiscussMasterPage() {
           <Button
             size="sm"
             onClick={() => setNewSignOpen(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white gap-1.5 shadow-sm text-xs h-9 font-medium"
+            className="bg-[#008080] hover:bg-[#006666] text-white gap-1.5 shadow-sm text-xs h-9 font-medium"
           >
             <FileSignature className="h-4 w-4" /> Request Signature
           </Button>
@@ -230,7 +230,7 @@ function DiscussMasterPage() {
                 {channels.length === 0 ? (
                   <div className="p-3 text-center text-xs text-gray-400">
                     No channels yet.
-                    <Button size="sm" onClick={() => createChannelMutation.mutate({ name: "general", description: "General company discussions" })} className="mt-2 text-xs w-full bg-blue-600 hover:bg-blue-700 text-white">
+                    <Button size="sm" onClick={() => createChannelMutation.mutate({ name: "general", description: "General company discussions" })} className="mt-2 text-xs w-full bg-[#008080] hover:bg-[#006666] text-white">
                       Create #general
                     </Button>
                   </div>
@@ -311,7 +311,7 @@ function DiscussMasterPage() {
                     placeholder={`Message #${activeChannel?.name || "channel"}...`}
                     className="h-9 text-xs"
                   />
-                  <Button type="submit" size="sm" disabled={postMessageMutation.isPending} className="bg-blue-600 hover:bg-blue-700 text-white">
+                  <Button type="submit" size="sm" disabled={postMessageMutation.isPending} className="bg-[#008080] hover:bg-[#006666] text-white">
                     <Send className="h-3.5 w-3.5" />
                   </Button>
                 </form>
@@ -325,7 +325,7 @@ function DiscussMasterPage() {
           <div className="rounded-xl border border-[#E5EAF1] bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden">
             <div className="p-4 border-b border-[#E5EAF1] flex items-center justify-between">
               <h2 className="text-sm font-semibold text-gray-900">Enterprise Cloud Document Vault</h2>
-              <Button size="sm" onClick={() => setNewDocOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white text-xs">
+              <Button size="sm" onClick={() => setNewDocOpen(true)} className="bg-[#008080] hover:bg-[#006666] text-white text-xs">
                 <Plus className="h-3.5 w-3.5 mr-1" /> Add Document
               </Button>
             </div>
@@ -376,7 +376,7 @@ function DiscussMasterPage() {
                 <h2 className="text-sm font-semibold text-gray-900">Digital Signatures &amp; Contract Execution</h2>
                 <p className="text-xs text-gray-500">Audit-logged electronic sign requests with cryptographic hash validation</p>
               </div>
-              <Button size="sm" onClick={() => setNewSignOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white text-xs">
+              <Button size="sm" onClick={() => setNewSignOpen(true)} className="bg-[#008080] hover:bg-[#006666] text-white text-xs">
                 <Plus className="h-3.5 w-3.5 mr-1" /> Request Signature
               </Button>
             </div>
@@ -485,7 +485,7 @@ function DiscussMasterPage() {
                 createChannelMutation.mutate({ name: chName, description: chDesc });
               }}
               disabled={createChannelMutation.isPending}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+              className="bg-[#008080] hover:bg-[#006666] text-white text-xs"
             >
               Create Channel
             </Button>
@@ -541,7 +541,7 @@ function DiscussMasterPage() {
                 createDocMutation.mutate({ name: docName, fileUrl: docUrl, category: docCategory, mimeType: "PDF" });
               }}
               disabled={createDocMutation.isPending}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+              className="bg-[#008080] hover:bg-[#006666] text-white text-xs"
             >
               Save Document
             </Button>
@@ -614,7 +614,7 @@ function DiscussMasterPage() {
                 });
               }}
               disabled={createSignMutation.isPending}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+              className="bg-[#008080] hover:bg-[#006666] text-white text-xs"
             >
               Send Request
             </Button>

@@ -16,7 +16,7 @@ export function LogoMark({ className }: { className?: string }) {
 
 export function Wordmark({ className }: { className?: string }) {
   return (
-    <span className={cn("text-lg font-semibold tracking-tight", className)}>
+    <span className={cn("text-lg font-bold tracking-tight text-[#0F2423]", className)}>
       optera<span className="text-gradient">OS</span>
     </span>
   );

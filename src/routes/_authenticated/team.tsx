@@ -259,7 +259,7 @@ function TeamPage() {
                 <Button
                   type="submit"
                   disabled={inviteMutation.isPending}
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  className="bg-[#008080] hover:bg-[#006666] text-white"
                 >
                   {inviteMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Send invite"}
                 </Button>
@@ -495,7 +495,7 @@ function TeamPage() {
               <Dialog open={deptOpen} onOpenChange={setDeptOpen}>
                 <DialogTrigger asChild>
                   <Button
-                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                    className="bg-[#008080] hover:bg-[#006666] text-white"
                     onClick={() => setDeptDraft({ id: undefined, name: "", description: "" })}
                   >
                     <Plus className="mr-1 h-4 w-4" /> New department
@@ -527,7 +527,7 @@ function TeamPage() {
                   </div>
                   <DialogFooter>
                     <Button
-                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                      className="bg-[#008080] hover:bg-[#006666] text-white"
                       disabled={deptDraft.name.trim().length < 2 || deptMutation.isPending}
                       onClick={() => deptMutation.mutate()}
                     >
@@ -604,7 +604,7 @@ function TeamPage() {
               <Dialog open={teamOpen} onOpenChange={setTeamOpen}>
                 <DialogTrigger asChild>
                   <Button
-                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                    className="bg-[#008080] hover:bg-[#006666] text-white"
                     onClick={() => setTeamDraft({ id: undefined, name: "", description: "", departmentId: "" })}
                   >
                     <Plus className="mr-1 h-4 w-4" /> New team
@@ -653,7 +653,7 @@ function TeamPage() {
                   </div>
                   <DialogFooter>
                     <Button
-                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                      className="bg-[#008080] hover:bg-[#006666] text-white"
                       disabled={teamDraft.name.trim().length < 2 || teamMutation.isPending}
                       onClick={() => teamMutation.mutate()}
                     >

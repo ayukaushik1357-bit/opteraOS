@@ -139,7 +139,7 @@ export function PriceListsPage() {
         subtitle="Manage multi-tier pricing strategies, category volume breaks, and customer specific agreements."
         actions={
           <Button
-            className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
+            className="bg-[#008080] hover:bg-[#006666] text-white shadow-sm"
             onClick={() => setShowAddModal(true)}
           >
             <Plus className="mr-1.5 h-4 w-4" /> Create Price List
@@ -232,7 +232,7 @@ export function PriceListsPage() {
 
               <Button
                 size="sm"
-                className="w-full bg-blue-600 text-white hover:bg-blue-700 h-8 text-xs"
+                className="w-full bg-[#008080] text-white hover:bg-[#006666] h-8 text-xs"
                 onClick={handleSimulate}
                 disabled={!calcProductId}
               >

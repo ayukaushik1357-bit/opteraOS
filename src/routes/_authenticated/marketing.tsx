@@ -93,7 +93,7 @@ function MarketingPage() {
           </Button>
           <Button
             onClick={() => setShowAddModal(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white text-xs gap-1.5 h-9 font-medium shadow-sm"
+            className="bg-[#008080] hover:bg-[#006666] text-white text-xs gap-1.5 h-9 font-medium shadow-sm"
           >
             <Plus className="w-4 h-4" />
             New Campaign
@@ -124,7 +124,7 @@ function MarketingPage() {
             });
             setShowAddModal(true);
           }}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs px-3.5 py-1.5 shrink-0 rounded-lg"
+          className="bg-[#008080] hover:bg-[#006666] text-white font-medium text-xs px-3.5 py-1.5 shrink-0 rounded-lg"
         >
           Auto-Create Campaign →
         </Button>
@@ -180,7 +180,7 @@ function MarketingPage() {
                 <Button
                   size="sm"
                   onClick={() => handleLaunch(camp.id)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white text-xs gap-1.5 rounded-lg h-8"
+                  className="bg-[#008080] hover:bg-[#006666] text-white text-xs gap-1.5 rounded-lg h-8"
                 >
                   <Play className="w-3 h-3" /> Launch Now
                 </Button>
@@ -251,7 +251,7 @@ function MarketingPage() {
 
               <div className="flex justify-end gap-2 pt-3 border-t border-[#E5EAF1]">
                 <Button type="button" variant="outline" onClick={() => setShowAddModal(false)}>Cancel</Button>
-                <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white">Save Campaign</Button>
+                <Button type="submit" className="bg-[#008080] hover:bg-[#006666] text-white">Save Campaign</Button>
               </div>
             </form>
           </div>

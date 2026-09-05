@@ -450,34 +450,34 @@ export function AutopilotCommandCenter({
   return (
     <div className="space-y-8">
       {/* ── 1. Hero AI Command Interface ────────────────────────────────── */}
-      <div className="relative overflow-hidden rounded-3xl border border-indigo-500/30 bg-gradient-to-b from-indigo-950/40 via-slate-950/80 to-[#070913] p-6 sm:p-8 shadow-2xl backdrop-blur-xl">
-        <div className="pointer-events-none absolute -top-24 left-1/2 h-48 w-96 -translate-x-1/2 rounded-full bg-indigo-500/20 blur-3xl" />
+      <div className="relative overflow-hidden rounded-3xl border border-[rgba(0,128,128,0.22)] bg-gradient-to-br from-white via-[#F3F8F7] to-[#E6EFEF] p-6 sm:p-8 shadow-card backdrop-blur-xl">
+        <div className="pointer-events-none absolute -top-24 left-1/2 h-48 w-96 -translate-x-1/2 rounded-full bg-[rgba(0,128,128,0.12)] blur-3xl" />
 
         <div className="relative z-10 mx-auto max-w-3xl text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/40 bg-indigo-500/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-indigo-300 shadow-sm">
-            <Sparkles className="h-3.5 w-3.5 text-cyan-400 animate-pulse" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-[rgba(0,128,128,0.25)] bg-[rgba(0,128,128,0.08)] px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-[#008080] shadow-xs">
+            <Sparkles className="h-3.5 w-3.5 text-[#008080] animate-pulse" />
             <span>Autonomous AI Command Center</span>
           </div>
 
-          <h1 className="mt-3 text-2xl font-bold tracking-tight text-white sm:text-4xl">
+          <h1 className="mt-3 text-2xl font-bold tracking-tight text-[#0F2423] sm:text-4xl">
             What should optera<span className="text-gradient">OS</span> do for you?
           </h1>
-          <p className="mt-2 text-xs text-[#6B7280] sm:text-sm">
+          <p className="mt-2 text-xs text-[#5A7573] sm:text-sm">
             Describe your business goal in plain language. opteraOS discovers required work, assigns it to the right teams, and autonomously executes.
           </p>
 
-          <form onSubmit={handleSubmitPrompt} className="mt-6 flex items-center gap-2 rounded-2xl border border-[#E2E8F0] bg-[#F8FAFC] p-1.5 shadow-xl backdrop-blur-md focus-within:border-indigo-500/60 focus-within:ring-2 focus-within:ring-indigo-500/20">
+          <form onSubmit={handleSubmitPrompt} className="mt-6 flex items-center gap-2 rounded-2xl border border-[rgba(0,128,128,0.25)] bg-white p-1.5 shadow-md focus-within:border-[#008080] focus-within:ring-2 focus-within:ring-[rgba(0,128,128,0.2)]">
             <Input
               value={promptText}
               onChange={(e) => setPromptText(e.target.value)}
               placeholder="e.g. Automatically qualify new leads and assign them to my sales team..."
-              className="h-11 border-0 bg-transparent text-xs text-white placeholder:text-[#6B7280] focus-visible:ring-0 sm:text-sm"
+              className="h-11 border-0 bg-transparent text-xs text-[#0F2423] placeholder:text-[#617D7B] focus-visible:ring-0 sm:text-sm font-medium"
               disabled={planMutation.isPending}
             />
             <Button
               type="submit"
               size="sm"
-              className="h-10 shrink-0 gap-2 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 px-5 text-xs font-semibold text-white shadow-md hover:opacity-95"
+              className="h-10 shrink-0 gap-2 rounded-xl bg-gradient-to-r from-[#008080] to-[#0D9488] hover:from-[#006666] hover:to-[#008080] px-5 text-xs font-semibold text-white shadow-sm transition-all"
               disabled={!promptText.trim() || planMutation.isPending}
             >
               {planMutation.isPending ? (
@@ -495,7 +495,7 @@ export function AutopilotCommandCenter({
           </form>
 
           <div className="mt-3 flex flex-wrap items-center justify-center gap-1.5 text-[11px]">
-            <span className="text-[#6B7280]">Quick suggestions:</span>
+            <span className="text-[#617D7B]">Quick suggestions:</span>
             {SUGGESTED_PROMPTS.map((p) => (
               <button
                 key={p}
@@ -504,7 +504,7 @@ export function AutopilotCommandCenter({
                   planMutation.mutate(p);
                 }}
                 disabled={planMutation.isPending}
-                className="rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 py-1 text-[#374151] transition-colors hover:border-indigo-500/40 hover:bg-white/[0.07] hover:text-white"
+                className="rounded-lg border border-[rgba(0,128,128,0.18)] bg-white px-2.5 py-1 text-[#3D5A58] transition-colors hover:border-[#008080] hover:text-[#008080] shadow-xs cursor-pointer"
               >
                 {p}
               </button>
@@ -515,35 +515,32 @@ export function AutopilotCommandCenter({
 
       {/* ── 2. Real Business Connectivity Banner ────────────────────────── */}
       {stats && (
-        <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 text-xs">
-          <div className="flex items-center gap-2 text-[#374151] font-medium">
-            <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+        <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-[rgba(0,128,128,0.14)] bg-white p-4 text-xs shadow-card">
+          <div className="flex items-center gap-2 text-[#0F2423] font-medium">
+            <span className="flex h-2 w-2 rounded-full bg-[#059669] animate-pulse" />
             <span>Business Capabilities Connected to Supabase DB:</span>
           </div>
-          <div className="flex flex-wrap items-center gap-3 font-mono text-[11px] text-[#6B7280]">
-            <span className="rounded-md bg-[#F8FAFC] px-2 py-1 border border-[#E2E8F0]">
-              <strong className="text-white">{stats.customers}</strong> customers
+          <div className="flex flex-wrap items-center gap-2 font-mono text-[11px] text-[#5A7573]">
+            <span className="rounded-md bg-[#F8FBFA] px-2.5 py-1 border border-[rgba(0,128,128,0.12)]">
+              <strong className="text-[#0F2423]">{stats.customers}</strong> customers
             </span>
-            <span className="rounded-md bg-[#F8FAFC] px-2 py-1 border border-[#E2E8F0]">
-              <strong className="text-white">{stats.leads}</strong> leads
+            <span className="rounded-md bg-[#F8FBFA] px-2.5 py-1 border border-[rgba(0,128,128,0.12)]">
+              <strong className="text-[#0F2423]">{stats.leads}</strong> leads
             </span>
-            <span className="rounded-md bg-[#F8FAFC] px-2 py-1 border border-[#E2E8F0]">
-              <strong className="text-white">{stats.teamMembers}</strong> team members
+            <span className="rounded-md bg-[#F8FBFA] px-2.5 py-1 border border-[rgba(0,128,128,0.12)]">
+              <strong className="text-[#0F2423]">{stats.teamMembers ?? 1}</strong> team
             </span>
-            <span className="rounded-md bg-[#F8FAFC] px-2 py-1 border border-[#E2E8F0]">
-              <strong className="text-white">{stats.workGroups}</strong> work groups
-            </span>
-            <span className="rounded-md bg-[#F8FAFC] px-2 py-1 border border-[#E2E8F0]">
-              <strong className="text-white">{stats.customerGroups}</strong> customer groups
+            <span className="rounded-md bg-[#F8FBFA] px-2.5 py-1 border border-[rgba(0,128,128,0.12)]">
+              <strong className="text-[#0F2423]">{stats.workGroups ?? 0}</strong> work groups
             </span>
           </div>
           <Button
             variant="outline"
             size="sm"
             onClick={onOpenDailyReport}
-            className="h-7 text-[11px] gap-1.5 border-indigo-500/40 text-indigo-300 hover:bg-indigo-500/10 font-medium"
+            className="h-8 text-[11px] gap-1.5 border-[rgba(0,128,128,0.25)] text-[#008080] hover:bg-[rgba(0,128,128,0.06)] font-medium shadow-xs"
           >
-            <BarChart3 className="h-3.5 w-3.5 text-cyan-400" />
+            <BarChart3 className="h-3.5 w-3.5 text-[#008080]" />
             <span>Generate Executive Report</span>
           </Button>
         </div>
@@ -554,125 +551,125 @@ export function AutopilotCommandCenter({
         <button
           type="button"
           onClick={() => setSelectedMetric("active_autopilots")}
-          className="group glass rounded-2xl p-5 border border-[#E2E8F0] text-left transition-all duration-200 hover:border-cyan-500/50 hover:bg-[#F8FAFC] hover:shadow-lg hover:shadow-cyan-500/10 hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+          className="group rounded-2xl p-5 border border-[rgba(0,128,128,0.14)] bg-white shadow-card text-left transition-all duration-200 hover:border-[#008080] hover:shadow-teal-sm hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#008080]"
         >
-          <div className="flex items-center justify-between text-muted-foreground">
-            <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-cyan-300 transition-colors">Active Autopilots</span>
-            <Zap className="h-4 w-4 text-brand-cyan group-hover:scale-110 transition-transform" />
+          <div className="flex items-center justify-between text-[#617D7B]">
+            <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-[#008080] transition-colors">Active Autopilots</span>
+            <Zap className="h-4 w-4 text-[#008080] group-hover:scale-110 transition-transform" />
           </div>
-          <p className="mt-3 text-2xl font-bold text-foreground group-hover:text-white">
+          <p className="mt-3 text-2xl font-bold text-[#0F2423]">
             {isLoading ? <Skeleton className="h-7 w-12" /> : (kpis?.activeAutopilots ?? 0)}
           </p>
-          <div className="mt-1 flex items-center justify-between text-[11px] text-muted-foreground">
+          <div className="mt-1 flex items-center justify-between text-[11px] text-[#617D7B]">
             <span>{kpis?.totalAutopilots ?? 0} configured systems</span>
-            <span className="opacity-0 group-hover:opacity-100 transition-opacity text-cyan-400 font-medium">Inspect →</span>
+            <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[#008080] font-medium">Inspect →</span>
           </div>
         </button>
 
         <button
           type="button"
           onClick={() => setSelectedMetric("work_created_today")}
-          className="group glass rounded-2xl p-5 border border-[#E2E8F0] text-left transition-all duration-200 hover:border-purple-500/50 hover:bg-[#F8FAFC] hover:shadow-lg hover:shadow-purple-500/10 hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+          className="group rounded-2xl p-5 border border-[rgba(0,128,128,0.14)] bg-white shadow-card text-left transition-all duration-200 hover:border-[#008080] hover:shadow-teal-sm hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#008080]"
         >
-          <div className="flex items-center justify-between text-muted-foreground">
-            <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-purple-300 transition-colors">Work Created Today</span>
-            <Sparkles className="h-4 w-4 text-brand-violet group-hover:scale-110 transition-transform" />
+          <div className="flex items-center justify-between text-[#617D7B]">
+            <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-[#008080] transition-colors">Work Created Today</span>
+            <Sparkles className="h-4 w-4 text-[#008080] group-hover:scale-110 transition-transform" />
           </div>
-          <p className="mt-3 text-2xl font-bold text-foreground group-hover:text-white">
+          <p className="mt-3 text-2xl font-bold text-[#0F2423]">
             {isLoading ? <Skeleton className="h-7 w-12" /> : (kpis?.workCreatedToday ?? 0)}
           </p>
-          <div className="mt-1 flex items-center justify-between text-[11px] text-muted-foreground">
+          <div className="mt-1 flex items-center justify-between text-[11px] text-[#617D7B]">
             <span>Routed to work groups</span>
-            <span className="opacity-0 group-hover:opacity-100 transition-opacity text-purple-400 font-medium">Inspect →</span>
+            <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[#008080] font-medium">Inspect →</span>
           </div>
         </button>
 
         <button
           type="button"
           onClick={() => setSelectedMetric("completed_today")}
-          className="group glass rounded-2xl p-5 border border-[#E2E8F0] text-left transition-all duration-200 hover:border-emerald-500/50 hover:bg-[#F8FAFC] hover:shadow-lg hover:shadow-emerald-500/10 hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+          className="group rounded-2xl p-5 border border-[rgba(0,128,128,0.14)] bg-white shadow-card text-left transition-all duration-200 hover:border-[#008080] hover:shadow-teal-sm hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#008080]"
         >
-          <div className="flex items-center justify-between text-muted-foreground">
-            <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-emerald-300 transition-colors">Completed Today</span>
-            <CheckCircle2 className="h-4 w-4 text-emerald-400 group-hover:scale-110 transition-transform" />
+          <div className="flex items-center justify-between text-[#617D7B]">
+            <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-emerald-600 transition-colors">Completed Today</span>
+            <CheckCircle2 className="h-4 w-4 text-emerald-600 group-hover:scale-110 transition-transform" />
           </div>
-          <p className="mt-3 text-2xl font-bold text-foreground group-hover:text-white">
+          <p className="mt-3 text-2xl font-bold text-[#0F2423]">
             {isLoading ? <Skeleton className="h-7 w-12" /> : (kpis?.workCompletedToday ?? 0)}
           </p>
-          <div className="mt-1 flex items-center justify-between text-[11px] text-muted-foreground">
+          <div className="mt-1 flex items-center justify-between text-[11px] text-[#617D7B]">
             <span>Verified results</span>
-            <span className="opacity-0 group-hover:opacity-100 transition-opacity text-emerald-400 font-medium">Inspect →</span>
+            <span className="opacity-0 group-hover:opacity-100 transition-opacity text-emerald-600 font-medium">Inspect →</span>
           </div>
         </button>
 
         <button
           type="button"
           onClick={() => setSelectedMetric("automated_actions")}
-          className="group glass rounded-2xl p-5 border border-[#E2E8F0] text-left transition-all duration-200 hover:border-indigo-500/50 hover:bg-[#F8FAFC] hover:shadow-lg hover:shadow-indigo-500/10 hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+          className="group rounded-2xl p-5 border border-[rgba(0,128,128,0.14)] bg-white shadow-card text-left transition-all duration-200 hover:border-[#008080] hover:shadow-teal-sm hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#008080]"
         >
-          <div className="flex items-center justify-between text-muted-foreground">
-            <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-indigo-300 transition-colors">Automated Actions</span>
-            <Activity className="h-4 w-4 text-indigo-400 group-hover:scale-110 transition-transform" />
+          <div className="flex items-center justify-between text-[#617D7B]">
+            <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-[#008080] transition-colors">Automated Actions</span>
+            <Activity className="h-4 w-4 text-[#008080] group-hover:scale-110 transition-transform" />
           </div>
-          <p className="mt-3 text-2xl font-bold text-foreground group-hover:text-white">
+          <p className="mt-3 text-2xl font-bold text-[#0F2423]">
             {isLoading ? <Skeleton className="h-7 w-12" /> : (kpis?.totalAutomatedActions ?? 0)}
           </p>
-          <div className="mt-1 flex items-center justify-between text-[11px] text-muted-foreground">
+          <div className="mt-1 flex items-center justify-between text-[11px] text-[#617D7B]">
             <span>Zero manual labor</span>
-            <span className="opacity-0 group-hover:opacity-100 transition-opacity text-indigo-400 font-medium">Inspect →</span>
+            <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[#008080] font-medium">Inspect →</span>
           </div>
         </button>
 
         <button
           type="button"
           onClick={() => setSelectedMetric("pending_work")}
-          className="group glass rounded-2xl p-5 border border-[#E2E8F0] text-left transition-all duration-200 hover:border-amber-500/50 hover:bg-[#F8FAFC] hover:shadow-lg hover:shadow-amber-500/10 hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
+          className="group rounded-2xl p-5 border border-[rgba(0,128,128,0.14)] bg-white shadow-card text-left transition-all duration-200 hover:border-[#008080] hover:shadow-teal-sm hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#008080]"
         >
-          <div className="flex items-center justify-between text-muted-foreground">
-            <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-amber-300 transition-colors">Pending Work</span>
-            <Clock className="h-4 w-4 text-amber-400 group-hover:scale-110 transition-transform" />
+          <div className="flex items-center justify-between text-[#617D7B]">
+            <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-amber-600 transition-colors">Pending Work</span>
+            <Clock className="h-4 w-4 text-amber-600 group-hover:scale-110 transition-transform" />
           </div>
-          <p className="mt-3 text-2xl font-bold text-foreground group-hover:text-white">
+          <p className="mt-3 text-2xl font-bold text-[#0F2423]">
             {isLoading ? <Skeleton className="h-7 w-12" /> : (kpis?.totalPendingWork ?? 0)}
           </p>
-          <div className="mt-1 flex items-center justify-between text-[11px] text-muted-foreground">
+          <div className="mt-1 flex items-center justify-between text-[11px] text-[#617D7B]">
             <span>In progress across teams</span>
-            <span className="opacity-0 group-hover:opacity-100 transition-opacity text-amber-400 font-medium">Inspect →</span>
+            <span className="opacity-0 group-hover:opacity-100 transition-opacity text-amber-600 font-medium">Inspect →</span>
           </div>
         </button>
 
         <button
           type="button"
           onClick={() => setSelectedMetric("attention_items")}
-          className="group glass rounded-2xl p-5 border border-[#E2E8F0] bg-amber-500/[0.03] text-left transition-all duration-200 hover:border-red-500/50 hover:bg-amber-500/[0.08] hover:shadow-lg hover:shadow-red-500/10 hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+          className="group rounded-2xl p-5 border border-amber-200 bg-amber-50/40 shadow-card text-left transition-all duration-200 hover:border-amber-400 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
         >
-          <div className="flex items-center justify-between text-amber-400">
-            <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-red-300 transition-colors">Attention Items</span>
-            <AlertTriangle className="h-4 w-4 group-hover:scale-110 transition-transform" />
+          <div className="flex items-center justify-between text-amber-700">
+            <span className="text-xs uppercase tracking-wider font-semibold group-hover:text-amber-800 transition-colors">Attention Items</span>
+            <AlertTriangle className="h-4 w-4 text-amber-600 group-hover:scale-110 transition-transform" />
           </div>
-          <p className="mt-3 text-2xl font-bold text-amber-400 group-hover:text-red-400">
+          <p className="mt-3 text-2xl font-bold text-amber-800">
             {isLoading ? <Skeleton className="h-7 w-12" /> : (kpis?.attentionCount ?? 0)}
           </p>
-          <div className="mt-1 flex items-center justify-between text-[11px] text-amber-500/80">
+          <div className="mt-1 flex items-center justify-between text-[11px] text-amber-700/80">
             <span>Requires escalation</span>
-            <span className="opacity-0 group-hover:opacity-100 transition-opacity text-red-400 font-medium">Inspect →</span>
+            <span className="opacity-0 group-hover:opacity-100 transition-opacity text-amber-800 font-medium">Inspect →</span>
           </div>
         </button>
       </div>
 
       {/* ── 4. Filtered Work View (When sidebar filter selected) ──────────── */}
       {activeWorkFilter !== "all_work" && (
-        <div className="rounded-2xl border border-blue-200 bg-white p-5 space-y-4 shadow-xl">
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#E2E8F0] pb-3">
+        <div className="rounded-2xl border border-[rgba(0,128,128,0.2)] bg-white p-5 space-y-4 shadow-card">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[rgba(0,128,128,0.14)] pb-3">
             <div className="flex items-center gap-2">
-              <span className="p-1.5 rounded-lg bg-indigo-500/20 text-indigo-400">
-                <Briefcase className="h-4 w-4 text-cyan-400" />
+              <span className="p-1.5 rounded-lg bg-[rgba(0,128,128,0.08)] text-[#008080]">
+                <Briefcase className="h-4 w-4 text-[#008080]" />
               </span>
               <div>
-                <h3 className="text-sm font-bold text-white capitalize">
+                <h3 className="text-sm font-bold text-[#0F2423] capitalize">
                   Filtered Work View: {activeWorkFilter.replace("_", " ")}
                 </h3>
-                <p className="text-[11px] text-[#6B7280]">
+                <p className="text-[11px] text-[#617D7B]">
                   Showing {activeWorkFilter} autopilots and unified work items.
                 </p>
               </div>
@@ -683,7 +680,7 @@ export function AutopilotCommandCenter({
                 variant="ghost"
                 size="sm"
                 onClick={() => onSelectWorkFilter("all_work")}
-                className="text-xs text-indigo-300 hover:text-white"
+                className="text-xs text-[#008080] hover:text-[#006666] font-medium"
               >
                 Back to All Work →
               </Button>
@@ -691,8 +688,8 @@ export function AutopilotCommandCenter({
           </div>
 
           {loadingFilteredWork ? (
-            <div className="py-8 text-center text-xs text-[#6B7280]">
-              <Loader2 className="h-5 w-5 animate-spin mx-auto text-indigo-400 mb-2" />
+            <div className="py-8 text-center text-xs text-[#617D7B]">
+              <Loader2 className="h-5 w-5 animate-spin mx-auto text-[#008080] mb-2" />
               Loading {activeWorkFilter} items...
             </div>
           ) : (
@@ -700,30 +697,30 @@ export function AutopilotCommandCenter({
               {/* Autopilots Matching Filter */}
               {filteredWorkData?.autopilots && filteredWorkData.autopilots.length > 0 && (
                 <div className="space-y-2">
-                  <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-[#617D7B]">
                     Autopilots ({filteredWorkData.autopilots.length})
                   </span>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {filteredWorkData.autopilots.map((ap: any) => (
                       <div
                         key={ap.id}
-                        className="rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3.5 space-y-2"
+                        className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-[#F8FAFC] p-3.5 space-y-2"
                       >
                         <div className="flex items-center justify-between">
-                          <span className="font-semibold text-xs text-white truncate max-w-[200px]">{ap.name}</span>
+                          <span className="font-semibold text-xs text-[#0F2423] truncate max-w-[200px]">{ap.name}</span>
                           <Badge
                             variant="outline"
                             className={`text-[10px] font-mono ${
                               ap.active
-                                ? "border-emerald-500/40 text-emerald-300 bg-emerald-500/10"
-                                : "border-amber-500/40 text-amber-300 bg-amber-500/10"
+                                ? "border-emerald-500/40 text-emerald-700 bg-emerald-50"
+                                : "border-amber-500/40 text-amber-700 bg-amber-50"
                             }`}
                           >
                             {ap.active ? "ACTIVE 🟢" : "PAUSED 🟡"}
                           </Badge>
                         </div>
-                        <p className="text-[11px] text-[#6B7280] line-clamp-1">{ap.description || ap.human_summary}</p>
-                        <div className="flex items-center justify-between pt-1 text-[10px] text-[#6B7280] font-mono">
+                        <p className="text-[11px] text-[#617D7B] line-clamp-1">{ap.description || ap.human_summary}</p>
+                        <div className="flex items-center justify-between pt-1 text-[10px] text-[#617D7B] font-mono">
                           <span>{ap.target_work_group_name ? `Group: ${ap.target_work_group_name}` : "Team Routing"}</span>
                           <div className="flex items-center gap-1">
                             <Button
@@ -731,7 +728,7 @@ export function AutopilotCommandCenter({
                               variant="ghost"
                               onClick={() => runApMutation.mutate(ap)}
                               disabled={!ap.active || executingApId === ap.id}
-                              className="h-6 px-2 text-[10px] text-cyan-400 hover:text-cyan-300"
+                              className="h-6 px-2 text-[10px] text-[#008080] hover:text-[#006666] font-semibold"
                             >
                               Run Now
                             </Button>
@@ -739,7 +736,7 @@ export function AutopilotCommandCenter({
                               size="sm"
                               variant="ghost"
                               onClick={() => toggleApMutation.mutate({ id: ap.id, active: !ap.active })}
-                              className="h-6 px-2 text-[10px] text-amber-400 hover:text-amber-300"
+                              className="h-6 px-2 text-[10px] text-amber-700 hover:text-amber-800 font-semibold"
                             >
                               {ap.active ? "Pause" : "Continue"}
                             </Button>
@@ -753,31 +750,31 @@ export function AutopilotCommandCenter({
 
               {/* Tasks Matching Filter */}
               {filteredWorkData?.tasks && filteredWorkData.tasks.length > 0 && (
-                <div className="space-y-2 pt-2 border-t border-[#E2E8F0]">
-                  <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">
+                <div className="space-y-2 pt-2 border-t border-[rgba(0,128,128,0.14)]">
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-[#617D7B]">
                     Work Items / Tasks ({filteredWorkData.tasks.length})
                   </span>
                   <div className="space-y-2 max-h-[360px] overflow-y-auto pr-1">
                     {filteredWorkData.tasks.map((task: any) => (
                       <div
                         key={task.id}
-                        className="flex items-center justify-between rounded-xl border border-[#E2E8F0] bg-[#F8FAFC]/50 p-3 text-xs"
+                        className="flex items-center justify-between rounded-xl border border-[rgba(0,128,128,0.14)] bg-[#F8FAFC] p-3 text-xs"
                       >
                         <div className="space-y-0.5 min-w-0 pr-2">
-                          <p className="font-medium text-[#1F2937] truncate">{task.title}</p>
-                          <p className="text-[11px] text-[#6B7280] truncate">
+                          <p className="font-semibold text-[#0F2423] truncate">{task.title}</p>
+                          <p className="text-[11px] text-[#617D7B] truncate">
                             Assignee: {task.assignee_name || "Unassigned"} · {task.work_group_name ? `Group: ${task.work_group_name}` : "General"}
                           </p>
                         </div>
                         <div className="flex items-center gap-2 shrink-0">
-                          <Badge variant="outline" className="text-[10px] border-[#E2E8F0] font-mono">
+                          <Badge variant="outline" className="text-[10px] border-[rgba(0,128,128,0.2)] text-[#3D5A58] font-mono">
                             {task.status}
                           </Badge>
                           <Badge
                             className={`text-[10px] ${
                               task.priority === "Urgent" || task.priority === "High"
-                                ? "bg-rose-500/20 text-rose-300 border-rose-500/30"
-                                : "bg-white/5 text-[#374151] border-[#E2E8F0]"
+                                ? "bg-rose-50 text-rose-700 border-rose-200"
+                                : "bg-white text-[#3D5A58] border-[rgba(0,128,128,0.2)]"
                             }`}
                           >
                             {task.priority}
@@ -791,7 +788,7 @@ export function AutopilotCommandCenter({
 
               {(!filteredWorkData?.autopilots || filteredWorkData.autopilots.length === 0) &&
                 (!filteredWorkData?.tasks || filteredWorkData.tasks.length === 0) && (
-                  <div className="py-6 text-center text-xs text-[#6B7280] border border-dashed border-[#E2E8F0] rounded-xl">
+                  <div className="py-6 text-center text-xs text-[#617D7B] border border-dashed border-[rgba(0,128,128,0.25)] rounded-xl">
                     No {activeWorkFilter} items currently found in workspace.
                   </div>
                 )}
@@ -801,33 +798,33 @@ export function AutopilotCommandCenter({
       )}
 
       {/* ── 5. Active Autopilots Management Table ───────────────────────── */}
-      <div className="rounded-2xl border border-[#E2E8F0] bg-card p-6 shadow-sm space-y-4">
+      <div className="rounded-2xl border border-[rgba(0,128,128,0.14)] bg-white p-6 shadow-card space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <div className="flex items-center gap-2">
-              <Zap className="h-4 w-4 text-cyan-400" />
-              <h3 className="font-semibold text-foreground text-sm">Active Autopilots Operational Registry</h3>
+              <Zap className="h-4 w-4 text-[#008080]" />
+              <h3 className="font-bold text-[#0F2423] text-sm">Active Autopilots Operational Registry</h3>
             </div>
-            <p className="text-xs text-muted-foreground mt-0.5">
+            <p className="text-xs text-[#617D7B] mt-0.5">
               Autonomous business processes running for your organization with persistent lifecycle controls.
             </p>
           </div>
 
-          <Badge variant="outline" className="text-[11px] font-mono border-cyan-500/30 text-cyan-300">
+          <Badge variant="outline" className="text-[11px] font-mono border-[rgba(0,128,128,0.25)] text-[#008080] bg-[rgba(0,128,128,0.06)] font-semibold">
             {autopilotsList.filter((a) => a.active).length} Active / {autopilotsList.length} Total
           </Badge>
         </div>
 
         {autopilotsList.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-border p-8 text-center text-xs text-muted-foreground space-y-2">
-            <p>No active Autopilots configured yet.</p>
-            <p className="text-[11px] text-muted-foreground/80">Use the natural language command bar above or choose a capability from the left sidebar to activate one.</p>
+          <div className="rounded-xl border border-dashed border-[rgba(0,128,128,0.25)] p-8 text-center text-xs text-[#617D7B] space-y-2">
+            <p className="font-semibold text-[#0F2423]">No active Autopilots configured yet.</p>
+            <p className="text-[11px] text-[#617D7B]">Use the natural language command bar above or choose a capability from the left sidebar to activate one.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-xs text-left">
               <thead>
-                <tr className="border-b border-[#E2E8F0] text-[#6B7280] uppercase text-[10px] tracking-wider">
+                <tr className="border-b border-[rgba(0,128,128,0.14)] text-[#617D7B] uppercase text-[10px] tracking-wider">
                   <th className="pb-3 font-semibold">Autopilot Name</th>
                   <th className="pb-3 font-semibold">Category</th>
                   <th className="pb-3 font-semibold">Schedule / Trigger</th>
@@ -837,38 +834,38 @@ export function AutopilotCommandCenter({
                   <th className="pb-3 font-semibold text-right">Lifecycle Controls</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5">
+              <tbody className="divide-y divide-[rgba(0,128,128,0.08)]">
                 {autopilotsList.map((ap) => {
                   const isRunningThis = executingApId === ap.id;
                   return (
-                    <tr key={ap.id} className="hover:bg-[#F8FAFC] transition-colors">
-                      <td className="py-3 font-medium text-[#1F2937]">
+                    <tr key={ap.id} className="hover:bg-[#F4F9F8] transition-colors">
+                      <td className="py-3 font-medium text-[#0F2423]">
                         <div className="flex flex-col">
-                          <span className="text-white font-semibold">{ap.name}</span>
+                          <span className="text-[#0F2423] font-bold text-xs">{ap.name}</span>
                           {ap.human_summary && (
-                            <span className="text-[11px] text-[#6B7280] line-clamp-1">{ap.human_summary}</span>
+                            <span className="text-[11px] text-[#617D7B] line-clamp-1">{ap.human_summary}</span>
                           )}
                         </div>
                       </td>
                       <td className="py-3">
-                        <Badge variant="outline" className="text-[10px] uppercase font-mono border-[#E2E8F0] text-[#374151]">
+                        <Badge variant="outline" className="text-[10px] uppercase font-mono border-[rgba(0,128,128,0.2)] text-[#3D5A58] bg-[#F4F9F8]">
                           {ap.category}
                         </Badge>
                       </td>
-                      <td className="py-3 text-[#6B7280] font-mono text-[11px]">
+                      <td className="py-3 text-[#617D7B] font-mono text-[11px]">
                         {ap.schedule || ap.trigger_type || "Event Trigger"}
                       </td>
-                      <td className="py-3 text-[#374151]">
+                      <td className="py-3 text-[#3D5A58]">
                         {ap.target_work_group?.name ? (
                           <span className="inline-flex items-center gap-1.5">
-                            <span className="h-2 w-2 rounded-full" style={{ backgroundColor: ap.target_work_group.color || "#8B5CF6" }} />
+                            <span className="h-2 w-2 rounded-full" style={{ backgroundColor: ap.target_work_group.color || "#008080" }} />
                             <span>{ap.target_work_group.name}</span>
                           </span>
                         ) : (
-                          <span className="text-[#6B7280]">Team Routing</span>
+                          <span className="text-[#617D7B]">Team Routing</span>
                         )}
                       </td>
-                      <td className="py-3 font-mono text-[#374151]">
+                      <td className="py-3 font-mono text-[#0F2423] font-semibold">
                         {ap.execution_stats?.total ?? 0} runs
                       </td>
                       <td className="py-3">
@@ -876,8 +873,8 @@ export function AutopilotCommandCenter({
                           variant="outline"
                           className={`text-[10px] font-mono ${
                             ap.active
-                              ? "border-emerald-500/40 text-emerald-300 bg-emerald-500/10"
-                              : "border-amber-500/40 text-amber-300 bg-amber-500/10"
+                              ? "border-emerald-500/40 text-emerald-700 bg-emerald-50"
+                              : "border-amber-500/40 text-amber-700 bg-amber-50"
                           }`}
                         >
                           {ap.active ? "ACTIVE 🟢" : "PAUSED 🟡"}
@@ -890,9 +887,9 @@ export function AutopilotCommandCenter({
                             variant="outline"
                             onClick={() => runApMutation.mutate(ap)}
                             disabled={!ap.active || isRunningThis || runApMutation.isPending}
-                            className="h-7 text-[11px] border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/10 gap-1 px-2.5 font-medium"
+                            className="h-7 text-[11px] border-[rgba(0,128,128,0.25)] text-[#008080] hover:bg-[rgba(0,128,128,0.08)] gap-1 px-2.5 font-semibold"
                           >
-                            {isRunningThis ? <Loader2 className="h-3 w-3 animate-spin" /> : <Play className="h-3 w-3 fill-cyan-400 text-cyan-400" />}
+                            {isRunningThis ? <Loader2 className="h-3 w-3 animate-spin" /> : <Play className="h-3 w-3 fill-[#008080] text-[#008080]" />}
                             <span>Run Now</span>
                           </Button>
 
@@ -901,10 +898,10 @@ export function AutopilotCommandCenter({
                             variant="outline"
                             onClick={() => toggleApMutation.mutate({ id: ap.id, active: !ap.active })}
                             disabled={toggleApMutation.isPending}
-                            className={`h-7 text-[11px] px-2.5 font-medium ${
+                            className={`h-7 text-[11px] px-2.5 font-semibold ${
                               ap.active
-                                ? "border-amber-500/30 text-amber-300 hover:bg-amber-500/10"
-                                : "border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/10"
+                                ? "border-amber-500/30 text-amber-700 hover:bg-amber-50"
+                                : "border-emerald-500/30 text-emerald-700 hover:bg-emerald-50"
                             }`}
                           >
                             {ap.active ? "Pause" : "Continue"}
@@ -917,7 +914,7 @@ export function AutopilotCommandCenter({
                               setAutopilotToDelete(ap);
                               setDeleteConfirmModalOpen(true);
                             }}
-                            className="h-7 w-7 p-0 text-[#6B7280] hover:text-rose-400 hover:bg-rose-500/10"
+                            className="h-7 w-7 p-0 text-[#617D7B] hover:text-rose-600 hover:bg-rose-50"
                           >
                             <Trash2 className="h-3.5 w-3.5" />
                           </Button>
@@ -936,49 +933,49 @@ export function AutopilotCommandCenter({
       <div className="grid gap-6 lg:grid-cols-5">
         <div className="space-y-6 lg:col-span-3">
           {attention && ((attention.urgentTasks?.length ?? 0) > 0 || (attention.overdueInvoices?.length ?? 0) > 0 || (attention.unassignedLeads?.length ?? 0) > 0) && (
-            <div className="rounded-2xl border border-amber-500/30 bg-amber-500/[0.05] p-5">
+            <div className="rounded-2xl border border-amber-300 bg-amber-50/60 p-5 shadow-card">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <ShieldAlert className="h-4 w-4 text-amber-400" />
-                  <h3 className="text-sm font-semibold text-white">Items Requiring Attention</h3>
+                  <ShieldAlert className="h-4 w-4 text-amber-600" />
+                  <h3 className="text-sm font-bold text-[#991B1B]">Items Requiring Attention</h3>
                 </div>
-                <span className="text-[11px] text-amber-400 font-mono">Live Escalations</span>
+                <span className="text-[11px] text-amber-700 font-mono font-semibold">Live Escalations</span>
               </div>
 
               <div className="mt-3 space-y-2">
                 {attention.overdueInvoices?.map((inv: any) => (
-                  <div key={inv.id} className="flex items-center justify-between rounded-xl bg-black/40 px-3 py-2 text-xs border border-[#E2E8F0]">
-                    <span className="text-[#374151] font-medium">Overdue Invoice {inv.number}</span>
-                    <span className="font-mono text-amber-400">{currency} {Number(inv.amount).toLocaleString()}</span>
+                  <div key={inv.id} className="flex items-center justify-between rounded-xl bg-white px-3 py-2 text-xs border border-amber-200/80 shadow-xs">
+                    <span className="text-[#0F2423] font-semibold">Overdue Invoice {inv.number}</span>
+                    <span className="font-mono text-amber-700 font-bold">{currency} {Number(inv.amount).toLocaleString()}</span>
                   </div>
                 ))}
                 {attention.unassignedLeads?.map((lead: any) => (
-                  <div key={lead.id} className="flex items-center justify-between rounded-xl bg-black/40 px-3 py-2 text-xs border border-[#E2E8F0]">
-                    <span className="text-[#374151] font-medium">Unassigned Lead: {lead.name} {lead.company ? `(${lead.company})` : ""}</span>
-                    <span className="text-[10px] text-indigo-400 font-mono">Score: {lead.score ?? 0}</span>
+                  <div key={lead.id} className="flex items-center justify-between rounded-xl bg-white px-3 py-2 text-xs border border-amber-200/80 shadow-xs">
+                    <span className="text-[#0F2423] font-semibold">Unassigned Lead: {lead.name} {lead.company ? `(${lead.company})` : ""}</span>
+                    <span className="text-[10px] text-[#008080] font-mono font-semibold">Score: {lead.score ?? 0}</span>
                   </div>
                 ))}
                 {attention.urgentTasks?.map((task: any) => (
-                  <div key={task.id} className="flex items-center justify-between rounded-xl bg-black/40 px-3 py-2 text-xs border border-[#E2E8F0]">
-                    <span className="text-[#374151] font-medium truncate max-w-[240px]">{task.title}</span>
-                    <Badge variant="destructive" className="text-[10px] py-0">{task.priority}</Badge>
+                  <div key={task.id} className="flex items-center justify-between rounded-xl bg-white px-3 py-2 text-xs border border-amber-200/80 shadow-xs">
+                    <span className="text-[#0F2423] font-semibold truncate max-w-[240px]">{task.title}</span>
+                    <Badge variant="destructive" className="text-[10px] py-0 font-bold">{task.priority}</Badge>
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          <div className="rounded-2xl border border-[#E2E8F0] bg-card p-6 shadow-sm">
+          <div className="rounded-2xl border border-[rgba(0,128,128,0.14)] bg-white p-6 shadow-card">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-indigo-400" />
-                <h3 className="font-semibold text-foreground">Recommended for Your Business</h3>
+                <Sparkles className="h-4 w-4 text-[#008080]" />
+                <h3 className="font-bold text-[#0F2423] text-sm">Recommended for Your Business</h3>
               </div>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => onNavigateTab("discovery")}
-                className="text-xs text-indigo-400 hover:text-indigo-300"
+                className="text-xs text-[#008080] hover:text-[#006666] font-semibold"
               >
                 Browse all capabilities →
               </Button>
@@ -988,18 +985,18 @@ export function AutopilotCommandCenter({
               {recommendations.map((rec) => (
                 <div
                   key={rec.id}
-                  className="group rounded-xl border border-[#E2E8F0] bg-secondary/30 p-4 transition-all hover:border-indigo-500/40 hover:bg-secondary/60"
+                  className="group rounded-xl border border-[rgba(0,128,128,0.14)] bg-[#F8FAFC] p-4 transition-all hover:border-[#008080] hover:shadow-teal-sm"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-semibold text-foreground">{rec.title}</span>
-                        <Badge variant="outline" className="text-[10px] uppercase font-mono border-indigo-500/30 text-indigo-300">
+                        <span className="text-xs font-bold text-[#0F2423]">{rec.title}</span>
+                        <Badge variant="outline" className="text-[10px] uppercase font-mono border-[rgba(0,128,128,0.25)] text-[#008080] bg-[rgba(0,128,128,0.06)] font-semibold">
                           {rec.category}
                         </Badge>
                       </div>
-                      <p className="mt-1 text-xs text-muted-foreground">{rec.description}</p>
-                      <span className="mt-2 inline-flex items-center gap-1 text-[11px] font-medium text-emerald-400">
+                      <p className="mt-1 text-xs text-[#617D7B]">{rec.description}</p>
+                      <span className="mt-2 inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700">
                         ⚡ {rec.impact}
                       </span>
                     </div>
@@ -1010,7 +1007,7 @@ export function AutopilotCommandCenter({
                         setPromptText(rec.prompt);
                         planMutation.mutate(rec.prompt);
                       }}
-                      className="shrink-0 text-xs bg-indigo-600 hover:bg-indigo-500 text-white shadow-sm"
+                      className="shrink-0 text-xs bg-[#008080] hover:bg-[#006666] text-white font-semibold shadow-teal-sm"
                     >
                       {rec.action}
                     </Button>
@@ -1022,41 +1019,41 @@ export function AutopilotCommandCenter({
         </div>
 
         <div className="space-y-6 lg:col-span-2">
-          <div className="rounded-2xl border border-[#E2E8F0] bg-card p-6 shadow-sm">
+          <div className="rounded-2xl border border-[rgba(0,128,128,0.14)] bg-white p-6 shadow-card">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Activity className="h-4 w-4 text-emerald-400" />
-                <h3 className="font-semibold text-foreground">Live Activity Stream</h3>
+                <Activity className="h-4 w-4 text-emerald-600" />
+                <h3 className="font-bold text-[#0F2423] text-sm">Live Activity Stream</h3>
               </div>
-              <button onClick={() => refetch()} title="Refresh stream" className="text-muted-foreground hover:text-foreground">
+              <button onClick={() => refetch()} title="Refresh stream" className="text-[#617D7B] hover:text-[#0F2423]">
                 <RotateCcw className="h-3.5 w-3.5" />
               </button>
             </div>
 
             <div className="mt-4 space-y-3 max-h-[480px] overflow-y-auto pr-1">
               {liveActivity.length === 0 ? (
-                <div className="rounded-xl border border-dashed border-border p-6 text-center text-xs text-muted-foreground">
+                <div className="rounded-xl border border-dashed border-[rgba(0,128,128,0.25)] p-6 text-center text-xs text-[#617D7B]">
                   No automated activity recorded yet. Activate an Autopilot above to begin autonomous execution.
                 </div>
               ) : (
                 liveActivity.map((act) => (
                   <div
                     key={act.id}
-                    className="flex items-start gap-3 rounded-xl border border-[#E2E8F0] bg-secondary/20 p-3 text-xs"
+                    className="flex items-start gap-3 rounded-xl border border-[rgba(0,128,128,0.12)] bg-[#F8FAFC] p-3 text-xs"
                   >
                     <div className="mt-0.5">
                       {act.status === "success" ? (
-                        <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                        <CheckCircle2 className="h-4 w-4 text-emerald-600" />
                       ) : act.status === "error" ? (
-                        <AlertTriangle className="h-4 w-4 text-destructive" />
+                        <AlertTriangle className="h-4 w-4 text-rose-600" />
                       ) : (
-                        <Loader2 className="h-4 w-4 animate-spin text-indigo-400" />
+                        <Loader2 className="h-4 w-4 animate-spin text-[#008080]" />
                       )}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="font-medium text-foreground truncate">{act.title}</p>
-                      <p className="text-[11px] text-muted-foreground mt-0.5">{act.description}</p>
-                      <span className="text-[10px] text-muted-foreground/60 block mt-1">
+                      <p className="font-semibold text-[#0F2423] truncate">{act.title}</p>
+                      <p className="text-[11px] text-[#617D7B] mt-0.5">{act.description}</p>
+                      <span className="text-[10px] text-[#617D7B]/80 block mt-1">
                         {formatDistanceToNow(new Date(act.timestamp), { addSuffix: true })}
                       </span>
                     </div>
@@ -1070,32 +1067,32 @@ export function AutopilotCommandCenter({
 
       {/* ── Centered Delete Autopilot Modal ─────────────────────────────── */}
       <Dialog open={deleteConfirmModalOpen} onOpenChange={setDeleteConfirmModalOpen}>
-        <DialogContent className="max-w-md border-rose-300 bg-white text-[#111827] shadow-2xl">
+        <DialogContent className="max-w-md border-rose-300 bg-white text-[#0F2423] shadow-2xl">
           <DialogHeader>
-            <div className="flex items-center gap-2 text-rose-400">
-              <AlertTriangle className="h-5 w-5 text-rose-400" />
-              <DialogTitle className="text-base font-bold text-white">Delete Autopilot System</DialogTitle>
+            <div className="flex items-center gap-2 text-rose-600">
+              <AlertTriangle className="h-5 w-5 text-rose-600" />
+              <DialogTitle className="text-base font-bold text-[#0F2423]">Delete Autopilot System</DialogTitle>
             </div>
-            <DialogDescription className="text-xs text-[#6B7280]">
-              Are you sure you want to delete <strong className="text-white font-semibold">{autopilotToDelete?.name}</strong>?
+            <DialogDescription className="text-xs text-[#617D7B]">
+              Are you sure you want to delete <strong className="text-[#0F2423] font-bold">{autopilotToDelete?.name}</strong>?
             </DialogDescription>
           </DialogHeader>
 
-          <div className="rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3 text-xs text-[#374151] space-y-2">
+          <div className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-[#F8FAFC] p-3 text-xs text-[#3D5A58] space-y-2">
             <p>
               • <strong>Safe Deletion:</strong> Future automated runs will be stopped immediately.
             </p>
             <p>
-              • <strong>Data Protected:</strong> Completed work items, customer records, invoices, tasks, and audit logs will <strong className="text-emerald-400">NOT</strong> be deleted.
+              • <strong>Data Protected:</strong> Completed work items, customer records, invoices, tasks, and audit logs will <strong className="text-emerald-700">NOT</strong> be deleted.
             </p>
           </div>
 
-          <DialogFooter className="gap-2 sm:gap-0 border-t border-[#E2E8F0] pt-3">
+          <DialogFooter className="gap-2 sm:gap-0 border-t border-[rgba(0,128,128,0.14)] pt-3">
             <Button
               variant="outline"
               size="sm"
               onClick={() => setDeleteConfirmModalOpen(false)}
-              className="text-xs border-white/20 bg-[#F8FAFC] text-[#1F2937] hover:bg-white/[0.1]"
+              className="text-xs border-[rgba(0,128,128,0.2)] bg-white text-[#3D5A58] hover:bg-[#F4F9F8] font-medium"
             >
               Cancel
             </Button>
@@ -1104,7 +1101,7 @@ export function AutopilotCommandCenter({
               variant="destructive"
               disabled={deleteApMutation.isPending}
               onClick={() => autopilotToDelete && deleteApMutation.mutate(autopilotToDelete.id)}
-              className="text-xs bg-rose-600 hover:bg-rose-500 text-white font-semibold gap-1.5"
+              className="text-xs bg-rose-600 hover:bg-rose-700 text-white font-semibold gap-1.5"
             >
               {deleteApMutation.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Trash2 className="h-3.5 w-3.5" />}
               <span>Delete Autopilot</span>
@@ -1115,12 +1112,12 @@ export function AutopilotCommandCenter({
 
       {/* ── 5. Master Autopilot Blueprint & Assignment Dialog ─────────────── */}
       <Dialog open={planModalOpen} onOpenChange={setPlanModalOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto border-[#E2E8F0] bg-[#0b0f19] text-white shadow-2xl backdrop-blur-2xl">
-          <DialogHeader className="border-b border-[#E2E8F0] pb-3">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto border-[rgba(0,128,128,0.2)] bg-white text-[#0F2423] shadow-2xl">
+          <DialogHeader className="border-b border-[rgba(0,128,128,0.14)] pb-3">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-indigo-400">
-                <Sparkles className="h-5 w-5 text-cyan-400" />
-                <DialogTitle className="text-base font-bold text-white">
+              <div className="flex items-center gap-2 text-[#008080]">
+                <Sparkles className="h-5 w-5 text-[#008080]" />
+                <DialogTitle className="text-base font-bold text-[#0F2423]">
                   {modalStep === "blueprint"
                     ? "Autopilot Blueprint Generated"
                     : modalStep === "assignment"
@@ -1131,20 +1128,20 @@ export function AutopilotCommandCenter({
 
               {/* Progress Steps Header */}
               <div className="flex items-center gap-1.5 text-[11px] font-mono">
-                <span className={`px-2 py-0.5 rounded-full ${modalStep === "blueprint" ? "bg-indigo-600 text-white font-bold" : "bg-white/10 text-[#6B7280]"}`}>
+                <span className={`px-2.5 py-0.5 rounded-full ${modalStep === "blueprint" ? "bg-[#008080] text-white font-bold" : "bg-[rgba(0,128,128,0.08)] text-[#617D7B]"}`}>
                   1. Blueprint
                 </span>
-                <span className="text-slate-600">→</span>
-                <span className={`px-2 py-0.5 rounded-full ${modalStep === "assignment" ? "bg-indigo-600 text-white font-bold" : "bg-white/10 text-[#6B7280]"}`}>
+                <span className="text-[#617D7B]">→</span>
+                <span className={`px-2.5 py-0.5 rounded-full ${modalStep === "assignment" ? "bg-[#008080] text-white font-bold" : "bg-[rgba(0,128,128,0.08)] text-[#617D7B]"}`}>
                   2. Assignment
                 </span>
-                <span className="text-slate-600">→</span>
-                <span className={`px-2 py-0.5 rounded-full ${modalStep === "review" ? "bg-indigo-600 text-white font-bold" : "bg-white/10 text-[#6B7280]"}`}>
+                <span className="text-[#617D7B]">→</span>
+                <span className={`px-2.5 py-0.5 rounded-full ${modalStep === "review" ? "bg-[#008080] text-white font-bold" : "bg-[rgba(0,128,128,0.08)] text-[#617D7B]"}`}>
                   3. Review
                 </span>
               </div>
             </div>
-            <DialogDescription className="text-xs text-[#6B7280] pt-1">
+            <DialogDescription className="text-xs text-[#617D7B] pt-1">
               {modalStep === "blueprint"
                 ? "Review the autonomous actions opteraOS discovered for your business goal."
                 : modalStep === "assignment"
@@ -1160,38 +1157,38 @@ export function AutopilotCommandCenter({
               ───────────────────────────────────────────────────────────── */}
               {modalStep === "blueprint" && (
                 <div className="space-y-4">
-                  <div className="rounded-xl border border-indigo-500/30 bg-indigo-950/40 p-4">
+                  <div className="rounded-xl border border-[rgba(0,128,128,0.2)] bg-[rgba(0,128,128,0.04)] p-4">
                     <div className="flex items-center justify-between">
-                      <h4 className="text-sm font-bold text-white">{activePlan.title}</h4>
-                      <Badge variant="outline" className="border-indigo-400 text-indigo-300 uppercase text-[10px]">
+                      <h4 className="text-sm font-bold text-[#0F2423]">{activePlan.title}</h4>
+                      <Badge variant="outline" className="border-[rgba(0,128,128,0.25)] text-[#008080] bg-white uppercase text-[10px] font-bold">
                         {activePlan.category}
                       </Badge>
                     </div>
-                    <p className="mt-1.5 text-[#374151] leading-relaxed">{activePlan.description}</p>
-                    <div className="mt-3 flex flex-wrap gap-2 text-[11px] font-mono text-[#6B7280] border-t border-[#E2E8F0] pt-2.5">
-                      <span className="rounded bg-white/5 px-2 py-0.5">⏱ Schedule: {activePlan.schedule}</span>
-                      <span className="rounded bg-white/5 px-2 py-0.5">⚡ Trigger: {activePlan.triggerType}</span>
+                    <p className="mt-1.5 text-[#3D5A58] leading-relaxed">{activePlan.description}</p>
+                    <div className="mt-3 flex flex-wrap gap-2 text-[11px] font-mono text-[#617D7B] border-t border-[rgba(0,128,128,0.12)] pt-2.5">
+                      <span className="rounded bg-white border border-[rgba(0,128,128,0.15)] text-[#0F2423] font-medium px-2 py-0.5">⏱ Schedule: {activePlan.schedule}</span>
+                      <span className="rounded bg-white border border-[rgba(0,128,128,0.15)] text-[#0F2423] font-medium px-2 py-0.5">⚡ Trigger: {activePlan.triggerType}</span>
                     </div>
                   </div>
 
                   <div>
-                    <h5 className="text-[11px] font-semibold uppercase tracking-wider text-[#6B7280] mb-2">
+                    <h5 className="text-[11px] font-semibold uppercase tracking-wider text-[#617D7B] mb-2">
                       Autonomous Actions Pipeline ({activePlan.actions.length} Steps):
                     </h5>
                     <ol className="space-y-2">
                       {activePlan.actions.map((act) => (
                         <li
                           key={act.step}
-                          className="flex items-start gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3 text-xs transition-all hover:bg-[#F8FAFC]"
+                          className="flex items-start gap-3 rounded-xl border border-[rgba(0,128,128,0.14)] bg-[#F8FAFC] p-3 text-xs transition-all hover:bg-white"
                         >
-                          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-indigo-500/20 text-xs font-bold text-indigo-300 border border-indigo-500/30">
+                          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[rgba(0,128,128,0.1)] text-xs font-bold text-[#008080] border border-[rgba(0,128,128,0.25)]">
                             {act.step}
                           </span>
                           <div className="min-w-0 flex-1">
-                            <p className="font-semibold text-slate-100">{act.title}</p>
-                            <p className="text-[11px] text-[#6B7280] mt-0.5 leading-relaxed">{act.description}</p>
+                            <p className="font-bold text-[#0F2423]">{act.title}</p>
+                            <p className="text-[11px] text-[#617D7B] mt-0.5 leading-relaxed">{act.description}</p>
                           </div>
-                          <Badge variant="secondary" className="text-[10px] font-mono uppercase shrink-0 py-0">
+                          <Badge variant="outline" className="text-[10px] font-mono uppercase shrink-0 py-0 border-[rgba(0,128,128,0.25)] text-[#008080] bg-white font-semibold">
                             Automated
                           </Badge>
                         </li>
@@ -1207,7 +1204,7 @@ export function AutopilotCommandCenter({
               {modalStep === "assignment" && (
                 <div className="space-y-5">
                   <div>
-                    <label className="text-xs font-bold uppercase tracking-wider text-[#1F2937] block mb-2">
+                    <label className="text-xs font-bold uppercase tracking-wider text-[#0F2423] block mb-2">
                       Who should handle the resulting work?
                     </label>
 
@@ -1224,13 +1221,13 @@ export function AutopilotCommandCenter({
                         }}
                         className={`flex flex-col items-start rounded-xl border p-3 text-left transition-all ${
                           assignmentType === "individual"
-                            ? "border-indigo-500 bg-indigo-950/50 shadow-md shadow-indigo-500/10 text-white"
-                            : "border-[#E2E8F0] bg-[#F8FAFC] text-[#6B7280] hover:bg-[#F8FAFC] hover:text-[#1F2937]"
+                            ? "border-[#008080] bg-[rgba(0,128,128,0.08)] shadow-teal-sm text-[#008080] ring-1 ring-[#008080]"
+                            : "border-[rgba(0,128,128,0.14)] bg-[#F8FAFC] text-[#617D7B] hover:bg-white hover:text-[#0F2423]"
                         }`}
                       >
-                        <User className="h-4 w-4 mb-2 text-indigo-400" />
-                        <span className="font-semibold text-xs text-white">Individual</span>
-                        <span className="text-[10px] text-[#6B7280] mt-0.5">One team member</span>
+                        <User className="h-4 w-4 mb-2 text-[#008080]" />
+                        <span className="font-bold text-xs text-[#0F2423]">Individual</span>
+                        <span className="text-[10px] text-[#617D7B] mt-0.5">One team member</span>
                       </button>
 
                       {/* Option B: Work Group */}
@@ -1244,13 +1241,13 @@ export function AutopilotCommandCenter({
                         }}
                         className={`flex flex-col items-start rounded-xl border p-3 text-left transition-all ${
                           assignmentType === "work_group"
-                            ? "border-indigo-500 bg-indigo-950/50 shadow-md shadow-indigo-500/10 text-white"
-                            : "border-[#E2E8F0] bg-[#F8FAFC] text-[#6B7280] hover:bg-[#F8FAFC] hover:text-[#1F2937]"
+                            ? "border-[#008080] bg-[rgba(0,128,128,0.08)] shadow-teal-sm text-[#008080] ring-1 ring-[#008080]"
+                            : "border-[rgba(0,128,128,0.14)] bg-[#F8FAFC] text-[#617D7B] hover:bg-white hover:text-[#0F2423]"
                         }`}
                       >
-                        <Briefcase className="h-4 w-4 mb-2 text-purple-400" />
-                        <span className="font-semibold text-xs text-white">Work Group</span>
-                        <span className="text-[10px] text-[#6B7280] mt-0.5">Team department</span>
+                        <Briefcase className="h-4 w-4 mb-2 text-purple-600" />
+                        <span className="font-bold text-xs text-[#0F2423]">Work Group</span>
+                        <span className="text-[10px] text-[#617D7B] mt-0.5">Team department</span>
                       </button>
 
                       {/* Option C: Multiple Members */}
@@ -1264,13 +1261,13 @@ export function AutopilotCommandCenter({
                         }}
                         className={`flex flex-col items-start rounded-xl border p-3 text-left transition-all ${
                           assignmentType === "multiple_members"
-                            ? "border-indigo-500 bg-indigo-950/50 shadow-md shadow-indigo-500/10 text-white"
-                            : "border-[#E2E8F0] bg-[#F8FAFC] text-[#6B7280] hover:bg-[#F8FAFC] hover:text-[#1F2937]"
+                            ? "border-[#008080] bg-[rgba(0,128,128,0.08)] shadow-teal-sm text-[#008080] ring-1 ring-[#008080]"
+                            : "border-[rgba(0,128,128,0.14)] bg-[#F8FAFC] text-[#617D7B] hover:bg-white hover:text-[#0F2423]"
                         }`}
                       >
-                        <Users className="h-4 w-4 mb-2 text-cyan-400" />
-                        <span className="font-semibold text-xs text-white">Multiple Members</span>
-                        <span className="text-[10px] text-[#6B7280] mt-0.5">Select specific people</span>
+                        <Users className="h-4 w-4 mb-2 text-[#008080]" />
+                        <span className="font-bold text-xs text-[#0F2423]">Multiple Members</span>
+                        <span className="text-[10px] text-[#617D7B] mt-0.5">Select specific people</span>
                       </button>
 
                       {/* Option D: AI Assignment */}
@@ -1279,30 +1276,30 @@ export function AutopilotCommandCenter({
                         onClick={() => setAssignmentType("ai_assignment")}
                         className={`flex flex-col items-start rounded-xl border p-3 text-left transition-all ${
                           assignmentType === "ai_assignment"
-                            ? "border-indigo-500 bg-indigo-950/50 shadow-md shadow-indigo-500/10 text-white"
-                            : "border-[#E2E8F0] bg-[#F8FAFC] text-[#6B7280] hover:bg-[#F8FAFC] hover:text-[#1F2937]"
+                            ? "border-[#008080] bg-[rgba(0,128,128,0.08)] shadow-teal-sm text-[#008080] ring-1 ring-[#008080]"
+                            : "border-[rgba(0,128,128,0.14)] bg-[#F8FAFC] text-[#617D7B] hover:bg-white hover:text-[#0F2423]"
                         }`}
                       >
-                        <Sparkles className="h-4 w-4 mb-2 text-amber-400" />
-                        <span className="font-semibold text-xs text-white">AI Assignment</span>
-                        <span className="text-[10px] text-[#6B7280] mt-0.5">Dynamic load match</span>
+                        <Sparkles className="h-4 w-4 mb-2 text-amber-600" />
+                        <span className="font-bold text-xs text-[#0F2423]">AI Assignment</span>
+                        <span className="text-[10px] text-[#617D7B] mt-0.5">Dynamic load match</span>
                       </button>
                     </div>
                   </div>
 
                   {/* Dynamic Target Selection UI based on Assignment Type */}
-                  <div className="rounded-xl border border-[#E2E8F0] bg-black/40 p-4 space-y-3">
+                  <div className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-[#F8FAFC] p-4 space-y-3">
                     {/* CASE A: Individual Member Dropdown */}
                     {assignmentType === "individual" && (
                       <div>
                         <div className="flex items-center justify-between mb-1.5">
-                          <label className="text-[11px] font-semibold text-[#374151]">
+                          <label className="text-[11px] font-semibold text-[#0F2423]">
                             Select Responsible Organization Member:
                           </label>
                           <button
                             type="button"
                             onClick={() => setInviteModalOpen(true)}
-                            className="text-[11px] text-indigo-400 hover:text-indigo-300 flex items-center gap-1 font-medium"
+                            className="text-[11px] text-[#008080] hover:text-[#006666] flex items-center gap-1 font-semibold"
                           >
                             <Link2 className="h-3 w-3" />
                             <span>+ Invite Member</span>
@@ -1310,12 +1307,12 @@ export function AutopilotCommandCenter({
                         </div>
 
                         {allMembers.length === 0 ? (
-                          <div className="rounded-lg border border-dashed border-[#E2E8F0] p-4 text-center space-y-2">
-                            <p className="text-[#6B7280] text-xs">No eligible team members found in workspace.</p>
+                          <div className="rounded-lg border border-dashed border-[rgba(0,128,128,0.25)] p-4 text-center space-y-2">
+                            <p className="text-[#617D7B] text-xs">No eligible team members found in workspace.</p>
                             <Button
                               size="sm"
                               onClick={() => setInviteModalOpen(true)}
-                              className="text-xs bg-indigo-600 hover:bg-indigo-500 text-white gap-1.5"
+                              className="text-xs bg-[#008080] hover:bg-[#006666] text-white gap-1.5 font-semibold"
                             >
                               <Link2 className="h-3.5 w-3.5" />
                               <span>Invite Team Members</span>
@@ -1323,10 +1320,10 @@ export function AutopilotCommandCenter({
                           </div>
                         ) : (
                           <Select value={selectedIndividualId} onValueChange={setSelectedIndividualId}>
-                            <SelectTrigger className="h-10 text-xs bg-white border-[#CBD5E1] text-[#111827]">
+                            <SelectTrigger className="h-10 text-xs bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                               <SelectValue placeholder="Choose a team member..." />
                             </SelectTrigger>
-                            <SelectContent className="bg-white border-[#CBD5E1] text-[#111827]">
+                            <SelectContent className="bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                               {allMembers.map((m) => (
                                 <SelectItem key={m.user_id} value={m.user_id}>
                                   {m.full_name || m.email} ({m.role})
@@ -1342,23 +1339,23 @@ export function AutopilotCommandCenter({
                     {assignmentType === "work_group" && (
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
-                          <label className="text-[11px] font-semibold text-[#374151]">
+                          <label className="text-[11px] font-semibold text-[#0F2423]">
                             Select Employee Work Group:
                           </label>
                           <div className="flex items-center gap-2">
                             <button
                               type="button"
                               onClick={() => setCreateWorkGroupModalOpen(true)}
-                              className="text-[11px] text-indigo-400 hover:text-indigo-300 flex items-center gap-1 font-semibold"
+                              className="text-[11px] text-[#008080] hover:text-[#006666] flex items-center gap-1 font-semibold"
                             >
                               <Plus className="h-3 w-3" />
                               <span>Create Group</span>
                             </button>
-                            <span className="text-slate-600">·</span>
+                            <span className="text-slate-400">·</span>
                             <button
                               type="button"
                               onClick={() => setInviteModalOpen(true)}
-                              className="text-[11px] text-indigo-400 hover:text-indigo-300 flex items-center gap-1 font-medium"
+                              className="text-[11px] text-[#008080] hover:text-[#006666] flex items-center gap-1 font-semibold"
                             >
                               <Link2 className="h-3 w-3" />
                               <span>Invite</span>
@@ -1368,18 +1365,18 @@ export function AutopilotCommandCenter({
 
                         {/* EMPTY WORK GROUP STATE */}
                         {workGroups.length === 0 ? (
-                          <div className="rounded-xl border border-dashed border-indigo-500/30 bg-indigo-950/20 p-4 text-center space-y-3">
-                            <Users className="h-6 w-6 text-indigo-400 mx-auto" />
+                          <div className="rounded-xl border border-dashed border-[rgba(0,128,128,0.25)] bg-[rgba(0,128,128,0.03)] p-4 text-center space-y-3">
+                            <Users className="h-6 w-6 text-[#008080] mx-auto" />
                             <div>
-                              <p className="font-bold text-white text-xs">No work groups created yet.</p>
-                              <p className="text-[#6B7280] text-[11px] mt-0.5">Create a team for this Autopilot, or invite people to join one.</p>
+                              <p className="font-bold text-[#0F2423] text-xs">No work groups created yet.</p>
+                              <p className="text-[#617D7B] text-[11px] mt-0.5">Create a team for this Autopilot, or invite people to join one.</p>
                             </div>
                             <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
                               <Button
                                 type="button"
                                 size="sm"
                                 onClick={() => setCreateWorkGroupModalOpen(true)}
-                                className="bg-indigo-600 hover:bg-indigo-500 text-white text-xs gap-1.5 font-semibold"
+                                className="bg-[#008080] hover:bg-[#006666] text-white text-xs gap-1.5 font-semibold shadow-teal-sm"
                               >
                                 <Plus className="h-3.5 w-3.5" />
                                 <span>Create Work Group</span>
@@ -1389,7 +1386,7 @@ export function AutopilotCommandCenter({
                                 size="sm"
                                 variant="outline"
                                 onClick={() => setInviteModalOpen(true)}
-                                className="border-white/20 bg-[#F8FAFC] text-[#1F2937] hover:bg-white/[0.1] hover:text-white text-xs gap-1.5 font-medium"
+                                className="border-[rgba(0,128,128,0.2)] bg-white text-[#3D5A58] hover:bg-[#F4F9F8] text-xs gap-1.5 font-medium"
                               >
                                 <Link2 className="h-3.5 w-3.5" />
                                 <span>Invite Members</span>
@@ -1399,7 +1396,7 @@ export function AutopilotCommandCenter({
                                 size="sm"
                                 variant="ghost"
                                 onClick={() => setAssignmentType("individual")}
-                                className="text-xs text-[#6B7280] hover:text-white"
+                                className="text-xs text-[#617D7B] hover:text-[#0F2423]"
                               >
                                 Continue Without Group →
                               </Button>
@@ -1407,10 +1404,10 @@ export function AutopilotCommandCenter({
                           </div>
                         ) : (
                           <Select value={selectedWorkGroupId} onValueChange={setSelectedWorkGroupId}>
-                            <SelectTrigger className="h-10 text-xs bg-white border-[#CBD5E1] text-[#111827]">
+                            <SelectTrigger className="h-10 text-xs bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                               <SelectValue placeholder="Choose a work group..." />
                             </SelectTrigger>
-                            <SelectContent className="bg-white border-[#CBD5E1] text-[#111827]">
+                            <SelectContent className="bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                               {workGroups.map((wg) => (
                                 <SelectItem key={wg.id} value={wg.id}>
                                   {wg.name} ({wg.members_count ?? 0} members)
@@ -1421,13 +1418,13 @@ export function AutopilotCommandCenter({
                         )}
 
                         {activeWorkGroup && (activeWorkGroup.members ?? []).length > 0 && (
-                          <div className="rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] p-2.5">
-                            <span className="text-[10px] uppercase font-bold text-[#6B7280] tracking-wider block mb-1.5">
+                          <div className="rounded-lg bg-white border border-[rgba(0,128,128,0.14)] p-2.5">
+                            <span className="text-[10px] uppercase font-bold text-[#617D7B] tracking-wider block mb-1.5">
                               Enrolled {activeWorkGroup.name} Members:
                             </span>
                             <div className="flex flex-wrap gap-1.5">
                               {activeWorkGroup.members?.map((m) => (
-                                <span key={m.id} className="rounded-md bg-white/5 border border-[#E2E8F0] px-2 py-0.5 text-[11px] text-[#374151]">
+                                <span key={m.id} className="rounded-md bg-[#F4F9F8] border border-[rgba(0,128,128,0.15)] px-2 py-0.5 text-[11px] text-[#0F2423] font-medium">
                                   ● {m.full_name || m.user_email} ({m.role})
                                 </span>
                               ))}
@@ -1441,13 +1438,13 @@ export function AutopilotCommandCenter({
                     {assignmentType === "multiple_members" && (
                       <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                          <label className="text-[11px] font-semibold text-[#374151]">
+                          <label className="text-[11px] font-semibold text-[#0F2423]">
                             Select Team Members for Rotation:
                           </label>
                           <button
                             type="button"
                             onClick={() => setInviteModalOpen(true)}
-                            className="text-[11px] text-indigo-400 hover:text-indigo-300 flex items-center gap-1 font-medium"
+                            className="text-[11px] text-[#008080] hover:text-[#006666] flex items-center gap-1 font-semibold"
                           >
                             <Link2 className="h-3 w-3" />
                             <span>+ Invite Member</span>
@@ -1455,7 +1452,7 @@ export function AutopilotCommandCenter({
                         </div>
 
                         {allMembers.length === 0 ? (
-                          <p className="text-[#6B7280] text-[11px]">No members found.</p>
+                          <p className="text-[#617D7B] text-[11px]">No members found.</p>
                         ) : (
                           <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto pr-1">
                             {allMembers.map((m) => {
@@ -1465,7 +1462,7 @@ export function AutopilotCommandCenter({
                                   key={m.user_id}
                                   onClick={() => handleToggleMember(m.user_id)}
                                   className={`flex items-center gap-2 rounded-lg border p-2 cursor-pointer transition-colors ${
-                                    checked ? "border-indigo-500/50 bg-indigo-950/30 text-white" : "border-[#E2E8F0] bg-[#F8FAFC] text-[#374151]"
+                                    checked ? "border-[#008080] bg-[rgba(0,128,128,0.08)] text-[#0F2423] font-semibold" : "border-[rgba(0,128,128,0.14)] bg-white text-[#3D5A58]"
                                   }`}
                                 >
                                   <Checkbox checked={checked} />
@@ -1480,12 +1477,12 @@ export function AutopilotCommandCenter({
 
                     {/* CASE D: AI Assignment Explanation */}
                     {assignmentType === "ai_assignment" && (
-                      <div className="rounded-lg bg-indigo-950/30 border border-indigo-500/30 p-3 space-y-1">
-                        <div className="flex items-center gap-1.5 text-indigo-300 font-semibold text-xs">
-                          <Sparkles className="h-3.5 w-3.5 text-cyan-400" />
+                      <div className="rounded-lg bg-[rgba(0,128,128,0.06)] border border-[rgba(0,128,128,0.2)] p-3 space-y-1">
+                        <div className="flex items-center gap-1.5 text-[#008080] font-bold text-xs">
+                          <Sparkles className="h-3.5 w-3.5 text-[#008080]" />
                           <span>opteraOS Autonomous AI Dispatcher</span>
                         </div>
-                        <p className="text-[11px] text-[#374151] leading-relaxed">
+                        <p className="text-[11px] text-[#3D5A58] leading-relaxed">
                           Work will be analyzed in real-time. opteraOS evaluates active workloads, department roles, and urgency to assign each item to the optimal available team member without overloading anyone.
                         </p>
                       </div>
@@ -1493,15 +1490,15 @@ export function AutopilotCommandCenter({
 
                     {/* Strategy Selector (when not a single direct individual) */}
                     {assignmentType !== "individual" && (
-                      <div className="border-t border-[#E2E8F0] pt-3 space-y-2">
-                        <label className="text-[11px] font-semibold text-[#374151] block">
+                      <div className="border-t border-[rgba(0,128,128,0.14)] pt-3 space-y-2">
+                        <label className="text-[11px] font-semibold text-[#0F2423] block">
                           Assignment Algorithm / Strategy:
                         </label>
                         <Select value={selectedStrategy} onValueChange={(val) => setSelectedStrategy(val as AssignmentStrategy)}>
-                          <SelectTrigger className="h-10 text-xs bg-white border-[#CBD5E1] text-[#111827]">
+                          <SelectTrigger className="h-10 text-xs bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent className="bg-white border-[#CBD5E1] text-[#111827]">
+                          <SelectContent className="bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                             <SelectItem value="round_robin">Round Robin (Equal Rotation)</SelectItem>
                             <SelectItem value="lowest_workload">Lowest Workload (Capacity Balancer)</SelectItem>
                             <SelectItem value="skill_based">Skill Based Match</SelectItem>
@@ -1509,7 +1506,7 @@ export function AutopilotCommandCenter({
                           </SelectContent>
                         </Select>
 
-                        <p className="text-[11px] text-emerald-400 font-mono flex items-center gap-1.5 pt-0.5">
+                        <p className="text-[11px] text-emerald-700 font-mono flex items-center gap-1.5 pt-0.5 font-medium">
                           <Info className="h-3.5 w-3.5 shrink-0" />
                           <span>{STRATEGY_DESCRIPTIONS[selectedStrategy]}</span>
                         </p>
@@ -1518,16 +1515,16 @@ export function AutopilotCommandCenter({
                   </div>
 
                   {/* Customer Group Connector (Optional Customer Segment Linking) */}
-                  <div className="rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 space-y-2">
+                  <div className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-[#F8FAFC] p-4 space-y-2">
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1.5 text-[#1F2937] font-semibold">
-                        <Users className="h-3.5 w-3.5 text-indigo-400" />
+                      <div className="flex items-center gap-1.5 text-[#0F2423] font-bold">
+                        <Users className="h-3.5 w-3.5 text-[#008080]" />
                         <span>Connect to Customer Segment (Optional):</span>
                       </div>
                       <button
                         type="button"
                         onClick={() => setCreateCustGroupModalOpen(true)}
-                        className="text-[11px] text-indigo-400 hover:text-indigo-300 flex items-center gap-1 font-semibold"
+                        className="text-[11px] text-[#008080] hover:text-[#006666] flex items-center gap-1 font-semibold"
                       >
                         <Plus className="h-3 w-3" />
                         <span>Create Segment</span>
@@ -1535,10 +1532,10 @@ export function AutopilotCommandCenter({
                     </div>
 
                     <Select value={selectedCustomerGroupId} onValueChange={setSelectedCustomerGroupId}>
-                      <SelectTrigger className="h-9 text-xs bg-white border-[#CBD5E1] text-[#111827]">
+                      <SelectTrigger className="h-9 text-xs bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                         <SelectValue placeholder="All Customers (No segment restriction)" />
                       </SelectTrigger>
-                      <SelectContent className="bg-white border-[#CBD5E1] text-[#111827]">
+                      <SelectContent className="bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                         <SelectItem value="none">All Customers (Universal)</SelectItem>
                         {customerGroups.map((cg) => (
                           <SelectItem key={cg.id} value={cg.id}>
@@ -1556,18 +1553,18 @@ export function AutopilotCommandCenter({
               ───────────────────────────────────────────────────────────── */}
               {modalStep === "review" && (
                 <div className="space-y-4">
-                  <div className="rounded-xl border border-indigo-500/40 bg-indigo-950/40 p-4 space-y-3">
+                  <div className="rounded-xl border border-[rgba(0,128,128,0.2)] bg-[rgba(0,128,128,0.04)] p-4 space-y-3">
                     <div className="flex items-center justify-between">
-                      <h4 className="text-sm font-bold text-white">{activePlan.title}</h4>
-                      <Badge variant="outline" className="border-indigo-400 text-indigo-300 uppercase text-[10px]">
+                      <h4 className="text-sm font-bold text-[#0F2423]">{activePlan.title}</h4>
+                      <Badge variant="outline" className="border-emerald-500/40 text-emerald-700 bg-emerald-50 uppercase text-[10px] font-bold">
                         🟢 Ready to Activate
                       </Badge>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3 text-xs border-t border-[#E2E8F0] pt-3">
+                    <div className="grid grid-cols-2 gap-3 text-xs border-t border-[rgba(0,128,128,0.14)] pt-3">
                       <div>
-                        <span className="text-[#6B7280] text-[10px] uppercase font-semibold block">Assigned Responsibility</span>
-                        <p className="font-bold text-white mt-0.5">
+                        <span className="text-[#617D7B] text-[10px] uppercase font-semibold block">Assigned Responsibility</span>
+                        <p className="font-bold text-[#0F2423] mt-0.5">
                           {assignmentType === "individual"
                             ? `Individual: ${activeIndividual?.full_name || activeIndividual?.email || "Team Member"}`
                             : assignmentType === "work_group"
@@ -1579,27 +1576,27 @@ export function AutopilotCommandCenter({
                       </div>
 
                       <div>
-                        <span className="text-[#6B7280] text-[10px] uppercase font-semibold block">Routing Strategy</span>
-                        <p className="font-bold text-emerald-400 mt-0.5 font-mono">
+                        <span className="text-[#617D7B] text-[10px] uppercase font-semibold block">Routing Strategy</span>
+                        <p className="font-bold text-[#008080] mt-0.5 font-mono">
                           {assignmentType === "individual" ? "Direct Assignment" : selectedStrategy.replace("_", " ")}
                         </p>
                       </div>
 
                       <div>
-                        <span className="text-[#6B7280] text-[10px] uppercase font-semibold block">Trigger & Schedule</span>
-                        <p className="text-[#1F2937] mt-0.5">{activePlan.schedule}</p>
+                        <span className="text-[#617D7B] text-[10px] uppercase font-semibold block">Trigger & Schedule</span>
+                        <p className="text-[#0F2423] font-medium mt-0.5">{activePlan.schedule}</p>
                       </div>
 
                       <div>
-                        <span className="text-[#6B7280] text-[10px] uppercase font-semibold block">Customer Segment</span>
-                        <p className="text-[#1F2937] mt-0.5">{activeCustomerGroup?.name || "All Customers"}</p>
+                        <span className="text-[#617D7B] text-[10px] uppercase font-semibold block">Customer Segment</span>
+                        <p className="text-[#0F2423] font-medium mt-0.5">{activeCustomerGroup?.name || "All Customers"}</p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="rounded-lg bg-emerald-500/[0.08] border border-emerald-500/30 p-3 flex items-start gap-2.5 text-xs">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
-                    <p className="text-[#1F2937] leading-relaxed">
+                  <div className="rounded-lg bg-emerald-50 border border-emerald-300 p-3 flex items-start gap-2.5 text-xs text-emerald-900">
+                    <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <p className="leading-relaxed">
                       Upon activation, opteraOS will autonomously monitor triggers, dispatch work to <strong>{assignmentType === "individual" ? activeIndividual?.full_name || "the assigned member" : activeWorkGroup?.name || "the team"}</strong>, and report verified results to your live business dashboard.
                     </p>
                   </div>
@@ -1609,7 +1606,7 @@ export function AutopilotCommandCenter({
           )}
 
           {/* ── Dialog Footer with High Contrast Accessible Buttons ── */}
-          <DialogFooter className="flex flex-wrap items-center justify-between gap-2 border-t border-[#E2E8F0] pt-3">
+          <DialogFooter className="flex flex-wrap items-center justify-between gap-2 border-t border-[rgba(0,128,128,0.14)] pt-3">
             <Button
               type="button"
               variant="outline"
@@ -1618,7 +1615,7 @@ export function AutopilotCommandCenter({
                 setPlanModalOpen(false);
                 setModalStep("blueprint");
               }}
-              className="border-white/20 bg-[#F8FAFC] text-[#1F2937] hover:bg-white/[0.1] hover:text-white font-medium text-xs shadow-sm"
+              className="border-[rgba(0,128,128,0.2)] bg-white text-[#3D5A58] hover:bg-[#F4F9F8] font-medium text-xs"
             >
               Cancel
             </Button>
@@ -1628,7 +1625,7 @@ export function AutopilotCommandCenter({
                 <Button
                   size="sm"
                   onClick={() => setModalStep("assignment")}
-                  className="gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-md"
+                  className="gap-1.5 bg-[#008080] hover:bg-[#006666] text-white font-bold text-xs shadow-teal-sm"
                 >
                   <span>Configure Assignment</span>
                   <ChevronRight className="h-3.5 w-3.5" />
@@ -1641,7 +1638,7 @@ export function AutopilotCommandCenter({
                     variant="ghost"
                     size="sm"
                     onClick={() => setModalStep("blueprint")}
-                    className="text-xs text-[#374151] hover:text-white"
+                    className="text-xs text-[#617D7B] hover:text-[#0F2423]"
                   >
                     Back
                   </Button>
@@ -1649,7 +1646,7 @@ export function AutopilotCommandCenter({
                     size="sm"
                     disabled={!isAssignmentValid}
                     onClick={() => setModalStep("review")}
-                    className="gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-md"
+                    className="gap-1.5 bg-[#008080] hover:bg-[#006666] text-white font-bold text-xs shadow-teal-sm"
                   >
                     <span>Review Plan</span>
                     <ChevronRight className="h-3.5 w-3.5" />
@@ -1663,7 +1660,7 @@ export function AutopilotCommandCenter({
                     variant="ghost"
                     size="sm"
                     onClick={() => setModalStep("assignment")}
-                    className="text-xs text-[#374151] hover:text-white"
+                    className="text-xs text-[#617D7B] hover:text-[#0F2423]"
                   >
                     Back
                   </Button>
@@ -1671,12 +1668,12 @@ export function AutopilotCommandCenter({
                     size="sm"
                     disabled={activateMutation.isPending || !isAssignmentValid}
                     onClick={() => activateMutation.mutate()}
-                    className="gap-1.5 bg-gradient-to-r from-emerald-500 via-indigo-600 to-purple-600 font-bold text-xs text-white shadow-lg shadow-indigo-500/20 hover:opacity-95"
+                    className="gap-1.5 bg-gradient-to-r from-[#008080] via-[#0D9488] to-[#14B8A6] font-bold text-xs text-white shadow-teal-sm hover:opacity-95"
                   >
                     {activateMutation.isPending ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
-                      <Play className="h-3.5 w-3.5" />
+                      <Play className="h-3.5 w-3.5 fill-white" />
                     )}
                     <span>Activate Autopilot</span>
                   </Button>
@@ -1689,57 +1686,57 @@ export function AutopilotCommandCenter({
 
       {/* ── Modal: Create Work Group on the Fly ───────────────────────── */}
       <Dialog open={createWorkGroupModalOpen} onOpenChange={setCreateWorkGroupModalOpen}>
-        <DialogContent className="max-w-lg border-[#E2E8F0] bg-white text-[#111827] shadow-2xl">
+        <DialogContent className="max-w-lg border-[rgba(0,128,128,0.2)] bg-white text-[#0F2423] shadow-2xl">
           <DialogHeader>
-            <div className="flex items-center gap-2 text-indigo-400">
-              <Briefcase className="h-5 w-5 text-purple-400" />
-              <DialogTitle className="text-base font-bold text-white">Create Work Group</DialogTitle>
+            <div className="flex items-center gap-2 text-[#008080]">
+              <Briefcase className="h-5 w-5 text-[#008080]" />
+              <DialogTitle className="text-base font-bold text-[#0F2423]">Create Work Group</DialogTitle>
             </div>
-            <DialogDescription className="text-xs text-[#6B7280]">
+            <DialogDescription className="text-xs text-[#617D7B]">
               Create a team to handle Autopilot actions. Select members from your organization.
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-2 text-xs">
             <div>
-              <label className="text-[11px] font-semibold text-[#374151] block mb-1">Group Name *</label>
+              <label className="text-[11px] font-semibold text-[#0F2423] block mb-1">Group Name *</label>
               <Input
                 value={newGroupName}
                 onChange={(e) => setNewGroupName(e.target.value)}
                 placeholder="e.g. Sales Team, Customer Success, Finance"
-                className="h-9 text-xs bg-white border-[#CBD5E1] text-[#111827]"
+                className="h-9 text-xs bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423] placeholder:text-[#617D7B]/60"
               />
             </div>
 
             <div>
-              <label className="text-[11px] font-semibold text-[#374151] block mb-1">Description</label>
+              <label className="text-[11px] font-semibold text-[#0F2423] block mb-1">Description</label>
               <Input
                 value={newGroupDescription}
                 onChange={(e) => setNewGroupDescription(e.target.value)}
                 placeholder="e.g. Handles inbound leads and pipeline velocity"
-                className="h-9 text-xs bg-white border-[#CBD5E1] text-[#111827]"
+                className="h-9 text-xs bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423] placeholder:text-[#617D7B]/60"
               />
             </div>
 
             {/* Member Selection with Search & Bulk Actions */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <label className="text-[11px] font-semibold text-[#374151]">
+                <label className="text-[11px] font-semibold text-[#0F2423]">
                   Select Team Members ({newGroupSelectedMembers.length} selected):
                 </label>
                 <div className="flex items-center gap-2 text-[11px]">
                   <button
                     type="button"
                     onClick={() => setNewGroupSelectedMembers(filteredCreationMembers.map((m) => m.user_id))}
-                    className="text-indigo-400 hover:text-indigo-300 font-semibold"
+                    className="text-[#008080] hover:text-[#006666] font-semibold"
                   >
                     Select All Filtered
                   </button>
-                  <span className="text-slate-600">·</span>
+                  <span className="text-slate-300">·</span>
                   <button
                     type="button"
                     onClick={() => setNewGroupSelectedMembers([])}
-                    className="text-[#6B7280] hover:text-[#374151]"
+                    className="text-[#617D7B] hover:text-[#0F2423]"
                   >
                     Clear
                   </button>
@@ -1747,18 +1744,18 @@ export function AutopilotCommandCenter({
               </div>
 
               <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-[#6B7280]" />
+                <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-[#617D7B]" />
                 <Input
                   value={newGroupMemberSearch}
                   onChange={(e) => setNewGroupMemberSearch(e.target.value)}
                   placeholder="Search members by name or email..."
-                  className="pl-8 h-8 text-xs bg-white border-[#CBD5E1] text-[#111827]"
+                  className="pl-8 h-8 text-xs bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423] placeholder:text-[#617D7B]/60"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-2 max-h-44 overflow-y-auto border border-[#E2E8F0] rounded-xl p-2 bg-black/40">
+              <div className="grid grid-cols-2 gap-2 max-h-44 overflow-y-auto border border-[rgba(0,128,128,0.14)] rounded-xl p-2 bg-[#F8FAFC]">
                 {filteredCreationMembers.length === 0 ? (
-                  <p className="text-[#6B7280] text-[11px] col-span-2 text-center py-4">
+                  <p className="text-[#617D7B] text-[11px] col-span-2 text-center py-4">
                     No members match search query.
                   </p>
                 ) : (
@@ -1776,14 +1773,14 @@ export function AutopilotCommandCenter({
                         }}
                         className={`flex items-center gap-2 rounded-lg border p-2 cursor-pointer transition-colors ${
                           checked
-                            ? "border-indigo-500/60 bg-indigo-950/40 text-white"
-                            : "border-[#E2E8F0] bg-[#F8FAFC] text-[#374151] hover:bg-[#F8FAFC]"
+                            ? "border-[#008080] bg-[rgba(0,128,128,0.08)] text-[#0F2423] font-semibold"
+                            : "border-[rgba(0,128,128,0.14)] bg-white text-[#3D5A58] hover:bg-[#F4F9F8]"
                         }`}
                       >
                         <Checkbox checked={checked} />
                         <div className="min-w-0 flex-1 truncate">
-                          <p className="text-xs font-medium truncate">{m.full_name || m.email}</p>
-                          <span className="text-[10px] text-[#6B7280]">{m.role}</span>
+                          <p className="text-xs font-semibold truncate text-[#0F2423]">{m.full_name || m.email}</p>
+                          <span className="text-[10px] text-[#617D7B]">{m.role}</span>
                         </div>
                       </label>
                     );
@@ -1793,12 +1790,12 @@ export function AutopilotCommandCenter({
             </div>
           </div>
 
-          <DialogFooter className="gap-2 sm:gap-0 border-t border-[#E2E8F0] pt-3">
+          <DialogFooter className="gap-2 sm:gap-0 border-t border-[rgba(0,128,128,0.14)] pt-3">
             <Button
               variant="outline"
               size="sm"
               onClick={() => setCreateWorkGroupModalOpen(false)}
-              className="border-white/20 bg-[#F8FAFC] text-[#1F2937] hover:bg-white/[0.1] hover:text-white text-xs font-medium"
+              className="border-[rgba(0,128,128,0.2)] bg-white text-[#3D5A58] hover:bg-[#F4F9F8] text-xs font-medium"
             >
               Cancel
             </Button>
@@ -1806,7 +1803,7 @@ export function AutopilotCommandCenter({
               size="sm"
               disabled={!newGroupName.trim() || createWorkGroupMutation.isPending}
               onClick={() => createWorkGroupMutation.mutate()}
-              className="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold"
+              className="bg-[#008080] hover:bg-[#006666] text-white text-xs font-semibold shadow-teal-sm"
             >
               {createWorkGroupMutation.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Create & Select Group"}
             </Button>
@@ -1816,64 +1813,64 @@ export function AutopilotCommandCenter({
 
       {/* ── Modal: Invite Members to Organization / Group ─────────────── */}
       <Dialog open={inviteModalOpen} onOpenChange={setInviteModalOpen}>
-        <DialogContent className="max-w-md border-[#E2E8F0] bg-white text-[#111827] shadow-2xl">
+        <DialogContent className="max-w-md border-[rgba(0,128,128,0.2)] bg-white text-[#0F2423] shadow-2xl">
           <DialogHeader>
-            <div className="flex items-center gap-2 text-indigo-400">
-              <Mail className="h-5 w-5 text-cyan-400" />
-              <DialogTitle className="text-base font-bold text-white">Invite Team Members</DialogTitle>
+            <div className="flex items-center gap-2 text-[#008080]">
+              <Mail className="h-5 w-5 text-[#008080]" />
+              <DialogTitle className="text-base font-bold text-[#0F2423]">Invite Team Members</DialogTitle>
             </div>
-            <DialogDescription className="text-xs text-[#6B7280]">
+            <DialogDescription className="text-xs text-[#617D7B]">
               Invite employees or specialists to join your workspace and handle work.
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-2 text-xs">
             <div>
-              <label className="text-[11px] font-semibold text-[#374151] block mb-1">Email Address</label>
+              <label className="text-[11px] font-semibold text-[#0F2423] block mb-1">Email Address</label>
               <Input
                 type="email"
                 value={inviteEmail}
                 onChange={(e) => setInviteEmail(e.target.value)}
                 placeholder="colleague@yourcompany.com"
-                className="h-9 text-xs bg-white border-[#CBD5E1] text-[#111827]"
+                className="h-9 text-xs bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423] placeholder:text-[#617D7B]/60"
               />
             </div>
 
             <div>
-              <label className="text-[11px] font-semibold text-[#374151] block mb-1">Workspace Role</label>
+              <label className="text-[11px] font-semibold text-[#0F2423] block mb-1">Workspace Role</label>
               <Select value={inviteRole} onValueChange={(val) => setInviteRole(val as any)}>
-                <SelectTrigger className="h-9 text-xs bg-white border-[#CBD5E1] text-[#111827]">
+                <SelectTrigger className="h-9 text-xs bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-white border-[#CBD5E1] text-[#111827]">
+                <SelectContent className="bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                   <SelectItem value="member">Standard Member</SelectItem>
                   <SelectItem value="admin">Administrator</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            <div className="border-t border-[#E2E8F0] pt-3 space-y-2">
-              <span className="text-[11px] text-[#6B7280] block font-semibold">Or share a single-click invite link:</span>
+            <div className="border-t border-[rgba(0,128,128,0.14)] pt-3 space-y-2">
+              <span className="text-[11px] text-[#617D7B] block font-semibold">Or share a single-click invite link:</span>
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
                 onClick={() => generateLinkMutation.mutate()}
                 disabled={generateLinkMutation.isPending}
-                className="w-full text-xs border-white/20 bg-[#F8FAFC] text-[#1F2937] hover:bg-white/[0.1] hover:text-white gap-1.5 font-medium"
+                className="w-full text-xs border-[rgba(0,128,128,0.2)] bg-[#F8FAFC] text-[#0F2423] hover:bg-white gap-1.5 font-medium"
               >
-                {generateLinkMutation.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Copy className="h-3.5 w-3.5 text-cyan-400" />}
+                {generateLinkMutation.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Copy className="h-3.5 w-3.5 text-[#008080]" />}
                 <span>{generatedLink ? "Link Copied!" : "Generate & Copy Shareable Invite Link"}</span>
               </Button>
             </div>
           </div>
 
-          <DialogFooter className="gap-2 sm:gap-0 border-t border-[#E2E8F0] pt-3">
+          <DialogFooter className="gap-2 sm:gap-0 border-t border-[rgba(0,128,128,0.14)] pt-3">
             <Button
               variant="outline"
               size="sm"
               onClick={() => setInviteModalOpen(false)}
-              className="border-white/20 bg-[#F8FAFC] text-[#1F2937] hover:bg-white/[0.1] hover:text-white text-xs font-medium"
+              className="border-[rgba(0,128,128,0.2)] bg-white text-[#3D5A58] hover:bg-[#F4F9F8] text-xs font-medium"
             >
               Close
             </Button>
@@ -1881,7 +1878,7 @@ export function AutopilotCommandCenter({
               size="sm"
               disabled={!inviteEmail.trim() || sendInviteMutation.isPending}
               onClick={() => sendInviteMutation.mutate()}
-              className="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold"
+              className="bg-[#008080] hover:bg-[#006666] text-white text-xs font-semibold shadow-teal-sm"
             >
               {sendInviteMutation.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Send Email Invitation"}
             </Button>
@@ -1891,45 +1888,45 @@ export function AutopilotCommandCenter({
 
       {/* ── Modal: Create Customer Group on the Fly ───────────────────── */}
       <Dialog open={createCustGroupModalOpen} onOpenChange={setCreateCustGroupModalOpen}>
-        <DialogContent className="max-w-md border-[#E2E8F0] bg-white text-[#111827] shadow-2xl">
+        <DialogContent className="max-w-md border-[rgba(0,128,128,0.2)] bg-white text-[#0F2423] shadow-2xl">
           <DialogHeader>
-            <div className="flex items-center gap-2 text-indigo-400">
-              <Users className="h-5 w-5 text-indigo-400" />
-              <DialogTitle className="text-base font-bold text-white">Create Customer Segment</DialogTitle>
+            <div className="flex items-center gap-2 text-[#008080]">
+              <Users className="h-5 w-5 text-[#008080]" />
+              <DialogTitle className="text-base font-bold text-[#0F2423]">Create Customer Segment</DialogTitle>
             </div>
-            <DialogDescription className="text-xs text-[#6B7280]">
+            <DialogDescription className="text-xs text-[#617D7B]">
               Group customers by stage or status for automated Autopilot targeting.
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-3 py-2 text-xs">
             <div>
-              <label className="text-[11px] font-semibold text-[#374151] block mb-1">Segment Name *</label>
+              <label className="text-[11px] font-semibold text-[#0F2423] block mb-1">Segment Name *</label>
               <Input
                 value={newCustGroupName}
                 onChange={(e) => setNewCustGroupName(e.target.value)}
                 placeholder="e.g. VIP Customers, Enterprise Accounts, At-Risk"
-                className="h-9 text-xs bg-white border-[#CBD5E1] text-[#111827]"
+                className="h-9 text-xs bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423] placeholder:text-[#617D7B]/60"
               />
             </div>
 
             <div>
-              <label className="text-[11px] font-semibold text-[#374151] block mb-1">Description</label>
+              <label className="text-[11px] font-semibold text-[#0F2423] block mb-1">Description</label>
               <Input
                 value={newCustGroupDescription}
                 onChange={(e) => setNewCustGroupDescription(e.target.value)}
                 placeholder="e.g. High-value enterprise customers"
-                className="h-9 text-xs bg-white border-[#CBD5E1] text-[#111827]"
+                className="h-9 text-xs bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423] placeholder:text-[#617D7B]/60"
               />
             </div>
 
             <div>
-              <label className="text-[11px] font-semibold text-[#374151] block mb-1">Status Filter</label>
+              <label className="text-[11px] font-semibold text-[#0F2423] block mb-1">Status Filter</label>
               <Select value={newCustGroupStatusCriteria} onValueChange={setNewCustGroupStatusCriteria}>
-                <SelectTrigger className="h-9 text-xs bg-white border-[#CBD5E1] text-[#111827]">
+                <SelectTrigger className="h-9 text-xs bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-white border-[#CBD5E1] text-[#111827]">
+                <SelectContent className="bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423]">
                   <SelectItem value="all">All Customer Statuses</SelectItem>
                   <SelectItem value="active">Active Customers Only</SelectItem>
                   <SelectItem value="prospect">Prospects Only</SelectItem>
@@ -1939,12 +1936,12 @@ export function AutopilotCommandCenter({
             </div>
           </div>
 
-          <DialogFooter className="gap-2 sm:gap-0 border-t border-[#E2E8F0] pt-3">
+          <DialogFooter className="gap-2 sm:gap-0 border-t border-[rgba(0,128,128,0.14)] pt-3">
             <Button
               variant="outline"
               size="sm"
               onClick={() => setCreateCustGroupModalOpen(false)}
-              className="border-white/20 bg-[#F8FAFC] text-[#1F2937] hover:bg-white/[0.1] hover:text-white text-xs font-medium"
+              className="border-[rgba(0,128,128,0.2)] bg-white text-[#3D5A58] hover:bg-[#F4F9F8] text-xs font-medium"
             >
               Cancel
             </Button>
@@ -1952,7 +1949,7 @@ export function AutopilotCommandCenter({
               size="sm"
               disabled={!newCustGroupName.trim() || createCustGroupMutation.isPending}
               onClick={() => createCustGroupMutation.mutate()}
-              className="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold"
+              className="bg-[#008080] hover:bg-[#006666] text-white text-xs font-semibold shadow-teal-sm"
             >
               {createCustGroupMutation.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Create & Select Segment"}
             </Button>

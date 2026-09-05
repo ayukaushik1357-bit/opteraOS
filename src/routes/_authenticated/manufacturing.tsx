@@ -194,7 +194,7 @@ function ManufacturingMasterPage() {
           <Button
             size="sm"
             onClick={() => setNewMoOpen(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white gap-1.5 shadow-sm text-xs h-9 font-medium"
+            className="bg-[#008080] hover:bg-[#006666] text-white gap-1.5 shadow-sm text-xs h-9 font-medium"
           >
             <Plus className="h-4 w-4" /> New Production Order
           </Button>
@@ -236,7 +236,7 @@ function ManufacturingMasterPage() {
                 <Factory className="h-10 w-10 text-gray-400 mx-auto mb-3" />
                 <p className="text-sm font-medium text-gray-800">No Production Orders Running</p>
                 <p className="text-xs text-gray-500 mt-1">Schedule a manufacturing run to assemble finished goods from raw parts.</p>
-                <Button size="sm" onClick={() => setNewMoOpen(true)} className="mt-4 bg-blue-600 hover:bg-blue-700 text-white text-xs">
+                <Button size="sm" onClick={() => setNewMoOpen(true)} className="mt-4 bg-[#008080] hover:bg-[#006666] text-white text-xs">
                   Create First Production Order
                 </Button>
               </div>
@@ -303,7 +303,7 @@ function ManufacturingMasterPage() {
                 <h2 className="text-sm font-semibold text-gray-900">Bills of Materials (Engineering Recipes)</h2>
                 <p className="text-xs text-gray-500">Specify exact component ingredients required for assembled products</p>
               </div>
-              <Button size="sm" onClick={() => setNewBomOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white text-xs">
+              <Button size="sm" onClick={() => setNewBomOpen(true)} className="bg-[#008080] hover:bg-[#006666] text-white text-xs">
                 <Plus className="h-3.5 w-3.5 mr-1" /> Add BOM
               </Button>
             </div>
@@ -350,7 +350,7 @@ function ManufacturingMasterPage() {
           <div className="rounded-xl border border-[#E5EAF1] bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden">
             <div className="p-4 border-b border-[#E5EAF1] flex items-center justify-between">
               <h2 className="text-sm font-semibold text-gray-900">Equipment Registry &amp; Preventative Maintenance</h2>
-              <Button size="sm" onClick={() => setNewEquipOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white text-xs">
+              <Button size="sm" onClick={() => setNewEquipOpen(true)} className="bg-[#008080] hover:bg-[#006666] text-white text-xs">
                 <Plus className="h-3.5 w-3.5 mr-1" /> Add Equipment
               </Button>
             </div>
@@ -459,7 +459,7 @@ function ManufacturingMasterPage() {
                 });
               }}
               disabled={createMoMutation.isPending}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+              className="bg-[#008080] hover:bg-[#006666] text-white text-xs"
             >
               Start Production
             </Button>
@@ -543,7 +543,7 @@ function ManufacturingMasterPage() {
                 });
               }}
               disabled={createBomMutation.isPending}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+              className="bg-[#008080] hover:bg-[#006666] text-white text-xs"
             >
               Save BOM
             </Button>
@@ -599,7 +599,7 @@ function ManufacturingMasterPage() {
                 createEquipMutation.mutate({ name: eqName, serialNumber: eqSerial, category: eqCategory });
               }}
               disabled={createEquipMutation.isPending}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+              className="bg-[#008080] hover:bg-[#006666] text-white text-xs"
             >
               Save Equipment
             </Button>

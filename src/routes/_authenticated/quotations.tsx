@@ -170,7 +170,7 @@ export function QuotationsPage() {
         subtitle="Formal sales quotations with real-time tax calculation, discount threshold approvals, PDF export, and customer acceptance."
         actions={
           <Button
-            className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
+            className="bg-[#008080] hover:bg-[#006666] text-white shadow-sm"
             onClick={() => setShowCreateModal(true)}
           >
             <Plus className="mr-1.5 h-4 w-4" /> Create Quotation
@@ -522,7 +522,7 @@ export function QuotationsPage() {
               Cancel
             </Button>
             <Button
-              className="bg-blue-600 hover:bg-blue-700 text-white"
+              className="bg-[#008080] hover:bg-[#006666] text-white"
               disabled={!emailTo || sendEmailMutation.isPending}
               onClick={() => sendEmailMutation.mutate()}
             >

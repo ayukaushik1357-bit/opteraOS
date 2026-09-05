@@ -91,22 +91,22 @@ export function UserProfileModal({ open, onOpenChange }: UserProfileModalProps) 
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg p-0 overflow-hidden border border-border bg-card shadow-2xl rounded-2xl">
+      <DialogContent className="max-w-lg p-0 overflow-hidden border border-[rgba(0,128,128,0.2)] bg-white shadow-2xl rounded-2xl">
         {/* Header Hero Banner */}
-        <div className="relative bg-gradient-to-r from-brand-indigo/20 via-brand-indigo/10 to-brand-cyan/20 p-6 border-b border-border/80">
+        <div className="relative bg-gradient-to-r from-[#008080]/15 via-[#0D9488]/10 to-[#14B8A6]/15 p-6 border-b border-[rgba(0,128,128,0.14)]">
           <div className="flex items-center gap-4">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-indigo text-white font-bold text-xl shadow-lg shadow-brand-indigo/30 shrink-0">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#008080] via-[#0D9488] to-[#14B8A6] text-white font-bold text-xl shadow-teal-sm shrink-0">
               {initials}
             </div>
             <div className="min-w-0">
-              <h2 className="text-xl font-bold text-foreground truncate">{displayName}</h2>
-              <p className="text-xs text-muted-foreground truncate">{email || "user@optera.internal"}</p>
+              <h2 className="text-xl font-bold text-[#0F2423] truncate">{displayName}</h2>
+              <p className="text-xs text-[#617D7B] truncate">{email || "user@optera.internal"}</p>
               <div className="mt-1.5 flex items-center gap-2">
-                <Badge variant="outline" className="text-[10px] bg-background/60 font-semibold text-brand-indigo border-brand-indigo/30">
+                <Badge variant="outline" className="text-[10px] bg-white/80 font-semibold text-[#008080] border-[rgba(0,128,128,0.3)]">
                   <Shield className="h-3 w-3 mr-1" />
                   {current?.role || "Owner"}
                 </Badge>
-                <Badge variant="outline" className="text-[10px] bg-background/60 font-semibold text-foreground border-border">
+                <Badge variant="outline" className="text-[10px] bg-white/80 font-semibold text-[#0F2423] border-[rgba(0,128,128,0.2)]">
                   <Building2 className="h-3 w-3 mr-1" />
                   {current?.name || "Workspace"}
                 </Badge>
@@ -118,11 +118,11 @@ export function UserProfileModal({ open, onOpenChange }: UserProfileModalProps) 
         {/* Tabbed Content */}
         <div className="p-6">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-2 mb-4">
-              <TabsTrigger value="profile" className="text-xs font-semibold">
+            <TabsList className="grid w-full grid-cols-2 mb-4 bg-[#EDF4F3] border border-[rgba(0,128,128,0.12)]">
+              <TabsTrigger value="profile" className="text-xs font-semibold data-[state=active]:bg-[#008080] data-[state=active]:text-white">
                 <User className="h-3.5 w-3.5 mr-1.5" /> Profile Details
               </TabsTrigger>
-              <TabsTrigger value="security" className="text-xs font-semibold">
+              <TabsTrigger value="security" className="text-xs font-semibold data-[state=active]:bg-[#008080] data-[state=active]:text-white">
                 <Lock className="h-3.5 w-3.5 mr-1.5" /> Security & Password
               </TabsTrigger>
             </TabsList>
@@ -131,54 +131,54 @@ export function UserProfileModal({ open, onOpenChange }: UserProfileModalProps) 
             <TabsContent value="profile" className="space-y-4 mt-0">
               <form onSubmit={handleUpdateProfile} className="space-y-4">
                 <div className="grid gap-1.5">
-                  <Label className="text-xs font-medium">Full Name</Label>
+                  <Label className="text-xs font-medium text-[#0F2423]">Full Name</Label>
                   <Input
                     value={displayName}
                     onChange={(e) => setDisplayName(e.target.value)}
                     placeholder="Sarah Connor"
-                    className="h-9 text-sm"
+                    className="h-9 text-sm border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div className="grid gap-1.5">
-                    <Label className="text-xs font-medium">Work Email</Label>
+                    <Label className="text-xs font-medium text-[#0F2423]">Work Email</Label>
                     <Input
                       type="email"
                       value={email || ""}
                       disabled
-                      className="h-9 text-sm bg-muted/50 cursor-not-allowed opacity-80"
+                      className="h-9 text-sm bg-[#EDF4F3]/60 cursor-not-allowed opacity-80 border-[rgba(0,128,128,0.15)] text-[#617D7B]"
                     />
                   </div>
                   <div className="grid gap-1.5">
-                    <Label className="text-xs font-medium">Phone Number</Label>
+                    <Label className="text-xs font-medium text-[#0F2423]">Phone Number</Label>
                     <Input
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="+91 9876543210"
-                      className="h-9 text-sm"
+                      className="h-9 text-sm border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
                     />
                   </div>
                 </div>
 
                 <div className="grid gap-1.5">
-                  <Label className="text-xs font-medium">Job Title / Department</Label>
+                  <Label className="text-xs font-medium text-[#0F2423]">Job Title / Department</Label>
                   <Input
                     value={jobTitle}
                     onChange={(e) => setJobTitle(e.target.value)}
                     placeholder="Chief Executive Officer"
-                    className="h-9 text-sm"
+                    className="h-9 text-sm border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
                   />
                 </div>
 
                 <DialogFooter className="pt-2">
-                  <Button type="button" variant="outline" size="sm" onClick={() => onOpenChange(false)}>
+                  <Button type="button" variant="outline" size="sm" onClick={() => onOpenChange(false)} className="border-[rgba(0,128,128,0.2)] text-[#0F2423] hover:border-[#008080]">
                     Close
                   </Button>
                   <Button
                     type="submit"
                     size="sm"
-                    className="bg-brand-indigo text-white hover:bg-brand-indigo/90"
+                    className="bg-[#008080] text-white hover:bg-[#006666] shadow-teal-sm"
                     disabled={saving}
                   >
                     Save Changes
@@ -191,43 +191,43 @@ export function UserProfileModal({ open, onOpenChange }: UserProfileModalProps) 
             <TabsContent value="security" className="space-y-4 mt-0">
               <form onSubmit={handleUpdatePassword} className="space-y-3.5">
                 <div className="grid gap-1.5">
-                  <Label className="text-xs font-medium">New Password</Label>
+                  <Label className="text-xs font-medium text-[#0F2423]">New Password</Label>
                   <Input
                     type="password"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder="At least 8 characters"
-                    className="h-9 text-sm"
+                    className="h-9 text-sm border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
                   />
                 </div>
 
                 <div className="grid gap-1.5">
-                  <Label className="text-xs font-medium">Confirm New Password</Label>
+                  <Label className="text-xs font-medium text-[#0F2423]">Confirm New Password</Label>
                   <Input
                     type="password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Re-enter new password"
-                    className="h-9 text-sm"
+                    className="h-9 text-sm border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
                   />
                 </div>
 
-                <div className="p-3 rounded-xl border border-border bg-muted/30 text-xs text-muted-foreground">
-                  <div className="flex items-center gap-1.5 font-semibold text-foreground mb-1">
-                    <Key className="h-3.5 w-3.5 text-brand-indigo" />
+                <div className="p-3 rounded-xl border border-[rgba(0,128,128,0.18)] bg-[#EDF4F3]/50 text-xs text-[#617D7B]">
+                  <div className="flex items-center gap-1.5 font-semibold text-[#0F2423] mb-1">
+                    <Key className="h-3.5 w-3.5 text-[#008080]" />
                     <span>Password Security Advice</span>
                   </div>
                   <p>Use at least 8 characters with a combination of uppercase letters, numbers, and symbols.</p>
                 </div>
 
                 <DialogFooter className="pt-2">
-                  <Button type="button" variant="outline" size="sm" onClick={() => onOpenChange(false)}>
+                  <Button type="button" variant="outline" size="sm" onClick={() => onOpenChange(false)} className="border-[rgba(0,128,128,0.2)] text-[#0F2423] hover:border-[#008080]">
                     Cancel
                   </Button>
                   <Button
                     type="submit"
                     size="sm"
-                    className="bg-brand-indigo text-white hover:bg-brand-indigo/90"
+                    className="bg-[#008080] text-white hover:bg-[#006666] shadow-teal-sm"
                     disabled={saving || !newPassword}
                   >
                     Update Password
