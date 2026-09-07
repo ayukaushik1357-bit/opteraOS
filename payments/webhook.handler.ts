@@ -3,6 +3,7 @@
 // Cryptographically verifies HMAC-SHA256 signatures for payment events
 // ============================================================================
 
+/// <reference types="node" />
 import * as crypto from 'crypto';
 
 export interface WebhookEventPayload {
@@ -58,8 +59,10 @@ export class PaymentWebhookHandler {
    */
   verifySignature(rawBody: string | Buffer, signature: string): boolean {
     if (!this.webhookSecret) {
-      console.warn('⚠️ RAZORPAY_WEBHOOK_SECRET not set. Skipping signature validation in development mode.');
-      return true;
+      throw new Error(
+        '⚠️ RAZORPAY_WEBHOOK_SECRET is not configured. ' +
+        'Signature verification refused — set the secret before processing webhooks.',
+      );
     }
 
     try {

@@ -60,41 +60,47 @@ export async function handleRazorpayWebhookRequest(request: Request): Promise<Re
   }
 
   // 2. Verify HMAC-SHA256 signature
+  // SECURITY: fail CLOSED, not open. If the webhook secret isn't configured we must
+  // reject the request rather than trust it — otherwise anyone who finds this endpoint
+  // could POST a forged "payment.captured" event and mark arbitrary invoices as paid.
   const webhookSecret = getWebhookSecret();
+
+  if (!webhookSecret) {
+    console.error(
+      "[optera Webhook] RAZORPAY_WEBHOOK_SECRET is not configured. Rejecting request " +
+        "instead of processing an unverified webhook — set the secret to enable this endpoint.",
+    );
+    return jsonResponse({ error: "Webhook not configured" }, 503);
+  }
+
   const signature = request.headers.get("x-razorpay-signature");
 
-  if (webhookSecret) {
-    if (!signature) {
-      console.warn("[optera Webhook] Request missing x-razorpay-signature header");
-      return jsonResponse({ error: "Missing x-razorpay-signature header" }, 401);
-    }
-
-    const expectedSig = crypto
-      .createHmac("sha256", webhookSecret)
-      .update(rawBody)
-      .digest("hex");
-
-    let signaturesMatch = false;
-    try {
-      signaturesMatch = crypto.timingSafeEqual(
-        Buffer.from(expectedSig, "hex"),
-        Buffer.from(signature, "hex"),
-      );
-    } catch {
-      signaturesMatch = false;
-    }
-
-    if (!signaturesMatch) {
-      console.warn("[optera Webhook] Invalid Razorpay signature rejected");
-      return jsonResponse({ error: "Signature verification failed" }, 401);
-    }
-
-    console.info("[optera Webhook] Signature verified OK");
-  } else {
-    console.warn(
-      "[optera Webhook] RAZORPAY_WEBHOOK_SECRET is not set. Signature verification skipped (dev mode).",
-    );
+  if (!signature) {
+    console.warn("[optera Webhook] Request missing x-razorpay-signature header");
+    return jsonResponse({ error: "Missing x-razorpay-signature header" }, 401);
   }
+
+  const expectedSig = crypto
+    .createHmac("sha256", webhookSecret)
+    .update(rawBody)
+    .digest("hex");
+
+  let signaturesMatch = false;
+  try {
+    signaturesMatch = crypto.timingSafeEqual(
+      Buffer.from(expectedSig, "hex"),
+      Buffer.from(signature, "hex"),
+    );
+  } catch {
+    signaturesMatch = false;
+  }
+
+  if (!signaturesMatch) {
+    console.warn("[optera Webhook] Invalid Razorpay signature rejected");
+    return jsonResponse({ error: "Signature verification failed" }, 401);
+  }
+
+  console.info("[optera Webhook] Signature verified OK");
 
   // 3. Parse JSON payload
   let payload: any;
