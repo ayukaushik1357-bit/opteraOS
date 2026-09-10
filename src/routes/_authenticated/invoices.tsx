@@ -302,9 +302,9 @@ function InvoicesPage() {
     <div className="grid gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-[#0F2423]">Invoices</h1>
-          <p className="mt-1 text-sm text-[#617D7B]">
-            <span className="font-semibold text-[#008080]">{money(collected, currency)}</span> collected &bull; <span className="font-semibold text-amber-600">{money(outstanding, currency)}</span> outstanding
+          <h1 className="text-3xl font-bold tracking-tight text-[#0F2423] dark:text-white">Invoices</h1>
+          <p className="mt-1 text-sm text-[#617D7B] dark:text-slate-400">
+            <span className="font-semibold text-[#008080] dark:text-teal-400">{money(collected, currency)}</span> collected &bull; <span className="font-semibold text-amber-600 dark:text-amber-400">{money(outstanding, currency)}</span> outstanding
           </p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
@@ -313,9 +313,9 @@ function InvoicesPage() {
               <Plus className="mr-1 h-4 w-4" /> New invoice
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white border border-[rgba(0,128,128,0.2)] shadow-2xl rounded-2xl">
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white dark:bg-[#091b1f] border border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 shadow-2xl rounded-2xl text-[#0F2423] dark:text-white">
             <DialogHeader>
-              <DialogTitle className="text-[#0F2423] font-bold text-lg">{draft.id ? "Edit invoice" : "New invoice"}</DialogTitle>
+              <DialogTitle className="text-[#0F2423] dark:text-white font-bold text-lg">{draft.id ? "Edit invoice" : "New invoice"}</DialogTitle>
             </DialogHeader>
             <div className="grid gap-4">
               {/* Invoice Number + Status */}
@@ -501,7 +501,7 @@ function InvoicesPage() {
         </Dialog>
       </div>
 
-      <div className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-white shadow-teal-xs overflow-hidden">
+      <div className="rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/20 bg-white dark:bg-[#091b1f] shadow-teal-xs overflow-hidden">
         {isLoading ? (
           <div className="grid gap-2 p-5">
             {Array.from({ length: 4 }).map((_, i) => (
@@ -509,34 +509,34 @@ function InvoicesPage() {
             ))}
           </div>
         ) : invoices.length === 0 ? (
-          <p className="p-8 text-center text-sm text-muted-foreground">
+          <p className="p-8 text-center text-sm text-[#617D7B] dark:text-slate-400">
             No invoices yet — create your first one.
           </p>
         ) : (
           <Table>
             <TableHeader>
-              <TableRow className="bg-[rgba(0,128,128,0.03)] border-b border-[rgba(0,128,128,0.1)] hover:bg-transparent">
-                <TableHead className="text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Number</TableHead>
-                <TableHead className="text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Customer</TableHead>
-                <TableHead className="text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Amount</TableHead>
-                <TableHead className="text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Issued</TableHead>
-                <TableHead className="text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Due</TableHead>
-                <TableHead className="text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Status</TableHead>
-                <TableHead className="w-40 text-right text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Actions</TableHead>
+              <TableRow className="bg-[rgba(0,128,128,0.03)] dark:bg-teal-950/20 border-b border-[rgba(0,128,128,0.1)] dark:border-teal-500/20 hover:bg-transparent">
+                <TableHead className="text-[#617D7B] dark:text-slate-400 font-semibold text-xs uppercase tracking-wider">Number</TableHead>
+                <TableHead className="text-[#617D7B] dark:text-slate-400 font-semibold text-xs uppercase tracking-wider">Customer</TableHead>
+                <TableHead className="text-[#617D7B] dark:text-slate-400 font-semibold text-xs uppercase tracking-wider">Amount</TableHead>
+                <TableHead className="text-[#617D7B] dark:text-slate-400 font-semibold text-xs uppercase tracking-wider">Issued</TableHead>
+                <TableHead className="text-[#617D7B] dark:text-slate-400 font-semibold text-xs uppercase tracking-wider">Due</TableHead>
+                <TableHead className="text-[#617D7B] dark:text-slate-400 font-semibold text-xs uppercase tracking-wider">Status</TableHead>
+                <TableHead className="w-40 text-right text-[#617D7B] dark:text-slate-400 font-semibold text-xs uppercase tracking-wider">Actions</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody className="divide-y divide-[rgba(0,128,128,0.08)]">
+            <TableBody className="divide-y divide-[rgba(0,128,128,0.08)] dark:divide-teal-500/15">
               {invoices.map((inv) => (
-                <TableRow key={inv.id} className="hover:bg-[rgba(0,128,128,0.02)] border-b border-[rgba(0,128,128,0.08)] transition-colors">
-                  <TableCell className="font-semibold text-[#0F2423] font-mono">{inv.number}</TableCell>
-                  <TableCell className="text-[#3D5A58] font-medium">
+                <TableRow key={inv.id} className="hover:bg-[rgba(0,128,128,0.02)] dark:hover:bg-teal-500/5 border-b border-[rgba(0,128,128,0.08)] dark:border-teal-500/15 transition-colors">
+                  <TableCell className="font-semibold text-[#0F2423] dark:text-white font-mono">{inv.number}</TableCell>
+                  <TableCell className="text-[#3D5A58] dark:text-slate-300 font-medium">
                     {customers.find((c) => c.id === inv.customer_id)?.name ?? "—"}
                   </TableCell>
-                  <TableCell className="font-bold text-[#0F2423] tabular-nums">{money(Number(inv.amount ?? 0), currency)}</TableCell>
-                  <TableCell className="text-[#617D7B]">
+                  <TableCell className="font-bold text-[#0F2423] dark:text-white tabular-nums">{money(Number(inv.amount ?? 0), currency)}</TableCell>
+                  <TableCell className="text-[#617D7B] dark:text-slate-400">
                     {shortDate(inv.issue_date)}
                   </TableCell>
-                  <TableCell className="text-[#617D7B]">
+                  <TableCell className="text-[#617D7B] dark:text-slate-400">
                     {inv.due_date ? shortDate(inv.due_date) : "—"}
                   </TableCell>
                   <TableCell>
@@ -546,10 +546,10 @@ function InvoicesPage() {
                         statusMutation.mutate({ id: inv.id, status: v as Status })
                       }
                     >
-                      <SelectTrigger className="h-8 w-28 text-xs border-[rgba(0,128,128,0.2)] text-[#0F2423]">
+                      <SelectTrigger className="h-8 w-28 text-xs border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#0F2423] dark:text-white bg-white dark:bg-[#061417]">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-white dark:bg-[#091b1f] border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#0F2423] dark:text-white">
                         {STATUSES.map((s) => (
                           <SelectItem key={s} value={s}>
                             {s}

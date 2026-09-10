@@ -119,11 +119,19 @@ function AuthPage() {
   // Sign In with password
   async function signIn(e: React.FormEvent): Promise<void> {
     e.preventDefault();
+    if (!email.trim()) {
+      toast.error("Please enter your work email");
+      return;
+    }
+    if (!password) {
+      toast.error("Please enter your password");
+      return;
+    }
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     setLoading(false);
     if (error) {
-      toast.error(error.message);
+      toast.error(error.message || "Invalid login credentials");
       return;
     }
     window.location.replace("/dashboard");
@@ -132,9 +140,17 @@ function AuthPage() {
   // Create account
   async function signUp(e: React.FormEvent): Promise<void> {
     e.preventDefault();
+    if (!email.trim()) {
+      toast.error("Please enter your work email");
+      return;
+    }
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters long");
+      return;
+    }
     setLoading(true);
     const { data, error } = await supabase.auth.signUp({
-      email,
+      email: email.trim(),
       password,
       options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
     });

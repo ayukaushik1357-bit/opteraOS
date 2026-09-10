@@ -107,19 +107,19 @@ function CrmPage() {
           <Link
             key={to}
             to={to}
-            className="group relative rounded-xl border border-[#E5EAF1] bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.05)] transition-all hover:border-blue-300 hover:shadow-md"
+            className="group relative rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/25 bg-white dark:bg-[#091b1f] p-6 shadow-teal-xs transition-all hover:border-[#008080] dark:hover:border-teal-400 hover:shadow-teal-sm cursor-pointer"
           >
             <div className="flex items-center justify-between">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[rgba(0,128,128,0.08)] dark:bg-teal-500/20 text-[#008080] dark:text-teal-300 group-hover:bg-[#008080] group-hover:text-white transition-colors">
                 <Icon className="h-5 w-5" aria-hidden />
               </div>
-              <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-gray-500 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
+              <span className="rounded-full bg-[rgba(0,128,128,0.06)] dark:bg-teal-500/15 border border-[rgba(0,128,128,0.12)] dark:border-teal-500/25 px-2.5 py-0.5 text-xs font-semibold text-[#5A7573] dark:text-teal-300 group-hover:bg-[rgba(0,128,128,0.15)] group-hover:text-[#008080] dark:group-hover:text-teal-200 transition-colors">
                 {tag}
               </span>
             </div>
-            <p className="mt-4 font-semibold text-gray-900 text-lg group-hover:text-blue-600 transition-colors">{label}</p>
-            <p className="mt-1 text-sm text-gray-500 leading-relaxed">{desc}</p>
-            <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
+            <p className="mt-4 font-bold text-[#0F2423] dark:text-white text-lg group-hover:text-[#008080] dark:group-hover:text-teal-300 transition-colors">{label}</p>
+            <p className="mt-1 text-sm text-[#617D7B] dark:text-slate-300 leading-relaxed">{desc}</p>
+            <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-[#008080] dark:text-teal-400 opacity-0 group-hover:opacity-100 transition-opacity">
               <span>Open module</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </div>

@@ -25,7 +25,10 @@ export function Nav() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/[0.08] bg-[#070913]/80 backdrop-blur-2xl transition-all duration-300">
+    <header
+      className="sticky top-0 z-50 border-b border-[#008080]/30 bg-[#062D2A]/95 backdrop-blur-2xl transition-all duration-300"
+      style={{ boxShadow: '0 1px 0 0 rgba(0,128,128,0.25), 0 4px 20px 0 rgba(0,32,30,0.35)' }}
+    >
       <nav
         className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6"
         aria-label="Main Navigation"
@@ -39,7 +42,7 @@ export function Nav() {
             <li key={l.label}>
               <a
                 href={l.href}
-                className="text-[13px] font-medium text-slate-300 transition-colors duration-200 hover:text-white"
+                className="text-[13px] font-medium text-slate-300 transition-colors duration-200 hover:text-teal-300 relative after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-teal-400/60 after:transition-all after:duration-300 hover:after:w-full"
               >
                 {l.label}
               </a>
@@ -86,21 +89,21 @@ export function Nav() {
       </nav>
 
       {open && (
-        <div className="border-t border-white/10 bg-[#070913]/95 px-4 pb-5 pt-3 backdrop-blur-2xl lg:hidden">
+        <div className="border-t border-teal-500/20 bg-[#060d12]/95 px-4 pb-5 pt-3 backdrop-blur-2xl lg:hidden">
           <ul className="grid gap-1 py-2">
             {links.map((l) => (
               <li key={l.label}>
                 <a
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="block rounded-lg px-3 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
+                  className="block rounded-lg px-3 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-teal-500/10 hover:text-teal-300"
                 >
                   {l.label}
                 </a>
               </li>
             ))}
           </ul>
-          <div className="mt-3 flex flex-col gap-2 border-t border-white/10 pt-3">
+          <div className="mt-3 flex flex-col gap-2 border-t border-teal-500/20 pt-3">
             {signedIn ? (
               <Button asChild className="w-full bg-gradient-brand text-white">
                 <Link to="/dashboard">Go to Console</Link>

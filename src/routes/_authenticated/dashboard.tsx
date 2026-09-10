@@ -64,7 +64,7 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 
 function KpiSkeleton() {
   return (
-    <div className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-white p-5 shadow-teal-xs">
+    <div className="rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/25 bg-white dark:bg-[#091b1f] p-5 shadow-teal-xs">
       <Skeleton className="h-3.5 w-24" />
       <Skeleton className="mt-3 h-7 w-32" />
       <Skeleton className="mt-2 h-3.5 w-20" />
@@ -146,7 +146,7 @@ export function Dashboard() {
   return (
     <div className="space-y-6">
       {/* ── 1. Welcome Header Card ───────────────────────────────────── */}
-      <div className="relative overflow-hidden rounded-xl border border-[rgba(0,128,128,0.14)] bg-white p-6 shadow-teal-xs">
+      <div className="relative overflow-hidden rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/25 bg-white dark:bg-[#091b1f] p-6 shadow-teal-xs">
         {/* Teal gradient accent top-left */}
         <div className="pointer-events-none absolute top-0 left-0 h-1 w-full rounded-t-xl bg-gradient-to-r from-[#008080] via-[#0D9488] to-[#14B8A6]" aria-hidden />
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -156,15 +156,15 @@ export function Dashboard() {
             </div>
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#0F2423]">
+                <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#0F2423] dark:text-white">
                   Welcome back, {userName}
                 </h1>
-                <Badge className="text-[10px] bg-[rgba(0,128,128,0.08)] text-[#008080] border border-[rgba(0,128,128,0.2)] font-semibold">
+                <Badge className="text-[10px] bg-[rgba(0,128,128,0.08)] dark:bg-teal-500/20 text-[#008080] dark:text-teal-300 border border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 font-semibold">
                   <Shield className="h-3 w-3 mr-1" /> {current.role || "Owner"}
                 </Badge>
               </div>
-              <p className="mt-0.5 text-xs text-[#617D7B]">
-                {current.name} &bull; {email} &bull; <span className="text-[#008080] font-semibold">Active Workspace</span>
+              <p className="mt-0.5 text-xs text-[#617D7B] dark:text-slate-300">
+                {current.name} &bull; {email} &bull; <span className="text-[#008080] dark:text-teal-400 font-semibold">Active Workspace</span>
               </p>
             </div>
           </div>
@@ -174,9 +174,9 @@ export function Dashboard() {
               variant="outline"
               size="sm"
               onClick={() => setProfileModalOpen(true)}
-              className="h-9 text-xs gap-1.5 border-[rgba(0,128,128,0.2)] text-[#0F2423] hover:border-[#008080] hover:bg-[rgba(0,128,128,0.04)]"
+              className="h-9 text-xs gap-1.5 border border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#0F2423] dark:text-slate-200 hover:border-[#008080] dark:hover:border-teal-400 hover:bg-[rgba(0,128,128,0.04)] dark:hover:bg-teal-500/10"
             >
-              <User className="h-3.5 w-3.5 text-[#008080]" />
+              <User className="h-3.5 w-3.5 text-[#008080] dark:text-teal-400" />
               <span>Edit Profile</span>
             </Button>
             <Button
@@ -202,100 +202,100 @@ export function Dashboard() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           <Link
             to="/invoices"
-            className="group rounded-xl border border-[rgba(0,128,128,0.14)] bg-white p-5 shadow-teal-xs transition-all hover:border-[#008080] hover:shadow-teal-sm cursor-pointer"
+            className="group rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/25 bg-white dark:bg-[#091b1f] p-5 shadow-teal-xs transition-all hover:border-[#008080] dark:hover:border-teal-400 hover:shadow-teal-sm cursor-pointer"
           >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-[#617D7B] uppercase tracking-wider">
+              <span className="text-xs font-semibold text-[#617D7B] dark:text-slate-300 uppercase tracking-wider">
                 Collected Revenue
               </span>
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[rgba(0,128,128,0.1)] text-[#008080]">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[rgba(0,128,128,0.1)] dark:bg-teal-500/20 text-[#008080] dark:text-teal-300">
                 <IndianRupee className="h-4 w-4" />
               </div>
             </div>
-            <p className="mt-3 text-2xl font-bold tracking-tight text-[#0F2423]">
+            <p className="mt-3 text-2xl font-bold tracking-tight text-[#0F2423] dark:text-white">
               {money(k.revenue, currency)}
             </p>
-            <p className="mt-1 text-xs text-[#617D7B]">
+            <p className="mt-1 text-xs text-[#617D7B] dark:text-slate-400">
               Paid customer invoices
             </p>
           </Link>
 
           <Link
             to="/invoices"
-            className="group rounded-xl border border-[rgba(0,128,128,0.14)] bg-white p-5 shadow-teal-xs transition-all hover:border-[#008080] hover:shadow-teal-sm cursor-pointer"
+            className="group rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/25 bg-white dark:bg-[#091b1f] p-5 shadow-teal-xs transition-all hover:border-[#008080] dark:hover:border-teal-400 hover:shadow-teal-sm cursor-pointer"
           >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-[#617D7B] uppercase tracking-wider">
+              <span className="text-xs font-semibold text-[#617D7B] dark:text-slate-300 uppercase tracking-wider">
                 Outstanding Balance
               </span>
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400">
                 <Wallet className="h-4 w-4" />
               </div>
             </div>
-            <p className="mt-3 text-2xl font-bold tracking-tight text-amber-600">
+            <p className="mt-3 text-2xl font-bold tracking-tight text-amber-600 dark:text-amber-400">
               {money(k.outstanding, currency)}
             </p>
-            <p className="mt-1 text-xs text-[#617D7B]">
+            <p className="mt-1 text-xs text-[#617D7B] dark:text-slate-400">
               {k.overdueInvoices > 0 ? `${k.overdueInvoices} overdue invoices` : "All invoices current"}
             </p>
           </Link>
 
           <Link
             to="/deals"
-            className="group rounded-xl border border-[rgba(0,128,128,0.14)] bg-white p-5 shadow-teal-xs transition-all hover:border-[#008080] hover:shadow-teal-sm cursor-pointer"
+            className="group rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/25 bg-white dark:bg-[#091b1f] p-5 shadow-teal-xs transition-all hover:border-[#008080] dark:hover:border-teal-400 hover:shadow-teal-sm cursor-pointer"
           >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-[#617D7B] uppercase tracking-wider">
+              <span className="text-xs font-semibold text-[#617D7B] dark:text-slate-300 uppercase tracking-wider">
                 Active Pipeline
               </span>
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[rgba(0,128,128,0.1)] text-[#008080]">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[rgba(0,128,128,0.1)] dark:bg-teal-500/20 text-[#008080] dark:text-teal-300">
                 <TrendingUp className="h-4 w-4" />
               </div>
             </div>
-            <p className="mt-3 text-2xl font-bold tracking-tight text-[#0F2423]">
+            <p className="mt-3 text-2xl font-bold tracking-tight text-[#0F2423] dark:text-white">
               {money(k.pipeline, currency)}
             </p>
-            <p className="mt-1 text-xs text-[#617D7B]">
+            <p className="mt-1 text-xs text-[#617D7B] dark:text-slate-400">
               {k.openDeals} open deals &bull; {k.winRate}% win rate
             </p>
           </Link>
 
           <Link
             to="/orders"
-            className="group rounded-xl border border-[rgba(0,128,128,0.14)] bg-white p-5 shadow-teal-xs transition-all hover:border-[#008080] hover:shadow-teal-sm cursor-pointer"
+            className="group rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/25 bg-white dark:bg-[#091b1f] p-5 shadow-teal-xs transition-all hover:border-[#008080] dark:hover:border-teal-400 hover:shadow-teal-sm cursor-pointer"
           >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-[#617D7B] uppercase tracking-wider">
+              <span className="text-xs font-semibold text-[#617D7B] dark:text-slate-300 uppercase tracking-wider">
                 Sales Orders
               </span>
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[rgba(0,128,128,0.1)] text-[#008080]">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[rgba(0,128,128,0.1)] dark:bg-teal-500/20 text-[#008080] dark:text-teal-300">
                 <ShoppingCart className="h-4 w-4" />
               </div>
             </div>
-            <p className="mt-3 text-2xl font-bold tracking-tight text-[#0F2423]">
+            <p className="mt-3 text-2xl font-bold tracking-tight text-[#0F2423] dark:text-white">
               {String(data.recentInvoices?.length || 0)} Orders
             </p>
-            <p className="mt-1 text-xs text-[#617D7B]">
+            <p className="mt-1 text-xs text-[#617D7B] dark:text-slate-400">
               Ready for fulfillment
             </p>
           </Link>
 
           <Link
             to="/customers"
-            className="group rounded-xl border border-[rgba(0,128,128,0.14)] bg-white p-5 shadow-teal-xs transition-all hover:border-[#008080] hover:shadow-teal-sm cursor-pointer"
+            className="group rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/25 bg-white dark:bg-[#091b1f] p-5 shadow-teal-xs transition-all hover:border-[#008080] dark:hover:border-teal-400 hover:shadow-teal-sm cursor-pointer"
           >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-[#617D7B] uppercase tracking-wider">
+              <span className="text-xs font-semibold text-[#617D7B] dark:text-slate-300 uppercase tracking-wider">
                 Customer Accounts
               </span>
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[rgba(0,128,128,0.08)] text-[#008080]">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[rgba(0,128,128,0.08)] dark:bg-teal-500/20 text-[#008080] dark:text-teal-300">
                 <Users className="h-4 w-4" />
               </div>
             </div>
-            <p className="mt-3 text-2xl font-bold tracking-tight text-[#0F2423]">
+            <p className="mt-3 text-2xl font-bold tracking-tight text-[#0F2423] dark:text-white">
               {String(k.customers)}
             </p>
-            <p className="mt-1 text-xs text-[#617D7B]">
+            <p className="mt-1 text-xs text-[#617D7B] dark:text-slate-400">
               {k.activeCustomers} active clients
             </p>
           </Link>
@@ -305,17 +305,17 @@ export function Dashboard() {
       {/* ── 3. Invoices & Payments Hub ───────────────────────────────── */}
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Left: Recent Invoices Table (2 Cols) */}
-        <div className="lg:col-span-2 rounded-xl border border-[rgba(0,128,128,0.14)] bg-white shadow-teal-xs overflow-hidden">
-          <div className="flex items-center justify-between p-5 border-b border-[rgba(0,128,128,0.1)]">
+        <div className="lg:col-span-2 rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/25 bg-white dark:bg-[#091b1f] shadow-teal-xs overflow-hidden">
+          <div className="flex items-center justify-between p-5 border-b border-[rgba(0,128,128,0.1)] dark:border-teal-500/20">
             <div className="flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[rgba(0,128,128,0.1)] text-[#008080]">
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[rgba(0,128,128,0.1)] dark:bg-teal-500/20 text-[#008080] dark:text-teal-300">
                 <FileText className="h-4 w-4" />
               </div>
-              <h2 className="font-bold text-sm text-[#0F2423]">Recent Invoices &amp; Billing</h2>
+              <h2 className="font-bold text-sm text-[#0F2423] dark:text-white">Recent Invoices &amp; Billing</h2>
             </div>
             <Link
               to="/invoices"
-              className="text-xs font-semibold text-[#008080] hover:text-[#006666] hover:underline flex items-center gap-1"
+              className="text-xs font-semibold text-[#008080] dark:text-teal-400 hover:text-[#006666] dark:hover:text-teal-300 hover:underline flex items-center gap-1"
             >
               <span>View All</span>
               <ArrowRight className="h-3 w-3" />
@@ -323,41 +323,41 @@ export function Dashboard() {
           </div>
 
           {!data || data.recentInvoices.length === 0 ? (
-            <div className="py-12 text-center text-xs text-[#617D7B]">
+            <div className="py-12 text-center text-xs text-[#617D7B] dark:text-slate-400">
               <FileText className="h-8 w-8 mx-auto mb-2 text-[#617D7B]/40" />
-              <p className="font-medium text-[#3D5A58]">No invoices generated yet.</p>
-              <Button asChild variant="outline" size="sm" className="mt-3 h-8 text-xs border-[rgba(0,128,128,0.2)] text-[#008080] hover:bg-[rgba(0,128,128,0.06)]">
+              <p className="font-medium text-[#3D5A58] dark:text-slate-300">No invoices generated yet.</p>
+              <Button asChild variant="outline" size="sm" className="mt-3 h-8 text-xs border border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#008080] dark:text-teal-300 hover:bg-[rgba(0,128,128,0.06)] dark:hover:bg-teal-500/15">
                 <Link to="/invoices">Create First Invoice</Link>
               </Button>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
-                <thead className="text-left bg-[rgba(0,128,128,0.03)]">
-                  <tr className="border-b border-[rgba(0,128,128,0.1)]">
-                    <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#617D7B]">Invoice #</th>
-                    <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#617D7B]">Status</th>
-                    <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#617D7B]">Amount</th>
-                    <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#617D7B] text-right">PDF</th>
+                <thead className="text-left bg-[rgba(0,128,128,0.03)] dark:bg-[#061417]">
+                  <tr className="border-b border-[rgba(0,128,128,0.1)] dark:border-teal-500/20">
+                    <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#617D7B] dark:text-slate-300">Invoice #</th>
+                    <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#617D7B] dark:text-slate-300">Status</th>
+                    <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#617D7B] dark:text-slate-300">Amount</th>
+                    <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wider text-[#617D7B] dark:text-slate-300 text-right">PDF</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[rgba(0,128,128,0.08)]">
+                <tbody className="divide-y divide-[rgba(0,128,128,0.08)] dark:divide-teal-500/15">
                   {data.recentInvoices.map((inv: any) => (
-                    <tr key={inv.id} className="hover:bg-[rgba(0,128,128,0.02)] transition-colors">
-                      <td className="px-5 py-3 font-semibold text-[#0F2423] font-mono">
+                    <tr key={inv.id} className="hover:bg-[rgba(0,128,128,0.02)] dark:hover:bg-teal-500/10 transition-colors">
+                      <td className="px-5 py-3 font-semibold text-[#0F2423] dark:text-white font-mono">
                         {inv.number}
                       </td>
                       <td className="px-5 py-3">
                         {getInvoiceStatusBadge(inv.status)}
                       </td>
-                      <td className="px-5 py-3 font-bold text-[#0F2423] tabular-nums">
+                      <td className="px-5 py-3 font-bold text-[#0F2423] dark:text-white tabular-nums">
                         {money(Number(inv.amount), currency)}
                       </td>
                       <td className="px-5 py-3 text-right">
                         <Button
                           size="sm"
                           variant="ghost"
-                          className="h-7 px-2 text-[#008080] hover:bg-[rgba(0,128,128,0.08)] text-xs"
+                          className="h-7 px-2 text-[#008080] dark:text-teal-400 hover:bg-[rgba(0,128,128,0.08)] dark:hover:bg-teal-500/15 text-xs"
                           asChild
                         >
                           <a href={invoicesApi.getPdfUrl(orgId, inv.id)} target="_blank" rel="noopener noreferrer">
@@ -376,33 +376,33 @@ export function Dashboard() {
         {/* Right: Quick Actions & Tasks */}
         <div className="space-y-5">
           {/* Quick Actions */}
-          <div className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-white p-5 shadow-teal-xs">
-            <h2 className="font-bold text-sm text-[#0F2423] mb-3 flex items-center gap-1.5">
-              <Zap className="h-4 w-4 text-[#008080]" />
+          <div className="rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/25 bg-white dark:bg-[#091b1f] p-5 shadow-teal-xs">
+            <h2 className="font-bold text-sm text-[#0F2423] dark:text-white mb-3 flex items-center gap-1.5">
+              <Zap className="h-4 w-4 text-[#008080] dark:text-teal-400" />
               <span>Quick Workflows</span>
             </h2>
             <div className="grid grid-cols-2 gap-2 text-xs">
-              <Button asChild variant="outline" size="sm" className="h-10 justify-start px-3 border-[rgba(0,128,128,0.18)] hover:border-[#008080] hover:bg-[rgba(0,128,128,0.04)] text-[#0F2423]">
+              <Button asChild variant="outline" size="sm" className="h-10 justify-start px-3 border border-[rgba(0,128,128,0.18)] dark:border-teal-500/30 hover:border-[#008080] dark:hover:border-teal-400 hover:bg-[rgba(0,128,128,0.04)] dark:hover:bg-teal-500/10 text-[#0F2423] dark:text-slate-200">
                 <Link to="/invoices">
-                  <FileText className="h-3.5 w-3.5 mr-2 text-[#008080]" />
+                  <FileText className="h-3.5 w-3.5 mr-2 text-[#008080] dark:text-teal-400" />
                   <span>New Invoice</span>
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="sm" className="h-10 justify-start px-3 border-[rgba(0,128,128,0.18)] hover:border-[#008080] hover:bg-[rgba(0,128,128,0.04)] text-[#0F2423]">
+              <Button asChild variant="outline" size="sm" className="h-10 justify-start px-3 border border-[rgba(0,128,128,0.18)] dark:border-teal-500/30 hover:border-[#008080] dark:hover:border-teal-400 hover:bg-[rgba(0,128,128,0.04)] dark:hover:bg-teal-500/10 text-[#0F2423] dark:text-slate-200">
                 <Link to="/quotations">
-                  <FileText className="h-3.5 w-3.5 mr-2 text-[#008080]" />
+                  <FileText className="h-3.5 w-3.5 mr-2 text-[#008080] dark:text-teal-400" />
                   <span>New Quote</span>
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="sm" className="h-10 justify-start px-3 border-[rgba(0,128,128,0.18)] hover:border-[#008080] hover:bg-[rgba(0,128,128,0.04)] text-[#0F2423]">
+              <Button asChild variant="outline" size="sm" className="h-10 justify-start px-3 border border-[rgba(0,128,128,0.18)] dark:border-teal-500/30 hover:border-[#008080] dark:hover:border-teal-400 hover:bg-[rgba(0,128,128,0.04)] dark:hover:bg-teal-500/10 text-[#0F2423] dark:text-slate-200">
                 <Link to="/leads">
-                  <Users className="h-3.5 w-3.5 mr-2 text-[#008080]" />
+                  <Users className="h-3.5 w-3.5 mr-2 text-[#008080] dark:text-teal-400" />
                   <span>Add Lead</span>
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="sm" className="h-10 justify-start px-3 border-[rgba(0,128,128,0.18)] hover:border-[#008080] hover:bg-[rgba(0,128,128,0.04)] text-[#0F2423]">
+              <Button asChild variant="outline" size="sm" className="h-10 justify-start px-3 border border-[rgba(0,128,128,0.18)] dark:border-teal-500/30 hover:border-[#008080] dark:hover:border-teal-400 hover:bg-[rgba(0,128,128,0.04)] dark:hover:bg-teal-500/10 text-[#0F2423] dark:text-slate-200">
                 <Link to="/deals">
-                  <TrendingUp className="h-3.5 w-3.5 mr-2 text-[#008080]" />
+                  <TrendingUp className="h-3.5 w-3.5 mr-2 text-[#008080] dark:text-teal-400" />
                   <span>Add Deal</span>
                 </Link>
               </Button>
@@ -410,31 +410,31 @@ export function Dashboard() {
           </div>
 
           {/* Action Items */}
-          <div className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-white shadow-teal-xs overflow-hidden">
-            <div className="flex items-center justify-between p-4 border-b border-[rgba(0,128,128,0.1)]">
-              <h2 className="font-bold text-sm text-[#0F2423] flex items-center gap-1.5">
-                <CheckSquare className="h-4 w-4 text-[#008080]" />
+          <div className="rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/25 bg-white dark:bg-[#091b1f] shadow-teal-xs overflow-hidden">
+            <div className="flex items-center justify-between p-4 border-b border-[rgba(0,128,128,0.1)] dark:border-teal-500/20">
+              <h2 className="font-bold text-sm text-[#0F2423] dark:text-white flex items-center gap-1.5">
+                <CheckSquare className="h-4 w-4 text-[#008080] dark:text-teal-400" />
                 <span>Action Items</span>
               </h2>
-              <Link to="/tasks" className="text-xs font-semibold text-[#008080] hover:underline">
+              <Link to="/tasks" className="text-xs font-semibold text-[#008080] dark:text-teal-400 hover:underline">
                 View All
               </Link>
             </div>
             {!data || (data.recentTasks ?? []).length === 0 ? (
               <div className="px-4 py-6 text-center">
-                <CheckSquare className="h-6 w-6 mx-auto mb-2 text-[#008080]/60" />
-                <p className="text-xs text-[#617D7B]">All tasks completed.</p>
+                <CheckSquare className="h-6 w-6 mx-auto mb-2 text-[#008080]/60 dark:text-teal-400/60" />
+                <p className="text-xs text-[#617D7B] dark:text-slate-400">All tasks completed.</p>
               </div>
             ) : (
-              <div className="divide-y divide-[rgba(0,128,128,0.08)]">
+              <div className="divide-y divide-[rgba(0,128,128,0.08)] dark:divide-teal-500/15">
                 {(data.recentTasks ?? []).slice(0, 3).map((t: any) => (
-                  <div key={t.id} className="p-3 flex items-center justify-between hover:bg-[rgba(0,128,128,0.02)] transition-colors">
-                    <span className="text-xs font-medium text-[#0F2423] truncate">{t.title}</span>
+                  <div key={t.id} className="p-3 flex items-center justify-between hover:bg-[rgba(0,128,128,0.02)] dark:hover:bg-teal-500/10 transition-colors">
+                    <span className="text-xs font-medium text-[#0F2423] dark:text-white truncate">{t.title}</span>
                     <Badge className={[
                       "text-[10px] uppercase font-bold shrink-0 ml-2",
-                      t.priority === "HIGH" ? "bg-red-50 text-red-600 border border-red-200" :
-                      t.priority === "MEDIUM" ? "bg-amber-50 text-amber-600 border border-amber-200" :
-                      "bg-[#EDF4F3] text-[#3D5A58] border border-[rgba(0,128,128,0.15)]"
+                      t.priority === "HIGH" ? "bg-red-50 dark:bg-rose-500/20 text-red-600 dark:text-rose-400 border border-red-200 dark:border-rose-500/30" :
+                      t.priority === "MEDIUM" ? "bg-amber-50 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-500/30" :
+                      "bg-[#EDF4F3] dark:bg-teal-500/15 text-[#3D5A58] dark:text-teal-300 border border-[rgba(0,128,128,0.15)] dark:border-teal-500/30"
                     ].join(" ")}>
                       {t.priority}
                     </Badge>
@@ -449,9 +449,9 @@ export function Dashboard() {
       {/* ── 4. Charts & Analytics ─────────────────────────────────── */}
       {data && (
         <div className="grid gap-6 lg:grid-cols-5">
-          <div className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-white p-5 shadow-teal-xs lg:col-span-3">
-            <h2 className="text-sm font-bold text-[#0F2423]">Revenue Trend &amp; Collections</h2>
-            <p className="text-xs text-[#617D7B] mt-0.5">Historical 6-month performance</p>
+          <div className="rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/25 bg-white dark:bg-[#091b1f] p-5 shadow-teal-xs lg:col-span-3">
+            <h2 className="text-sm font-bold text-[#0F2423] dark:text-white">Revenue Trend &amp; Collections</h2>
+            <p className="text-xs text-[#617D7B] dark:text-slate-400 mt-0.5">Historical 6-month performance</p>
             <div className="mt-4 h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={data.revenueSeries}>
@@ -465,7 +465,7 @@ export function Dashboard() {
                   <XAxis dataKey="month" stroke="#617D7B" fontSize={11} tickLine={false} axisLine={false} />
                   <YAxis stroke="#617D7B" fontSize={11} tickLine={false} axisLine={false} width={48} />
                   <Tooltip
-                    contentStyle={{ background: "#FFFFFF", border: "1px solid rgba(0,128,128,0.2)", borderRadius: 8, boxShadow: "0 4px 12px rgba(0,128,128,0.08)", color: "#0F2423" }}
+                    contentStyle={{ background: "#091b1f", border: "1px solid rgba(0,179,179,0.3)", borderRadius: 8, boxShadow: "0 4px 12px rgba(0,0,0,0.3)", color: "#ffffff" }}
                     formatter={(v: number) => money(v, currency)}
                   />
                   <Area type="monotone" dataKey="revenue" stroke="#008080" strokeWidth={2.5} fill="url(#revFill)" />
@@ -474,9 +474,9 @@ export function Dashboard() {
             </div>
           </div>
 
-          <div className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-white p-5 shadow-teal-xs lg:col-span-2">
-            <h2 className="text-sm font-bold text-[#0F2423]">Sales Pipeline by Stage</h2>
-            <p className="text-xs text-[#617D7B] mt-0.5">Weighted opportunity value</p>
+          <div className="rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/25 bg-white dark:bg-[#091b1f] p-5 shadow-teal-xs lg:col-span-2">
+            <h2 className="text-sm font-bold text-[#0F2423] dark:text-white">Sales Pipeline by Stage</h2>
+            <p className="text-xs text-[#617D7B] dark:text-slate-400 mt-0.5">Weighted opportunity value</p>
             <div className="mt-4 h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={data.pipelineByStage}>
@@ -484,7 +484,7 @@ export function Dashboard() {
                   <XAxis dataKey="stage" stroke="#617D7B" fontSize={11} tickLine={false} axisLine={false} />
                   <YAxis stroke="#617D7B" fontSize={11} tickLine={false} axisLine={false} width={48} />
                   <Tooltip
-                    contentStyle={{ background: "#FFFFFF", border: "1px solid rgba(0,128,128,0.2)", borderRadius: 8, boxShadow: "0 4px 12px rgba(0,128,128,0.08)", color: "#0F2423" }}
+                    contentStyle={{ background: "#091b1f", border: "1px solid rgba(0,179,179,0.3)", borderRadius: 8, boxShadow: "0 4px 12px rgba(0,0,0,0.3)", color: "#ffffff" }}
                     formatter={(v: number) => money(v, currency)}
                   />
                   <Bar dataKey="value" fill="#008080" radius={[6, 6, 0, 0]} />

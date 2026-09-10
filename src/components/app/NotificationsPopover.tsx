@@ -63,8 +63,8 @@ export function NotificationsPopover() {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="sm" className="relative h-9 w-9 p-0 rounded-full hover:bg-white/10">
-          <Bell className="h-4 w-4 text-[#374151]" />
+        <Button variant="ghost" size="sm" className="relative h-9 w-9 p-0 rounded-full hover:bg-[rgba(0,128,128,0.08)] dark:hover:bg-teal-500/15">
+          <Bell className="h-4 w-4 text-[#374151] dark:text-teal-300" />
           {unreadCount > 0 && (
             <Badge
               variant="destructive"
@@ -76,14 +76,14 @@ export function NotificationsPopover() {
           <span className="sr-only">Notifications</span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="end" className="w-88 p-0 bg-white border-[#E2E8F0] text-[#1F2937] shadow-2xl backdrop-blur-xl">
-        <div className="flex items-center justify-between border-b border-[#E2E8F0] p-3 bg-[#F8FAFC]">
+      <PopoverContent align="end" className="w-88 p-0 bg-white dark:bg-[#091b1f] border border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#0F2423] dark:text-slate-100 shadow-2xl backdrop-blur-xl">
+        <div className="flex items-center justify-between border-b border-[rgba(0,128,128,0.14)] dark:border-teal-500/20 p-3 bg-[#F8FBFA] dark:bg-[#061417]">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-[#374151]">
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#0F2423] dark:text-slate-200">
               Notifications
             </span>
             {unreadCount > 0 && (
-              <Badge className="bg-indigo-500/20 text-indigo-300 border-indigo-500/30 text-[10px]">
+              <Badge className="bg-[rgba(0,128,128,0.15)] dark:bg-teal-500/25 text-[#008080] dark:text-teal-300 border border-[rgba(0,128,128,0.25)] dark:border-teal-500/40 text-[10px]">
                 {unreadCount} unread
               </Badge>
             )}
@@ -93,15 +93,15 @@ export function NotificationsPopover() {
               variant="ghost"
               size="sm"
               onClick={() => markAllReadMutation.mutate()}
-              className="h-6 text-[11px] text-indigo-400 hover:text-indigo-300 hover:bg-white/5 px-2"
+              className="h-6 text-[11px] text-[#008080] dark:text-teal-400 hover:text-[#006666] dark:hover:text-teal-300 hover:bg-[rgba(0,128,128,0.06)] dark:hover:bg-teal-500/15 px-2 font-medium"
             >
               <CheckCheck className="h-3 w-3 mr-1" /> Mark all read
             </Button>
           )}
         </div>
-        <div className="max-h-80 overflow-y-auto divide-y divide-white/5">
+        <div className="max-h-80 overflow-y-auto divide-y divide-[rgba(0,128,128,0.08)] dark:divide-teal-500/15">
           {items.length === 0 ? (
-            <div className="p-8 text-center text-xs text-[#6B7280]">
+            <div className="p-8 text-center text-xs text-[#5A7573] dark:text-slate-400">
               No notifications yet. You're all caught up!
             </div>
           ) : (
@@ -110,30 +110,30 @@ export function NotificationsPopover() {
               return (
                 <div
                   key={n.id}
-                  className={`p-3 text-xs transition-colors hover:bg-[#F8FAFC] ${
-                    !isRead ? "bg-indigo-500/[0.07]" : ""
+                  className={`p-3 text-xs transition-colors hover:bg-[rgba(0,128,128,0.05)] dark:hover:bg-teal-500/10 ${
+                    !isRead ? "bg-[rgba(0,128,128,0.08)] dark:bg-teal-500/15" : ""
                   }`}
                 >
                   <div className="flex items-start gap-2.5">
                     {n.priority === "URGENT" || n.priority === "HIGH" ? (
-                      <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-rose-400" />
+                      <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-rose-500 dark:text-rose-400" />
                     ) : n.type === "AI_ACTION_REQUIRED" ? (
-                      <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-indigo-400" />
+                      <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-[#008080] dark:text-teal-400" />
                     ) : (
-                      <Info className="mt-0.5 h-4 w-4 shrink-0 text-cyan-400" />
+                      <Info className="mt-0.5 h-4 w-4 shrink-0 text-cyan-600 dark:text-cyan-400" />
                     )}
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-slate-100 truncate">{n.title}</p>
-                      <p className="text-[#6B7280] mt-0.5 leading-relaxed text-[11px]">{n.message}</p>
+                      <p className="font-semibold text-[#0F2423] dark:text-white truncate">{n.title}</p>
+                      <p className="text-[#3D5A58] dark:text-slate-300 mt-0.5 leading-relaxed text-[11px]">{n.message}</p>
                       <div className="flex items-center gap-2 mt-1.5">
-                        <span className="text-[10px] text-[#6B7280] font-mono">
+                        <span className="text-[10px] text-[#617D7B] dark:text-slate-400 font-mono">
                           {shortDate(n.createdAt || n.created_at)}
                         </span>
                         {n.actionUrl && (
                           <Link
                             to={n.actionUrl}
                             onClick={() => setOpen(false)}
-                            className="text-[10px] text-indigo-400 hover:underline"
+                            className="text-[10px] text-[#008080] dark:text-teal-400 hover:underline font-semibold"
                           >
                             View details →
                           </Link>
@@ -143,7 +143,7 @@ export function NotificationsPopover() {
                     {!isRead && (
                       <button
                         onClick={() => markReadMutation.mutate(n.id)}
-                        className="text-[#6B7280] hover:text-white p-1 rounded hover:bg-white/10"
+                        className="text-[#617D7B] dark:text-slate-400 hover:text-[#0F2423] dark:hover:text-white p-1 rounded hover:bg-[rgba(0,128,128,0.1)]"
                         title="Mark as read"
                       >
                         <Check className="h-3.5 w-3.5" />
@@ -155,11 +155,11 @@ export function NotificationsPopover() {
             })
           )}
         </div>
-        <div className="border-t border-[#E2E8F0] p-2 text-center bg-[#F8FAFC]">
+        <div className="border-t border-[rgba(0,128,128,0.14)] dark:border-teal-500/20 p-2 text-center bg-[#F8FBFA] dark:bg-[#061417]">
           <Link
             to="/notifications"
             onClick={() => setOpen(false)}
-            className="text-[11px] text-indigo-400 hover:text-indigo-300 font-medium block py-1"
+            className="text-[11px] text-[#008080] dark:text-teal-400 hover:text-[#006666] dark:hover:text-teal-300 font-semibold block py-1"
           >
             View all notifications →
           </Link>

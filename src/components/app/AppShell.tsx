@@ -15,6 +15,8 @@ import {
   LayoutDashboard,
   LineChart,
   LogOut,
+  Moon,
+  Sun,
   TrendingUp,
   UserPlus,
   Users,
@@ -66,6 +68,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getMyWorkspaces } from "@/lib/workspace.functions";
 import { authApi } from "@/lib/api";
 import { authStorage } from "@/lib/api/client";
+import { useTheme } from "@/hooks/use-theme";
 
 const STORAGE_KEY = "opteraos.currentOrg";
 
@@ -385,6 +388,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { isDark, toggleTheme } = useTheme();
 
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -405,14 +409,14 @@ export function AppShell({ children }: { children: ReactNode }) {
     : "OP";
 
   return (
-    <div className="min-h-screen text-[#0F2423] flex flex-col">
+    <div className="min-h-screen text-[#0F2423] dark:text-slate-100 flex flex-col bg-white dark:bg-[#071619] transition-colors duration-200">
 
       {/* ── Top Header ── */}
-      <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center border-b border-[rgba(0,128,128,0.14)] bg-white/90 backdrop-blur-xl px-4 sm:px-6 shadow-[0_2px_12px_rgba(0,64,64,0.04)]">
+      <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center border-b border-[rgba(0,128,128,0.14)] dark:border-teal-500/20 bg-white/90 dark:bg-[#091b1f]/95 backdrop-blur-xl px-4 sm:px-6 shadow-[0_2px_12px_rgba(0,64,64,0.04)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.3)]">
 
         {/* Mobile hamburger */}
         <button
-          className="mr-3 rounded-md p-1.5 text-[#5A7573] hover:bg-[rgba(0,128,128,0.06)] hover:text-[#0F2423] lg:hidden cursor-pointer"
+          className="mr-3 rounded-md p-1.5 text-[#5A7573] dark:text-slate-300 hover:bg-[rgba(0,128,128,0.06)] dark:hover:bg-teal-500/15 hover:text-[#0F2423] dark:hover:text-white lg:hidden cursor-pointer"
           onClick={() => setMobileOpen(true)}
           aria-label="Open navigation"
         >
@@ -421,7 +425,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
         {/* Desktop sidebar collapse toggle */}
         <button
-          className="mr-4 hidden rounded-md p-1.5 text-[#5A7573] hover:bg-[rgba(0,128,128,0.06)] hover:text-[#0F2423] lg:flex cursor-pointer"
+          className="mr-4 hidden rounded-md p-1.5 text-[#5A7573] dark:text-slate-300 hover:bg-[rgba(0,128,128,0.06)] dark:hover:bg-teal-500/15 hover:text-[#0F2423] dark:hover:text-white lg:flex cursor-pointer"
           onClick={() => setSidebarCollapsed((v) => !v)}
           aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
@@ -437,7 +441,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <div className="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-br from-[#008080] to-[#0D9488] text-white text-xs font-bold shadow-[0_2px_8px_rgba(0,128,128,0.3)]">
             O
           </div>
-          <span className="text-sm font-bold tracking-tight text-[#0F2423]">
+          <span className="text-sm font-bold tracking-tight text-[#0F2423] dark:text-white">
             optera<span className="text-gradient">OS</span>
           </span>
         </Link>
@@ -454,49 +458,59 @@ export function AppShell({ children }: { children: ReactNode }) {
 
         {/* Right: actions */}
         <div className="ml-auto flex items-center gap-1.5 sm:gap-2 shrink-0">
+          {/* Theme Toggle */}
+          <button
+            onClick={toggleTheme}
+            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            className="flex items-center justify-center h-8 w-8 rounded-lg border border-[rgba(0,128,128,0.18)] dark:border-teal-500/30 bg-transparent text-[#5A7573] dark:text-teal-300 hover:bg-[rgba(0,128,128,0.08)] dark:hover:bg-teal-500/15 hover:text-[#008080] dark:hover:text-teal-200 transition-all duration-200 cursor-pointer"
+          >
+            {isDark ? <Sun className="h-4 w-4 text-amber-400" /> : <Moon className="h-4 w-4 text-[#008080]" />}
+          </button>
+
           <NotificationsPopover />
 
           {/* User avatar dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button
-                className="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-sm font-medium text-[#3D5A58] hover:bg-[rgba(0,128,128,0.06)] hover:text-[#0F2423] transition-colors cursor-pointer"
+                className="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-sm font-medium text-[#3D5A58] dark:text-slate-200 hover:bg-[rgba(0,128,128,0.06)] dark:hover:bg-teal-500/10 hover:text-[#0F2423] dark:hover:text-white transition-colors cursor-pointer"
                 aria-label="User menu"
               >
                 <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-[#008080] to-[#0D9488] text-white text-xs font-bold shadow-[0_2px_8px_rgba(0,128,128,0.25)]">
                   {userInitials}
                 </div>
-                <span className="hidden max-w-[8rem] truncate text-sm font-semibold text-[#0F2423] lg:inline">
+                <span className="hidden max-w-[8rem] truncate text-sm font-semibold text-[#0F2423] dark:text-white lg:inline">
                   {email?.split("@")[0] || "Account"}
                 </span>
-                <ChevronDown className="h-3.5 w-3.5 text-[#5A7573] hidden sm:block" />
+                <ChevronDown className="h-3.5 w-3.5 text-[#5A7573] dark:text-slate-300 hidden sm:block" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
-              className="w-52 border border-[rgba(0,128,128,0.15)] bg-white shadow-[0_8px_32px_rgba(0,64,64,0.1)]"
+              className="w-52 border border-[rgba(0,128,128,0.15)] dark:border-teal-500/30 bg-white dark:bg-[#091b1f] shadow-[0_8px_32px_rgba(0,64,64,0.1)]"
             >
-              <DropdownMenuLabel className="text-xs text-[#5A7573]">
-                <div className="font-bold text-[#0F2423] text-sm">{email?.split("@")[0] || "User"}</div>
-                <div className="text-[11px] text-[#617D7B] truncate">{email || ""}</div>
+              <DropdownMenuLabel className="text-xs text-[#5A7573] dark:text-slate-300">
+                <div className="font-bold text-[#0F2423] dark:text-white text-sm">{email?.split("@")[0] || "User"}</div>
+                <div className="text-[11px] text-[#617D7B] dark:text-slate-400 truncate">{email || ""}</div>
               </DropdownMenuLabel>
-              <DropdownMenuSeparator className="bg-[rgba(0,128,128,0.1)]" />
+              <DropdownMenuSeparator className="bg-[rgba(0,128,128,0.1)] dark:bg-teal-500/20" />
               <DropdownMenuItem
                 onClick={() => setProfileOpen(true)}
-                className="cursor-pointer text-sm text-[#3D5A58] hover:bg-[rgba(0,128,128,0.06)] hover:text-[#0F2423]"
+                className="cursor-pointer text-sm text-[#3D5A58] dark:text-slate-200 hover:bg-[rgba(0,128,128,0.06)] dark:hover:bg-teal-500/15 hover:text-[#0F2423] dark:hover:text-white"
               >
-                <User className="mr-2 h-4 w-4 text-[#008080]" /> Profile & Account
+                <User className="mr-2 h-4 w-4 text-[#008080] dark:text-teal-400" /> Profile & Account
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => navigate({ to: "/settings" })}
-                className="cursor-pointer text-sm text-[#3D5A58] hover:bg-[rgba(0,128,128,0.06)] hover:text-[#0F2423]"
+                className="cursor-pointer text-sm text-[#3D5A58] dark:text-slate-200 hover:bg-[rgba(0,128,128,0.06)] dark:hover:bg-teal-500/15 hover:text-[#0F2423] dark:hover:text-white"
               >
-                <Settings className="mr-2 h-4 w-4" /> Settings
+                <Settings className="mr-2 h-4 w-4 text-[#008080] dark:text-teal-400" /> Settings
               </DropdownMenuItem>
-              <DropdownMenuSeparator className="bg-[rgba(0,128,128,0.1)]" />
+              <DropdownMenuSeparator className="bg-[rgba(0,128,128,0.1)] dark:bg-teal-500/20" />
               <DropdownMenuItem
                 onClick={signOut}
-                className="cursor-pointer text-sm text-[#E11D48] hover:bg-[rgba(225,29,72,0.08)] focus:text-[#E11D48] focus:bg-[rgba(225,29,72,0.08)]"
+                className="cursor-pointer text-sm text-[#E11D48] dark:text-rose-400 hover:bg-[rgba(225,29,72,0.08)] dark:hover:bg-rose-500/15 focus:text-[#E11D48] focus:bg-[rgba(225,29,72,0.08)]"
               >
                 <LogOut className="mr-2 h-4 w-4" /> Sign out
               </DropdownMenuItem>

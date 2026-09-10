@@ -54,7 +54,7 @@ export const authStorage = {
         } catch {}
       }
     }
-    return 'dev_session_token_opteraos';
+    return null;
   },
   setToken: (token: string): void => {
     if (typeof window !== 'undefined') localStorage.setItem(TOKEN_KEY, token);

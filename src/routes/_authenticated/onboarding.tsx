@@ -69,29 +69,29 @@ function Onboarding() {
 
   return (
     <div className="mx-auto max-w-xl py-8">
-      <h1 className="text-2xl font-bold tracking-tight text-gray-900">Create your workspace</h1>
-      <p className="mt-1 text-xs text-gray-500">
+      <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Create your workspace</h1>
+      <p className="mt-1 text-xs text-gray-500 dark:text-slate-400">
         Every business runs in its own opteraOS workspace. You'll be the owner and can invite
         teammates next.
       </p>
 
       {invites.length > 0 && (
-        <div className="mt-6 rounded-xl border border-[#E5EAF1] bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
-          <h2 className="text-sm font-semibold text-gray-900">Pending invitations</h2>
+        <div className="mt-6 rounded-xl border border-[#E5EAF1] dark:border-teal-500/20 bg-white dark:bg-[#091b1f] p-5 shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
+          <h2 className="text-sm font-semibold text-gray-900 dark:text-white">Pending invitations</h2>
           <ul className="mt-3 grid gap-2">
             {invites.map((invite) => (
               <li
                 key={invite.id}
-                className="flex items-center justify-between gap-3 rounded-lg bg-[#F8FAFC] border border-[#E5EAF1] px-3 py-2"
+                className="flex items-center justify-between gap-3 rounded-lg bg-[#F8FAFC] dark:bg-[#061417] border border-[#E5EAF1] dark:border-teal-500/20 px-3 py-2"
               >
-                <span className="text-xs text-gray-800">
-                  {invite.org_name} <span className="text-gray-500">· {invite.role}</span>
+                <span className="text-xs text-gray-800 dark:text-slate-200">
+                  {invite.org_name} <span className="text-gray-500 dark:text-slate-400">· {invite.role}</span>
                 </span>
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={() => acceptMutation.mutate(invite.id)}
-                  className="text-xs h-7"
+                  className="text-xs h-7 border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#0F2423] dark:text-slate-200"
                 >
                   Join
                 </Button>
@@ -102,14 +102,14 @@ function Onboarding() {
       )}
 
       <form
-        className="mt-6 grid gap-4 rounded-xl border border-[#E5EAF1] bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.05)]"
+        className="mt-6 grid gap-4 rounded-xl border border-[#E5EAF1] dark:border-teal-500/20 bg-white dark:bg-[#091b1f] p-6 shadow-[0_1px_3px_rgba(0,0,0,0.05)]"
         onSubmit={(e) => {
           e.preventDefault();
           createMutation.mutate();
         }}
       >
         <div className="grid gap-2 text-xs">
-          <Label htmlFor="name" className="text-gray-700">Business name</Label>
+          <Label htmlFor="name" className="text-gray-700 dark:text-slate-200 font-medium">Business name</Label>
           <Input
             id="name"
             required
@@ -120,12 +120,12 @@ function Onboarding() {
           />
         </div>
         <div className="grid gap-2 text-xs">
-          <Label htmlFor="currency" className="text-gray-700">Reporting currency</Label>
+          <Label htmlFor="currency" className="text-gray-700 dark:text-slate-200 font-medium">Reporting currency</Label>
           <Select value={currency} onValueChange={setCurrency}>
-            <SelectTrigger id="currency" className="h-9">
+            <SelectTrigger id="currency" className="h-9 border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#0F2423] dark:text-white bg-white dark:bg-[#061417]">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white dark:bg-[#091b1f] border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#0F2423] dark:text-white">
               {["INR", "USD", "EUR", "GBP", "AED", "SGD"].map((c) => (
                 <SelectItem key={c} value={c}>
                   {c}

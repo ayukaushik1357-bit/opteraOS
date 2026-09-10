@@ -1,7 +1,18 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell, WorkspaceProvider } from "@/components/app/AppShell";
 import { authStorage } from "@/lib/api/client";
+
+function AuthenticatedLayout() {
+  return (
+    <WorkspaceProvider>
+      <AppShell>
+        <Outlet />
+      </AppShell>
+    </WorkspaceProvider>
+  );
+}
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -29,14 +40,8 @@ export const Route = createFileRoute("/_authenticated")({
       // Supabase not configured
     }
 
-    // Fallback to local session so user is never blocked from viewing Autopilot or workspace modules
-    return { user: { id: "00000000-0000-0000-0000-000000000001", email: "admin@opteraos.com" } };
+    // Unauthenticated: redirect to login
+    throw redirect({ to: "/auth" });
   },
-  component: () => (
-    <WorkspaceProvider>
-      <AppShell>
-        <Outlet />
-      </AppShell>
-    </WorkspaceProvider>
-  ),
+  component: AuthenticatedLayout,
 });

@@ -1,4 +1,4 @@
-﻿import {
+import {
   Activity,
   BarChart3,
   Boxes,
@@ -19,6 +19,8 @@
   Users,
   Workflow,
   Zap,
+  Moon,
+  Sun,
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
@@ -30,6 +32,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { CampaignModal, ConnectModal } from "@/components/marketing/modals";
+import { useTheme } from "@/hooks/use-theme";
 
 export function SectionHeading({
   eyebrow,
@@ -45,15 +48,15 @@ export function SectionHeading({
   return (
     <div className={align === "center" ? "mx-auto max-w-2xl text-center" : "max-w-2xl"}>
       {eyebrow && (
-        <p className="text-xs font-semibold uppercase tracking-[0.1em] text-[#008080]">
+        <p className="text-xs font-semibold uppercase tracking-[0.1em] text-[#008080] dark:text-teal-400">
           {eyebrow}
         </p>
       )}
-      <h2 className="mt-3 text-balance text-3xl font-bold tracking-tight text-[#0F2423] sm:text-4xl">
+      <h2 className="mt-3 text-balance text-3xl font-bold tracking-tight text-[#0F2423] dark:text-white sm:text-4xl">
         {title}
       </h2>
       {subtitle && (
-        <p className="mt-4 text-pretty text-base text-[#3D5A58] leading-relaxed">{subtitle}</p>
+        <p className="mt-4 text-pretty text-base text-[#3D5A58] dark:text-slate-300 leading-relaxed">{subtitle}</p>
       )}
     </div>
   );
@@ -68,7 +71,7 @@ function SectionGlow({ color = "teal" }: { color?: "teal" | "violet" | "cyan" })
   };
   return (
     <div
-      className={`pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[400px] w-[600px] rounded-full ${colors[color]} opacity-[0.04] blur-[120px] -z-10`}
+      className={`pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[400px] w-[600px] rounded-full ${colors[color]} opacity-[0.04] dark:opacity-[0.08] blur-[120px] -z-10`}
       aria-hidden
     />
   );
@@ -95,19 +98,19 @@ export function ProblemSection() {
           {fragmented.map((f, i) => (
             <div
               key={f}
-              className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-white backdrop-blur-sm px-3 py-4 text-center text-xs font-semibold text-[#5A7573]"
+              className="rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/20 bg-white dark:bg-[#091b1f] backdrop-blur-sm px-3 py-4 text-center text-xs font-semibold text-[#5A7573] dark:text-slate-300"
               style={{ transform: `rotate(${(i % 3) - 1}deg)` }}
             >
               {f}
             </div>
           ))}
         </div>
-        <div className="mx-auto hidden h-px w-24 bg-gradient-to-r from-transparent via-[#008080] to-transparent lg:block" />
-        <div className="rounded-2xl border border-[rgba(0,128,128,0.25)] bg-white backdrop-blur-sm p-8 text-center shadow-[0_0_30px_rgba(0,128,128,0.12)]">
-          <p className="text-2xl font-bold tracking-tight text-[#0F2423]">
+        <div className="mx-auto hidden h-px w-24 bg-gradient-to-r from-transparent via-[#008080] dark:via-teal-500 to-transparent lg:block" />
+        <div className="rounded-2xl border border-[rgba(0,128,128,0.25)] dark:border-teal-500/40 bg-white dark:bg-[#091b1f] backdrop-blur-sm p-8 text-center shadow-[0_0_30px_rgba(0,128,128,0.12)] dark:shadow-[0_0_30px_rgba(0,179,179,0.18)]">
+          <p className="text-2xl font-bold tracking-tight text-[#0F2423] dark:text-white">
             optera<span className="text-gradient">OS</span>
           </p>
-          <p className="mt-3 text-sm text-[#3D5A58] leading-relaxed">
+          <p className="mt-3 text-sm text-[#3D5A58] dark:text-slate-300 leading-relaxed">
             One business system. One source of truth. One intelligent operating layer.
           </p>
         </div>
@@ -131,25 +134,44 @@ const modules = [
 ];
 
 export function PlatformSection() {
+  const { isDark, toggleTheme } = useTheme();
+
   return (
     <section id="platform" className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 overflow-hidden">
       <SectionGlow color="teal" />
       <SectionHeading
-        eyebrow="Core platform"
+        eyebrow="Core platform & services"
         title="Everything your business runs on, unified"
         subtitle="Nine deeply connected modules sharing one data model, one permission system and one AI context."
       />
-      <div id="features" className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+
+      {/* In-section theme toggle for services */}
+      <div className="mt-6 flex items-center justify-center">
+        <button
+          onClick={toggleTheme}
+          aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
+          className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold border border-[rgba(0,128,128,0.22)] dark:border-teal-500/35 bg-white/90 dark:bg-[#091b1f]/90 text-[#0F2423] dark:text-teal-200 hover:bg-[rgba(0,128,128,0.08)] dark:hover:bg-teal-500/20 shadow-xs backdrop-blur-md transition-all cursor-pointer"
+        >
+          {isDark ? (
+            <Sun className="h-3.5 w-3.5 text-amber-400" />
+          ) : (
+            <Moon className="h-3.5 w-3.5 text-[#008080]" />
+          )}
+          <span>{isDark ? "Services in Dark Mode — switch to Light" : "Services in Light Mode — switch to Dark"}</span>
+        </button>
+      </div>
+
+      <div id="features" className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {modules.map(({ icon: Icon, name, desc, color, bg }) => (
           <article
             key={name}
-            className="group rounded-xl border border-[rgba(0,128,128,0.14)] bg-white backdrop-blur-sm p-6 transition-all duration-200 hover:border-[rgba(0,128,128,0.3)] hover:bg-white hover:shadow-[0_0_20px_rgba(0,128,128,0.1)]"
+            className="group rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/20 bg-white dark:bg-[#091b1f] backdrop-blur-sm p-6 transition-all duration-200 hover:border-[rgba(0,128,128,0.3)] dark:hover:border-teal-400/40 hover:bg-white dark:hover:bg-[#0c2429] hover:shadow-[0_0_20px_rgba(0,128,128,0.1)] dark:hover:shadow-[0_0_20px_rgba(0,179,179,0.12)]"
           >
             <span className={`inline-flex h-10 w-10 items-center justify-center rounded-lg border ${bg} ${color}`}>
               <Icon className="h-5 w-5" />
             </span>
-            <h3 className="mt-4 text-base font-bold text-[#0F2423]">{name}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-[#3D5A58]">{desc}</p>
+            <h3 className="mt-4 text-base font-bold text-[#0F2423] dark:text-white">{name}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-[#3D5A58] dark:text-slate-300">{desc}</p>
           </article>
         ))}
       </div>
@@ -181,12 +203,12 @@ export function AiSection() {
             title={
               <>
                 Don&apos;t just see what happened.{" "}
-                <span className="text-[#008080]">Act on it.</span>
+                <span className="text-[#008080] dark:text-teal-400">Act on it.</span>
               </>
             }
             subtitle="optera AI understands your business data, explains performance, recommends the next action and executes it through controlled, permissioned tools."
           />
-          <ul className="mt-8 space-y-3.5 text-sm font-medium text-[#3D5A58]">
+          <ul className="mt-8 space-y-3.5 text-sm font-medium text-[#3D5A58] dark:text-slate-300">
             {[
               "Explains performance in plain language",
               "Grounded in your live business data",
@@ -194,14 +216,14 @@ export function AiSection() {
               "Executes only after you approve",
             ].map((t) => (
               <li key={t} className="flex items-start gap-2.5">
-                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#008080]" />
-                <span className="text-[#1E3937]">{t}</span>
+                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#008080] dark:text-teal-400" />
+                <span className="text-[#1E3937] dark:text-slate-200">{t}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="rounded-2xl border border-[rgba(0,128,128,0.2)] bg-white backdrop-blur-sm p-5 sm:p-6 shadow-[0_0_40px_rgba(0,128,128,0.1)]">
+        <div className="rounded-2xl border border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 bg-white dark:bg-[#091b1f] backdrop-blur-sm p-5 sm:p-6 shadow-[0_0_40px_rgba(0,128,128,0.1)] dark:shadow-[0_0_40px_rgba(0,179,179,0.15)]">
           <div className="flex flex-wrap gap-2">
             {prompts.map((p, i) => (
               <button
@@ -209,8 +231,8 @@ export function AiSection() {
                 onClick={() => setActive(i)}
                 className={`rounded-full border px-3 py-1.5 text-left text-xs font-semibold transition-all duration-200 cursor-pointer ${
                   active === i
-                    ? "border-[#008080] bg-[rgba(0,128,128,0.2)] text-[#008080] shadow-[0_0_10px_rgba(0,128,128,0.25)]"
-                    : "border-[rgba(0,128,128,0.16)] bg-white text-[#5A7573] hover:text-[#3D5A58] hover:bg-[rgba(0,128,128,0.06)]"
+                    ? "border-[#008080] dark:border-teal-400 bg-[rgba(0,128,128,0.2)] dark:bg-teal-500/20 text-[#008080] dark:text-teal-300 shadow-[0_0_10px_rgba(0,128,128,0.25)] dark:shadow-[0_0_10px_rgba(0,179,179,0.25)]"
+                    : "border-[rgba(0,128,128,0.16)] dark:border-teal-500/20 bg-white dark:bg-[#061417] text-[#5A7573] dark:text-slate-400 hover:text-[#3D5A58] dark:hover:text-slate-200 hover:bg-[rgba(0,128,128,0.06)] dark:hover:bg-teal-500/10"
                 }`}
               >
                 {p}
@@ -219,28 +241,28 @@ export function AiSection() {
           </div>
 
           <div className="mt-5 space-y-4">
-            <div className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-xs bg-[rgba(0,128,128,0.15)] border border-[rgba(0,128,128,0.25)] px-4 py-2.5 text-sm font-medium text-[#008080]">
+            <div className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-xs bg-[rgba(0,128,128,0.15)] dark:bg-teal-500/20 border border-[rgba(0,128,128,0.25)] dark:border-teal-500/35 px-4 py-2.5 text-sm font-medium text-[#008080] dark:text-teal-300">
               {prompts[active]}
             </div>
-            <div className="max-w-[95%] rounded-2xl rounded-bl-xs border border-[rgba(0,128,128,0.14)] bg-[rgba(22,35,64,0.8)] p-4 text-sm shadow-sm">
-              <p className="inline-flex items-center gap-1.5 text-xs font-bold text-[#008080]">
+            <div className="max-w-[95%] rounded-2xl rounded-bl-xs border border-[rgba(0,128,128,0.18)] dark:border-teal-500/20 bg-white dark:bg-[#061417] p-4 text-sm shadow-sm">
+              <p className="inline-flex items-center gap-1.5 text-xs font-bold text-[#008080] dark:text-teal-400">
                 <Sparkles className="h-3.5 w-3.5" /> optera AI
               </p>
-              <p className="mt-2 text-sm text-[#1E3937] leading-relaxed">
+              <p className="mt-2 text-sm text-[#0F2423] dark:text-slate-200 leading-relaxed font-normal">
                 Revenue is down 14% this month. The largest change is a 22% decrease in repeat
                 purchases from key manufacturing accounts.
               </p>
-              <div className="mt-3 rounded-lg border border-[rgba(245,158,11,0.25)] bg-[rgba(245,158,11,0.1)] p-3 text-xs font-medium text-[#FCD34D]">
+              <div className="mt-3 rounded-lg border border-amber-500/30 bg-amber-500/10 dark:bg-amber-500/15 p-3 text-xs font-semibold text-amber-800 dark:text-amber-300">
                 37 high-value customers haven&apos;t purchased in 60+ days · ₹4.2L at risk
               </div>
-              <div className="mt-3 grid gap-1 rounded-lg border border-[rgba(0,128,128,0.14)] bg-[rgba(12,22,41,0.5)] p-3 text-xs">
-                <p className="text-[#5A7573]">
+              <div className="mt-3 grid gap-1 rounded-lg border border-[rgba(0,128,128,0.14)] dark:border-teal-500/20 bg-slate-50 dark:bg-[#040d10] p-3 text-xs">
+                <p className="text-[#5A7573] dark:text-slate-400">
                   Estimated opportunity{" "}
-                  <span className="font-bold text-[#0F2423]">₹4.8L</span>
+                  <span className="font-bold text-[#0F2423] dark:text-white">₹4.8L</span>
                 </p>
-                <p className="text-[#5A7573]">
+                <p className="text-[#5A7573] dark:text-slate-400">
                   Recommended action{" "}
-                  <span className="font-semibold text-[#0F2423]">Trigger re-engagement sequence</span>
+                  <span className="font-semibold text-[#0F2423] dark:text-white">Trigger re-engagement sequence</span>
                 </p>
               </div>
               <div className="mt-4 flex flex-wrap gap-2.5">
@@ -255,7 +277,7 @@ export function AiSection() {
                   asChild
                   size="sm"
                   variant="outline"
-                  className="text-xs font-medium border-[rgba(0,128,128,0.2)] text-[#3D5A58] bg-transparent hover:bg-[rgba(0,128,128,0.06)] hover:text-[#0F2423]"
+                  className="text-xs font-medium border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#3D5A58] dark:text-slate-300 bg-transparent hover:bg-[rgba(0,128,128,0.06)] dark:hover:bg-teal-500/10 hover:text-[#0F2423] dark:hover:text-white"
                 >
                   <Link to="/auth">Try optera AI</Link>
                 </Button>
@@ -280,21 +302,21 @@ export function DifferentiatorSection() {
         title="Traditional software reports. opteraOS operates."
       />
       <div className="mt-12 grid gap-6 md:grid-cols-2">
-        <div className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-[rgba(12,22,41,0.6)] backdrop-blur-sm p-6">
-          <p className="text-xs font-bold uppercase tracking-wider text-[#5A7573]">
+        <div className="rounded-xl border border-slate-200 dark:border-teal-500/20 bg-[#F8FAFC] dark:bg-[#071015] backdrop-blur-sm p-6">
+          <p className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
             Traditional software
           </p>
-          <ol className="mt-4 space-y-2 text-sm text-[#5A7573]">
+          <ol className="mt-4 space-y-2 text-sm text-slate-600 dark:text-slate-300">
             {["Data recorded in silos", "Manual dashboard review", "User spends hours deciding", "User executes manually across tools"].map((s) => (
-              <li key={s} className="rounded-lg border border-[rgba(0,128,128,0.1)] bg-[rgba(15,30,56,0.4)] px-3.5 py-2.5 font-medium">
+              <li key={s} className="rounded-lg border border-slate-200 dark:border-teal-500/15 bg-white dark:bg-[#040d10] px-3.5 py-2.5 font-medium text-slate-700 dark:text-slate-300">
                 {s}
               </li>
             ))}
           </ol>
         </div>
-        <div className="rounded-xl border border-[rgba(0,128,128,0.25)] bg-white backdrop-blur-sm p-6 shadow-[0_0_24px_rgba(0,128,128,0.1)]">
-          <p className="text-xs font-bold uppercase tracking-wider text-[#008080]">opteraOS</p>
-          <ol className="mt-4 space-y-2 text-sm text-[#0F2423]">
+        <div className="rounded-xl border border-[rgba(0,128,128,0.25)] dark:border-teal-500/40 bg-white dark:bg-[#091b1f] backdrop-blur-sm p-6 shadow-[0_0_24px_rgba(0,128,128,0.1)] dark:shadow-[0_0_24px_rgba(0,179,179,0.18)]">
+          <p className="text-xs font-bold uppercase tracking-wider text-[#008080] dark:text-teal-400">opteraOS</p>
+          <ol className="mt-4 space-y-2 text-sm text-[#0F2423] dark:text-white">
             {[
               "Unified live operational data",
               "AI understands patterns & risks",
@@ -303,7 +325,7 @@ export function DifferentiatorSection() {
               "Automation engine executes workflow",
               "Continuous business self-healing",
             ].map((s) => (
-              <li key={s} className="rounded-lg border border-[rgba(0,128,128,0.2)] bg-[rgba(0,128,128,0.08)] px-3.5 py-2.5 font-semibold text-[#1E3937]">
+              <li key={s} className="rounded-lg border border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 bg-[rgba(0,128,128,0.08)] dark:bg-teal-500/10 px-3.5 py-2.5 font-semibold text-[#1E3937] dark:text-slate-100">
                 {s}
               </li>
             ))}
@@ -317,10 +339,10 @@ export function DifferentiatorSection() {
 /* ---------------- Analytics ---------------- */
 
 const analyticsHighlights = [
-  { label: "Revenue MTD", value: "₹12.8L", delta: "+18.2% MoM", color: "text-[#10B981]" },
-  { label: "Sales Orders", value: "1,248", delta: "+6.4% MoM", color: "text-[#008080]" },
-  { label: "New Customers", value: "312", delta: "+11.9% MoM", color: "text-[#22D3EE]" },
-  { label: "Collections Rate", value: "94%", delta: "+3.1 pts", color: "text-[#8B5CF6]" },
+  { label: "Revenue MTD", value: "₹12.8L", delta: "+18.2% MoM", color: "text-[#10B981] dark:text-emerald-400" },
+  { label: "Sales Orders", value: "1,248", delta: "+6.4% MoM", color: "text-[#008080] dark:text-teal-400" },
+  { label: "New Customers", value: "312", delta: "+11.9% MoM", color: "text-[#22D3EE] dark:text-cyan-400" },
+  { label: "Collections Rate", value: "94%", delta: "+3.1 pts", color: "text-[#8B5CF6] dark:text-violet-400" },
 ];
 
 export function AnalyticsSection() {
@@ -334,9 +356,9 @@ export function AnalyticsSection() {
       />
       <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {analyticsHighlights.map((h) => (
-          <div key={h.label} className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-white backdrop-blur-sm p-5 hover:border-[rgba(0,128,128,0.25)] transition-all duration-200">
-            <p className="text-xs font-semibold uppercase tracking-wider text-[#5A7573]">{h.label}</p>
-            <p className="mt-2 text-2xl font-bold tracking-tight text-[#0F2423]">{h.value}</p>
+          <div key={h.label} className="rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/20 bg-white dark:bg-[#091b1f] backdrop-blur-sm p-5 hover:border-[rgba(0,128,128,0.25)] dark:hover:border-teal-500/40 transition-all duration-200">
+            <p className="text-xs font-semibold uppercase tracking-wider text-[#5A7573] dark:text-slate-400">{h.label}</p>
+            <p className="mt-2 text-2xl font-bold tracking-tight text-[#0F2423] dark:text-white">{h.value}</p>
             <p className={`mt-1 text-xs font-semibold ${h.color}`}>{h.delta}</p>
           </div>
         ))}
@@ -365,12 +387,12 @@ export function AnalyticsSection() {
             bg: "bg-[rgba(139,92,246,0.12)] border-[rgba(139,92,246,0.2)]",
           },
         ].map(({ icon: Icon, t, d, color, bg }) => (
-          <div key={t} className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-white backdrop-blur-sm p-6 hover:border-[rgba(0,128,128,0.25)] transition-all duration-200">
+          <div key={t} className="rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/20 bg-white dark:bg-[#091b1f] backdrop-blur-sm p-6 hover:border-[rgba(0,128,128,0.25)] dark:hover:border-teal-500/40 transition-all duration-200">
             <span className={`inline-flex h-10 w-10 items-center justify-center rounded-lg border ${bg} ${color}`}>
               <Icon className="h-5 w-5" aria-hidden />
             </span>
-            <h3 className="mt-3 text-base font-bold text-[#0F2423]">{t}</h3>
-            <p className="mt-2 text-sm text-[#3D5A58] leading-relaxed">{d}</p>
+            <h3 className="mt-3 text-base font-bold text-[#0F2423] dark:text-white">{t}</h3>
+            <p className="mt-2 text-sm text-[#3D5A58] dark:text-slate-300 leading-relaxed">{d}</p>
           </div>
         ))}
       </div>
@@ -403,19 +425,19 @@ export function IntegrationsSection() {
         {integrations.map(({ icon: Icon, name, cat, color }) => (
           <div
             key={name}
-            className="flex items-center gap-4 rounded-xl border border-[rgba(0,128,128,0.14)] bg-white backdrop-blur-sm p-5 hover:border-[rgba(0,128,128,0.25)] hover:bg-white transition-all duration-200"
+            className="flex items-center gap-4 rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/20 bg-white dark:bg-[#091b1f] backdrop-blur-sm p-5 hover:border-[rgba(0,128,128,0.25)] dark:hover:border-teal-500/40 hover:bg-white dark:hover:bg-[#0c2429] transition-all duration-200"
           >
-            <span className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-[rgba(0,128,128,0.14)] bg-[rgba(22,35,64,0.8)]">
+            <span className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-[rgba(0,128,128,0.14)] dark:border-teal-500/20 bg-teal-500/10 dark:bg-[#040d10]">
               <Icon className={`h-5 w-5 ${color}`} />
             </span>
             <div className="min-w-0">
-              <p className="truncate text-sm font-bold text-[#0F2423]">{name}</p>
-              <p className="text-xs text-[#5A7573]">{cat}</p>
+              <p className="truncate text-sm font-bold text-[#0F2423] dark:text-white">{name}</p>
+              <p className="text-xs text-[#5A7573] dark:text-slate-400">{cat}</p>
             </div>
             <Button
               variant="outline"
               size="sm"
-              className="ml-auto shrink-0 text-xs font-semibold border-[rgba(0,128,128,0.16)] text-[#3D5A58] bg-transparent hover:bg-[rgba(0,128,128,0.1)] hover:text-[#008080] hover:border-[rgba(0,128,128,0.3)] transition-all"
+              className="ml-auto shrink-0 text-xs font-semibold border-[rgba(0,128,128,0.16)] dark:border-teal-500/25 text-[#3D5A58] dark:text-slate-300 bg-transparent hover:bg-[rgba(0,128,128,0.1)] dark:hover:bg-teal-500/15 hover:text-[#008080] dark:hover:text-teal-300 hover:border-[rgba(0,128,128,0.3)] dark:hover:border-teal-400/40 transition-all"
               onClick={() => setConnect(name)}
             >
               Connect
@@ -464,12 +486,12 @@ export function SecuritySection() {
       <SectionHeading eyebrow="Security" title="Enterprise security by architecture" />
       <div className="mt-12 grid gap-4 sm:grid-cols-2">
         {security.map(({ icon: Icon, t, d, color, bg }) => (
-          <div key={t} className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-white backdrop-blur-sm p-6 hover:border-[rgba(0,128,128,0.25)] transition-all duration-200">
+          <div key={t} className="rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/20 bg-white dark:bg-[#091b1f] backdrop-blur-sm p-6 hover:border-[rgba(0,128,128,0.25)] dark:hover:border-teal-500/40 transition-all duration-200">
             <span className={`inline-flex h-10 w-10 items-center justify-center rounded-lg border ${bg} ${color}`}>
               <Icon className="h-5 w-5" />
             </span>
-            <h3 className="mt-3 text-base font-bold text-[#0F2423]">{t}</h3>
-            <p className="mt-2 text-sm text-[#3D5A58] leading-relaxed">{d}</p>
+            <h3 className="mt-3 text-base font-bold text-[#0F2423] dark:text-white">{t}</h3>
+            <p className="mt-2 text-sm text-[#3D5A58] dark:text-slate-300 leading-relaxed">{d}</p>
           </div>
         ))}
       </div>
@@ -502,25 +524,25 @@ export function PricingSection({ id }: { id?: string }) {
             key={c.name}
             className={`relative flex flex-col justify-between rounded-2xl border p-6 transition-all duration-200 ${
               c.featured
-                ? "border-[rgba(0,128,128,0.4)] bg-[rgba(0,128,128,0.08)] shadow-[0_0_30px_rgba(0,128,128,0.2)] ring-1 ring-[rgba(0,128,128,0.3)]"
-                : "border-[rgba(0,128,128,0.14)] bg-white backdrop-blur-sm hover:border-[rgba(0,128,128,0.2)]"
+                ? "border-[rgba(0,128,128,0.4)] dark:border-teal-500/50 bg-[rgba(0,128,128,0.08)] dark:bg-teal-500/10 shadow-[0_0_30px_rgba(0,128,128,0.2)] dark:shadow-[0_0_30px_rgba(0,179,179,0.25)] ring-1 ring-[rgba(0,128,128,0.3)] dark:ring-teal-500/40"
+                : "border-[rgba(0,128,128,0.14)] dark:border-teal-500/20 bg-white dark:bg-[#091b1f] backdrop-blur-sm hover:border-[rgba(0,128,128,0.2)] dark:hover:border-teal-500/35"
             }`}
           >
             {c.featured && (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-[#008080] to-[#0D9488] px-3 py-0.5 text-[11px] font-bold uppercase tracking-wider text-white shadow-[0_0_10px_rgba(0,128,128,0.5)]">
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-[#008080] to-[#0D9488] px-3 py-0.5 text-[11px] font-bold uppercase tracking-wider text-white shadow-[0_0_10px_rgba(0,128,128,0.5)] dark:shadow-[0_0_10px_rgba(0,179,179,0.5)]">
                 Core AI
               </span>
             )}
             <div>
-              <p className={`font-bold text-base ${c.featured ? "text-[#008080]" : "text-[#0F2423]"}`}>{c.name}</p>
-              <p className="mt-2 text-xs text-[#5A7573] leading-relaxed">{c.desc}</p>
+              <p className={`font-bold text-base ${c.featured ? "text-[#008080] dark:text-teal-400" : "text-[#0F2423] dark:text-white"}`}>{c.name}</p>
+              <p className="mt-2 text-xs text-[#5A7573] dark:text-slate-400 leading-relaxed">{c.desc}</p>
             </div>
             <Button
               asChild
               className={`mt-6 w-full text-xs font-semibold ${
                 c.featured
-                  ? "bg-gradient-to-r from-[#008080] to-[#0D9488] text-white border-0 shadow-[0_0_12px_rgba(0,128,128,0.35)]"
-                  : "border-[rgba(0,128,128,0.2)] text-[#3D5A58] bg-transparent hover:bg-[rgba(0,128,128,0.1)] hover:text-[#008080] hover:border-[rgba(0,128,128,0.3)]"
+                  ? "bg-gradient-to-r from-[#008080] to-[#0D9488] text-white border-0 shadow-[0_0_12px_rgba(0,128,128,0.35)] dark:shadow-[0_0_12px_rgba(0,179,179,0.4)]"
+                  : "border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#3D5A58] dark:text-slate-300 bg-transparent hover:bg-[rgba(0,128,128,0.1)] dark:hover:bg-teal-500/15 hover:text-[#008080] dark:hover:text-teal-300 hover:border-[rgba(0,128,128,0.3)] dark:hover:border-teal-400/40"
               }`}
               variant={c.featured ? "default" : "outline"}
             >
@@ -557,10 +579,10 @@ export function TestimonialsSection() {
       <SectionHeading eyebrow="Customers" title="Built for modern operators" />
       <div className="mt-12 grid gap-4 md:grid-cols-3">
         {testimonials.map((t) => (
-          <figure key={t.a} className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-white backdrop-blur-sm p-6 hover:border-[rgba(0,128,128,0.25)] transition-all duration-200">
-            <Quote className="h-5 w-5 text-[#008080]" />
-            <blockquote className="mt-3 text-sm text-[#1E3937] leading-relaxed font-medium">{t.q}</blockquote>
-            <figcaption className="mt-4 text-xs font-semibold text-[#5A7573]">{t.a}</figcaption>
+          <figure key={t.a} className="rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/20 bg-white dark:bg-[#091b1f] backdrop-blur-sm p-6 hover:border-[rgba(0,128,128,0.25)] dark:hover:border-teal-500/40 transition-all duration-200">
+            <Quote className="h-5 w-5 text-[#008080] dark:text-teal-400" />
+            <blockquote className="mt-3 text-sm text-[#1E3937] dark:text-slate-200 leading-relaxed font-medium">{t.q}</blockquote>
+            <figcaption className="mt-4 text-xs font-semibold text-[#5A7573] dark:text-slate-400">{t.a}</figcaption>
           </figure>
         ))}
       </div>
@@ -604,14 +626,14 @@ export function FaqSection() {
       <Accordion
         type="single"
         collapsible
-        className="mt-10 divide-y divide-[rgba(148,163,184,0.1)] border-y border-[rgba(0,128,128,0.14)]"
+        className="mt-10 divide-y divide-[rgba(148,163,184,0.1)] dark:divide-teal-500/15 border-y border-[rgba(0,128,128,0.14)] dark:border-teal-500/20"
       >
         {faqs.map((f) => (
           <AccordionItem key={f.q} value={f.q} className="border-none py-2">
-            <AccordionTrigger className="text-left text-sm font-bold text-[#1E3937] hover:text-[#008080] [&[data-state=open]]:text-[#008080]">
+            <AccordionTrigger className="text-left text-sm font-bold text-[#1E3937] dark:text-slate-200 hover:text-[#008080] dark:hover:text-teal-400 [&[data-state=open]]:text-[#008080] dark:[&[data-state=open]]:text-teal-400">
               {f.q}
             </AccordionTrigger>
-            <AccordionContent className="text-sm text-[#3D5A58] leading-relaxed">
+            <AccordionContent className="text-sm text-[#3D5A58] dark:text-slate-300 leading-relaxed">
               {f.a}
             </AccordionContent>
           </AccordionItem>
@@ -626,25 +648,25 @@ export function FaqSection() {
 export function FinalCta() {
   return (
     <section className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 overflow-hidden">
-      <div className="relative rounded-2xl border border-[rgba(0,128,128,0.25)] bg-white backdrop-blur-sm px-6 py-16 text-center sm:px-12 overflow-hidden shadow-[0_0_60px_rgba(0,128,128,0.12)]">
+      <div className="relative rounded-2xl border border-[rgba(0,128,128,0.25)] dark:border-teal-500/35 bg-white dark:bg-[#091b1f] backdrop-blur-sm px-6 py-16 text-center sm:px-12 overflow-hidden shadow-[0_0_60px_rgba(0,128,128,0.12)] dark:shadow-[0_0_60px_rgba(0,179,179,0.18)]">
         {/* Glow orbs inside CTA */}
-        <div className="pointer-events-none absolute -top-20 left-1/4 h-64 w-64 rounded-full bg-[#008080] opacity-[0.08] blur-[80px]" aria-hidden />
-        <div className="pointer-events-none absolute -bottom-20 right-1/4 h-64 w-64 rounded-full bg-[#8B5CF6] opacity-[0.08] blur-[80px]" aria-hidden />
+        <div className="pointer-events-none absolute -top-20 left-1/4 h-64 w-64 rounded-full bg-[#008080] opacity-[0.08] dark:opacity-[0.15] blur-[80px]" aria-hidden />
+        <div className="pointer-events-none absolute -bottom-20 right-1/4 h-64 w-64 rounded-full bg-[#8B5CF6] opacity-[0.08] dark:opacity-[0.12] blur-[80px]" aria-hidden />
 
         <div className="relative z-10">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#008080] to-[#0D9488] shadow-[0_0_20px_rgba(0,128,128,0.4)] mx-auto">
+          <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#008080] to-[#0D9488] shadow-[0_0_20px_rgba(0,128,128,0.4)] dark:shadow-[0_0_20px_rgba(0,179,179,0.5)] mx-auto">
             <Zap className="h-6 w-6 text-white" />
           </div>
-          <h2 className="mt-5 text-balance text-3xl font-bold tracking-tight text-[#0F2423] sm:text-4xl">
+          <h2 className="mt-5 text-balance text-3xl font-bold tracking-tight text-[#0F2423] dark:text-white sm:text-4xl">
             Stop managing your business across disconnected tools.
           </h2>
-          <p className="mt-4 text-base text-[#3D5A58] max-w-xl mx-auto">
+          <p className="mt-4 text-base text-[#3D5A58] dark:text-slate-300 max-w-xl mx-auto">
             Unify your CRM, pipelines, invoices, and automations into a single intelligent platform.
           </p>
           <Button
             asChild
             size="lg"
-            className="mt-8 bg-gradient-to-r from-[#008080] to-[#0D9488] hover:from-[#006666] hover:to-[#008080] text-white font-semibold text-sm px-8 py-3 h-12 shadow-[0_0_24px_rgba(0,128,128,0.45)] border-0 transition-all duration-200 rounded-xl"
+            className="mt-8 bg-gradient-to-r from-[#008080] to-[#0D9488] hover:from-[#006666] hover:to-[#008080] text-white font-semibold text-sm px-8 py-3 h-12 shadow-[0_0_24px_rgba(0,128,128,0.45)] dark:shadow-[0_0_28px_rgba(0,179,179,0.5)] border-0 transition-all duration-200 rounded-xl"
           >
             <Link to="/auth">Start Free Today</Link>
           </Button>
@@ -696,18 +718,26 @@ const footerCols: { title: string; links: FooterLink[] }[] = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-[rgba(0,128,128,0.14)] bg-white text-[#3D5A58]">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
+    <footer
+      className="relative border-t border-[#008080]/30 bg-[#062D2A] text-teal-100 overflow-hidden"
+      style={{
+        boxShadow: "0 -1px 0 0 rgba(0, 128, 128, 0.25), 0 -4px 32px 0 rgba(0, 32, 30, 0.35)",
+      }}
+    >
+      {/* Subtle ambient teal glow */}
+      <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-64 w-[650px] rounded-full bg-[#008080] opacity-15 blur-[100px]" aria-hidden />
+
+      <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {footerCols.map((c) => (
             <div key={c.title}>
-              <p className="text-xs font-bold uppercase tracking-wider text-[#0F2423]">{c.title}</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-teal-300">{c.title}</p>
               <ul className="mt-4 space-y-2.5">
                 {c.links.map((l) => (
                   <li key={l.label}>
                     <a
                       href={l.href || "#"}
-                      className="text-sm text-[#5A7573] transition-colors hover:text-[#008080]"
+                      className="text-sm text-teal-100/70 transition-colors duration-150 hover:text-white hover:text-teal-200"
                     >
                       {l.label}
                     </a>
@@ -717,16 +747,16 @@ export function Footer() {
             </div>
           ))}
         </div>
-        <div className="mt-12 border-t border-[rgba(0,128,128,0.1)] pt-8 flex flex-wrap items-center justify-between gap-4">
+        <div className="mt-12 border-t border-[#008080]/20 pt-8 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="text-base font-bold tracking-tight text-[#0F2423]">
+            <p className="text-base font-bold tracking-tight text-white">
               optera<span className="text-gradient">OS</span>
             </p>
-            <p className="mt-1 text-xs text-[#5A7573]">
+            <p className="mt-1 text-xs text-teal-200/60">
               © 2026 opteraOS. All rights reserved. Enterprise AI Business Operating System.
             </p>
           </div>
-          <p className="text-xs font-medium text-[#5A7573]">
+          <p className="text-xs font-medium text-teal-200/70">
             Engineered for high-reliability enterprise operations.
           </p>
         </div>

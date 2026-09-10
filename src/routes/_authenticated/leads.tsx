@@ -257,10 +257,10 @@ export function LeadsPage() {
               setPage(1);
             }}
           >
-            <SelectTrigger className="w-48 bg-white border-[rgba(0,128,128,0.2)] text-[#0F2423]" aria-label="Filter by stage">
+            <SelectTrigger className="w-48 bg-white dark:bg-[#091b1f] border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#0F2423] dark:text-white" aria-label="Filter by stage">
               <SelectValue placeholder="All Stages" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white dark:bg-[#091b1f] border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#0F2423] dark:text-white">
               <SelectItem value="all">All Stages</SelectItem>
               {STAGES.map((s) => (
                 <SelectItem key={s} value={s}>
@@ -272,8 +272,8 @@ export function LeadsPage() {
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={() => refetch()} className="h-9 border-[rgba(0,128,128,0.2)] text-[#0F2423] hover:border-[#008080] hover:bg-[rgba(0,128,128,0.04)]">
-            <RefreshCw className="h-3.5 w-3.5 mr-1.5 text-[#008080]" /> Refresh
+          <Button variant="outline" size="sm" onClick={() => refetch()} className="h-9 border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#0F2423] dark:text-slate-200 hover:border-[#008080] hover:bg-[rgba(0,128,128,0.04)] dark:hover:bg-teal-500/10">
+            <RefreshCw className="h-3.5 w-3.5 mr-1.5 text-[#008080] dark:text-teal-400" /> Refresh
           </Button>
         </div>
       </div>
@@ -292,9 +292,9 @@ export function LeadsPage() {
             description="Create your first lead or import from CSV to start scoring and converting."
           />
         ) : (
-          <div className="overflow-x-auto rounded-xl border border-[rgba(0,128,128,0.14)] bg-white shadow-teal-xs">
+          <div className="overflow-x-auto rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/20 bg-white dark:bg-[#091b1f] shadow-teal-xs">
             <table className="w-full min-w-[850px] text-sm">
-              <thead className="bg-[rgba(0,128,128,0.03)] text-left text-xs uppercase tracking-wider text-[#617D7B] font-semibold border-b border-[rgba(0,128,128,0.1)]">
+              <thead className="bg-[rgba(0,128,128,0.03)] dark:bg-teal-950/20 text-left text-xs uppercase tracking-wider text-[#617D7B] dark:text-slate-400 font-semibold border-b border-[rgba(0,128,128,0.1)] dark:border-teal-500/20">
                 <tr>
                   <th className="px-4 py-3.5">Lead Details</th>
                   <th className="px-4 py-3.5">Source & Priority</th>
@@ -305,17 +305,17 @@ export function LeadsPage() {
                   <th className="px-4 py-3.5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[rgba(0,128,128,0.08)]">
+              <tbody className="divide-y divide-[rgba(0,128,128,0.08)] dark:divide-teal-500/15">
                 {rows.map((l: any) => (
-                  <tr key={l.id} className="hover:bg-[rgba(0,128,128,0.02)] transition-colors">
+                  <tr key={l.id} className="hover:bg-[rgba(0,128,128,0.02)] dark:hover:bg-teal-500/5 transition-colors">
                     <td className="px-4 py-3.5">
-                      <p className="font-semibold text-[#0F2423]">{l.name}</p>
-                      <p className="text-xs text-[#617D7B]">{l.company || l.email || "No company"}</p>
+                      <p className="font-semibold text-[#0F2423] dark:text-white">{l.name}</p>
+                      <p className="text-xs text-[#617D7B] dark:text-slate-400">{l.company || l.email || "No company"}</p>
                     </td>
                     <td className="px-4 py-3.5">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs text-[#3D5A58] font-medium">{l.source || "Direct"}</span>
-                        <span className={`text-[10px] uppercase font-bold px-1.5 py-0.5 rounded ${l.priority === 'HIGH' ? 'bg-rose-500/10 text-rose-600' : 'bg-[#EDF4F3] text-[#3D5A58]'}`}>
+                        <span className="text-xs text-[#3D5A58] dark:text-slate-300 font-medium">{l.source || "Direct"}</span>
+                        <span className={`text-[10px] uppercase font-bold px-1.5 py-0.5 rounded ${l.priority === 'HIGH' ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400' : 'bg-[#EDF4F3] dark:bg-teal-950/40 text-[#3D5A58] dark:text-slate-300'}`}>
                           {l.priority || 'MED'}
                         </span>
                       </div>
@@ -323,7 +323,7 @@ export function LeadsPage() {
                     <td className="px-4 py-3.5">
                       <button
                         onClick={() => setOpenScoreDetails(l)}
-                        className="flex items-center gap-1.5 rounded-lg bg-[rgba(0,128,128,0.08)] hover:bg-[rgba(0,128,128,0.15)] px-2.5 py-1 text-xs font-semibold text-[#008080] transition-colors"
+                        className="flex items-center gap-1.5 rounded-lg bg-[rgba(0,128,128,0.08)] dark:bg-teal-500/15 hover:bg-[rgba(0,128,128,0.15)] dark:hover:bg-teal-500/25 px-2.5 py-1 text-xs font-semibold text-[#008080] dark:text-teal-300 transition-colors cursor-pointer"
                       >
                         <Sparkles className="h-3.5 w-3.5" />
                         <span>{l.score ?? 50}/100</span>
@@ -332,10 +332,10 @@ export function LeadsPage() {
                     <td className="px-4 py-3.5">
                       <StatusBadge label={l.stage} tone={stageTone[l.stage] || "neutral"} />
                     </td>
-                    <td className="px-4 py-3.5 tabular-nums font-bold text-[#0F2423]">
+                    <td className="px-4 py-3.5 tabular-nums font-bold text-[#0F2423] dark:text-white">
                       {money(Number(l.expectedRevenue || 0), current?.currency || 'INR')}
                     </td>
-                    <td className="px-4 py-3.5 text-xs text-[#617D7B]">
+                    <td className="px-4 py-3.5 text-xs text-[#617D7B] dark:text-slate-400">
                       {l.owner ? `${l.owner.firstName} ${l.owner.lastName}` : "Unassigned"}
                     </td>
                     <td className="px-4 py-3.5 text-right">
@@ -344,18 +344,18 @@ export function LeadsPage() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="h-8 text-xs text-emerald-700 hover:text-emerald-800 hover:bg-emerald-50"
+                            className="h-8 text-xs text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/30"
                             onClick={() => qualifyMutation.mutate(l.id)}
                             title="Mark as Qualified"
                           >
-                            <CheckCircle2 className="h-4 w-4 mr-1 text-emerald-600" /> Qualify
+                            <CheckCircle2 className="h-4 w-4 mr-1 text-emerald-600 dark:text-emerald-400" /> Qualify
                           </Button>
                         )}
                         {l.stage !== "CONVERTED" && (
                           <Button
                             variant="outline"
                             size="sm"
-                            className="h-8 text-xs text-[#008080] border-[rgba(0,128,128,0.3)] hover:bg-[rgba(0,128,128,0.06)] font-medium"
+                            className="h-8 text-xs text-[#008080] dark:text-teal-300 border-[rgba(0,128,128,0.3)] dark:border-teal-500/30 hover:bg-[rgba(0,128,128,0.06)] dark:hover:bg-teal-500/15 font-medium"
                             onClick={() => {
                               setOpenConvert(l);
                               setConvertDealTitle(`${l.company || l.name} — Opportunity`);
@@ -368,7 +368,7 @@ export function LeadsPage() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-8 px-2 text-[#617D7B] hover:text-[#0F2423] hover:bg-[rgba(0,128,128,0.06)]"
+                          className="h-8 px-2 text-[#617D7B] dark:text-slate-400 hover:text-[#0F2423] dark:hover:text-white hover:bg-[rgba(0,128,128,0.06)] dark:hover:bg-teal-500/10"
                           onClick={() => setOpenAssign(l)}
                           title="Assign Lead"
                         >
@@ -397,10 +397,10 @@ export function LeadsPage() {
           {STAGES.map((stg) => {
             const list = (pipelineData as any)?.[stg] || [];
             return (
-              <div key={stg} className="flex flex-col rounded-xl border border-[#E5EAF1] bg-[#F8FAFC] p-3 min-w-[220px]">
-                <div className="flex items-center justify-between pb-2 mb-2 border-b border-[#E5EAF1]">
-                  <span className="text-xs font-bold tracking-wider text-gray-600">{stg}</span>
-                  <span className="rounded-full bg-white border border-[#E5EAF1] px-2 py-0.5 text-[11px] font-semibold text-gray-600">
+              <div key={stg} className="flex flex-col rounded-xl border border-[#E5EAF1] dark:border-teal-500/20 bg-[#F8FAFC] dark:bg-[#061417] p-3 min-w-[220px]">
+                <div className="flex items-center justify-between pb-2 mb-2 border-b border-[#E5EAF1] dark:border-teal-500/20">
+                  <span className="text-xs font-bold tracking-wider text-gray-600 dark:text-slate-300">{stg}</span>
+                  <span className="rounded-full bg-white dark:bg-[#091b1f] border border-[#E5EAF1] dark:border-teal-500/25 px-2 py-0.5 text-[11px] font-semibold text-gray-600 dark:text-slate-300">
                     {list.length}
                   </span>
                 </div>
@@ -408,16 +408,16 @@ export function LeadsPage() {
                   {list.map((lead: any) => (
                     <div
                       key={lead.id}
-                      className="rounded-lg border border-[#E5EAF1] bg-white p-3 shadow-xs hover:border-blue-300 hover:shadow-sm transition-all cursor-pointer"
+                      className="rounded-lg border border-[#E5EAF1] dark:border-teal-500/25 bg-white dark:bg-[#091b1f] p-3 shadow-xs hover:border-[#008080] dark:hover:border-teal-400 hover:shadow-sm transition-all cursor-pointer"
                       onClick={() => setOpenScoreDetails(lead)}
                     >
-                      <p className="font-semibold text-sm text-gray-900 truncate">{lead.name}</p>
-                      <p className="text-xs text-gray-500 truncate">{lead.company || lead.email}</p>
+                      <p className="font-semibold text-sm text-gray-900 dark:text-white truncate">{lead.name}</p>
+                      <p className="text-xs text-gray-500 dark:text-slate-400 truncate">{lead.company || lead.email}</p>
                       <div className="mt-2.5 flex items-center justify-between">
-                        <span className="text-[11px] font-bold text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">
+                        <span className="text-[11px] font-bold text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/40 px-1.5 py-0.5 rounded border border-teal-200 dark:border-teal-500/30">
                           ★ {lead.score}/100
                         </span>
-                        <span className="text-xs font-semibold tabular-nums text-gray-800">
+                        <span className="text-xs font-semibold tabular-nums text-gray-800 dark:text-white">
                           {money(Number(lead.expectedRevenue || 0), current?.currency || 'INR')}
                         </span>
                       </div>
@@ -434,82 +434,82 @@ export function LeadsPage() {
 
       {/* Create Lead Modal */}
       <Dialog open={openCreate} onOpenChange={setOpenCreate}>
-        <DialogContent className="max-w-md bg-white border border-[rgba(0,128,128,0.2)] shadow-2xl rounded-2xl">
+        <DialogContent className="max-w-md bg-white dark:bg-[#091b1f] border border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 shadow-2xl rounded-2xl text-[#0F2423] dark:text-white">
           <DialogHeader>
-            <DialogTitle className="text-[#0F2423] font-bold text-lg">Create New Lead</DialogTitle>
+            <DialogTitle className="text-[#0F2423] dark:text-white font-bold text-lg">Create New Lead</DialogTitle>
           </DialogHeader>
           <div className="grid gap-4 py-2">
             <div className="grid gap-1.5">
-              <Label className="text-xs font-semibold text-[#0F2423]">Lead Contact Name *</Label>
+              <Label className="text-xs font-semibold text-[#0F2423] dark:text-slate-200">Lead Contact Name *</Label>
               <Input
                 value={draft.name}
                 onChange={(e) => setDraft({ ...draft, name: e.target.value })}
                 placeholder="Sarah Connor"
-                className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
+                className="border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 focus-visible:ring-[#008080] text-[#0F2423] dark:text-white bg-[#F8FBFA] dark:bg-[#061417]"
               />
             </div>
             <div className="grid gap-1.5">
-              <Label className="text-xs font-semibold text-[#0F2423]">Company Name</Label>
+              <Label className="text-xs font-semibold text-[#0F2423] dark:text-slate-200">Company Name</Label>
               <Input
                 value={draft.company}
                 onChange={(e) => setDraft({ ...draft, company: e.target.value })}
                 onBlur={handleDuplicateCheck}
                 placeholder="Cyberdyne Systems"
-                className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
+                className="border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 focus-visible:ring-[#008080] text-[#0F2423] dark:text-white bg-[#F8FBFA] dark:bg-[#061417]"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="grid gap-1.5">
-                <Label className="text-xs font-semibold text-[#0F2423]">Work Email</Label>
+                <Label className="text-xs font-semibold text-[#0F2423] dark:text-slate-200">Work Email</Label>
                 <Input
                   type="email"
                   value={draft.email}
                   onChange={(e) => setDraft({ ...draft, email: e.target.value })}
                   onBlur={handleDuplicateCheck}
                   placeholder="sarah@company.com"
-                  className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
+                  className="border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 focus-visible:ring-[#008080] text-[#0F2423] dark:text-white bg-[#F8FBFA] dark:bg-[#061417]"
                 />
               </div>
               <div className="grid gap-1.5">
-                <Label className="text-xs font-semibold text-[#0F2423]">Phone Number</Label>
+                <Label className="text-xs font-semibold text-[#0F2423] dark:text-slate-200">Phone Number</Label>
                 <Input
                   value={draft.phone}
                   onChange={(e) => setDraft({ ...draft, phone: e.target.value })}
                   onBlur={handleDuplicateCheck}
                   placeholder="+91 9876543210"
-                  className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
+                  className="border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 focus-visible:ring-[#008080] text-[#0F2423] dark:text-white bg-[#F8FBFA] dark:bg-[#061417]"
                 />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="grid gap-1.5">
-                <Label className="text-xs font-semibold text-[#0F2423]">Lead Source</Label>
+                <Label className="text-xs font-semibold text-[#0F2423] dark:text-slate-200">Lead Source</Label>
                 <Input
                   value={draft.source}
                   onChange={(e) => setDraft({ ...draft, source: e.target.value })}
                   placeholder="Website, Referral, Inbound..."
-                  className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
+                  className="border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 focus-visible:ring-[#008080] text-[#0F2423] dark:text-white bg-[#F8FBFA] dark:bg-[#061417]"
                 />
               </div>
               <div className="grid gap-1.5">
-                <Label className="text-xs font-semibold text-[#0F2423]">Expected Revenue</Label>
+                <Label className="text-xs font-semibold text-[#0F2423] dark:text-slate-200">Expected Revenue</Label>
                 <Input
                   type="number"
                   value={draft.expectedRevenue}
                   onChange={(e) => setDraft({ ...draft, expectedRevenue: Number(e.target.value) })}
-                  className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
+                  className="border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 focus-visible:ring-[#008080] text-[#0F2423] dark:text-white bg-[#F8FBFA] dark:bg-[#061417]"
                 />
               </div>
             </div>
 
             {/* Real-time duplicate analysis warning */}
             {duplicateMatches && duplicateMatches.status !== "NONE" && (
-              <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-amber-900">
+              <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-amber-900 dark:text-amber-200">
                 <div className="flex items-center gap-1.5 font-bold">
-                  <AlertTriangle className="h-4 w-4 text-amber-600" />
+                  <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                   <span>Potential Duplicates Found ({duplicateMatches.count})</span>
                 </div>
-                <ul className="mt-1.5 space-y-1 list-disc pl-4 text-[#3D5A58]">
+                <ul className="mt-1.5 space-y-1 list-disc pl-4 text-[#3D5A58] dark:text-slate-300">
                   {duplicateMatches.matches.slice(0, 3).map((m: any, idx: number) => (
                     <li key={idx}>
                       Matching {m.type} '{m.name}' via {m.matchType}
@@ -520,7 +520,7 @@ export function LeadsPage() {
             )}
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setOpenCreate(false)} className="border-[rgba(0,128,128,0.2)] text-[#0F2423]">
+            <Button variant="outline" onClick={() => setOpenCreate(false)} className="border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#0F2423] dark:text-slate-200">
               Cancel
             </Button>
             <Button
@@ -536,34 +536,34 @@ export function LeadsPage() {
 
       {/* Convert Lead Modal */}
       <Dialog open={!!openConvert} onOpenChange={() => setOpenConvert(null)}>
-        <DialogContent className="max-w-md bg-white border border-[rgba(0,128,128,0.2)] shadow-2xl rounded-2xl">
+        <DialogContent className="max-w-md bg-white dark:bg-[#091b1f] border border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 shadow-2xl rounded-2xl text-[#0F2423] dark:text-white">
           <DialogHeader>
-            <DialogTitle className="text-[#0F2423] font-bold text-lg">Convert Lead to Opportunity</DialogTitle>
+            <DialogTitle className="text-[#0F2423] dark:text-white font-bold text-lg">Convert Lead to Opportunity</DialogTitle>
           </DialogHeader>
-          <p className="text-xs text-[#617D7B]">
+          <p className="text-xs text-[#617D7B] dark:text-slate-400">
             This will atomically create a verified Customer account, Primary Contact, Company record, and Sales Opportunity.
           </p>
           <div className="grid gap-3 py-2">
             <div className="grid gap-1.5">
-              <Label className="text-xs font-semibold text-[#0F2423]">Opportunity Title</Label>
+              <Label className="text-xs font-semibold text-[#0F2423] dark:text-slate-200">Opportunity Title</Label>
               <Input
                 value={convertDealTitle}
                 onChange={(e) => setConvertDealTitle(e.target.value)}
-                className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
+                className="border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 focus-visible:ring-[#008080] text-[#0F2423] dark:text-white bg-[#F8FBFA] dark:bg-[#061417]"
               />
             </div>
             <div className="grid gap-1.5">
-              <Label className="text-xs font-semibold text-[#0F2423]">Deal Value ({current?.currency || 'INR'})</Label>
+              <Label className="text-xs font-semibold text-[#0F2423] dark:text-slate-200">Deal Value ({current?.currency || 'INR'})</Label>
               <Input
                 type="number"
                 value={convertDealValue}
                 onChange={(e) => setConvertDealValue(Number(e.target.value))}
-                className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
+                className="border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 focus-visible:ring-[#008080] text-[#0F2423] dark:text-white bg-[#F8FBFA] dark:bg-[#061417]"
               />
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setOpenConvert(null)} className="border-[rgba(0,128,128,0.2)] text-[#0F2423]">
+            <Button variant="outline" onClick={() => setOpenConvert(null)} className="border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#0F2423] dark:text-slate-200">
               Cancel
             </Button>
             <Button
@@ -579,18 +579,18 @@ export function LeadsPage() {
 
       {/* Assign Lead Modal */}
       <Dialog open={!!openAssign} onOpenChange={() => setOpenAssign(null)}>
-        <DialogContent className="max-w-sm bg-white border border-[rgba(0,128,128,0.2)] shadow-2xl rounded-2xl">
+        <DialogContent className="max-w-sm bg-white dark:bg-[#091b1f] border border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 shadow-2xl rounded-2xl text-[#0F2423] dark:text-white">
           <DialogHeader>
-            <DialogTitle className="text-[#0F2423] font-bold text-lg">Assign Lead</DialogTitle>
+            <DialogTitle className="text-[#0F2423] dark:text-white font-bold text-lg">Assign Lead</DialogTitle>
           </DialogHeader>
           <div className="grid gap-3 py-2">
             <div className="grid gap-1.5">
-              <Label className="text-xs font-semibold text-[#0F2423]">Assignment Strategy</Label>
+              <Label className="text-xs font-semibold text-[#0F2423] dark:text-slate-200">Assignment Strategy</Label>
               <Select value={assignStrategy} onValueChange={setAssignStrategy}>
-                <SelectTrigger className="border-[rgba(0,128,128,0.2)] text-[#0F2423]">
+                <SelectTrigger className="border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#0F2423] dark:text-white bg-[#F8FBFA] dark:bg-[#061417]">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white dark:bg-[#091b1f] border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#0F2423] dark:text-white">
                   <SelectItem value="ROUND_ROBIN">Round Robin (Even Distribution)</SelectItem>
                   <SelectItem value="LOAD_BASED">Load Based (Least Active Deals)</SelectItem>
                   <SelectItem value="MANUAL">Manual Selection</SelectItem>
@@ -599,7 +599,7 @@ export function LeadsPage() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setOpenAssign(null)} className="border-[rgba(0,128,128,0.2)] text-[#0F2423]">
+            <Button variant="outline" onClick={() => setOpenAssign(null)} className="border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#0F2423] dark:text-slate-200">
               Cancel
             </Button>
             <Button
@@ -615,24 +615,24 @@ export function LeadsPage() {
 
       {/* Lead Score Details Modal */}
       <Dialog open={!!openScoreDetails} onOpenChange={() => setOpenScoreDetails(null)}>
-        <DialogContent className="max-w-md bg-white border border-[rgba(0,128,128,0.2)] shadow-2xl rounded-2xl">
+        <DialogContent className="max-w-md bg-white dark:bg-[#091b1f] border border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 shadow-2xl rounded-2xl text-[#0F2423] dark:text-white">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-[#0F2423] font-bold text-lg">
-              <Sparkles className="h-5 w-5 text-[#008080]" />
+            <DialogTitle className="flex items-center gap-2 text-[#0F2423] dark:text-white font-bold text-lg">
+              <Sparkles className="h-5 w-5 text-[#008080] dark:text-teal-400" />
               AI Lead Score Analysis
             </DialogTitle>
           </DialogHeader>
           {openScoreDetails && (
             <div className="space-y-4 py-2">
-              <div className="flex items-center justify-between p-4 rounded-2xl bg-[rgba(0,128,128,0.08)] border border-[rgba(0,128,128,0.2)]">
+              <div className="flex items-center justify-between p-4 rounded-2xl bg-[rgba(0,128,128,0.08)] dark:bg-teal-500/15 border border-[rgba(0,128,128,0.2)] dark:border-teal-500/30">
                 <div>
-                  <p className="text-xs font-semibold text-[#008080] uppercase tracking-wider">Computed Score</p>
-                  <p className="text-3xl font-black text-[#008080]">{openScoreDetails.score ?? 50}/100</p>
+                  <p className="text-xs font-semibold text-[#008080] dark:text-teal-400 uppercase tracking-wider">Computed Score</p>
+                  <p className="text-3xl font-black text-[#008080] dark:text-teal-300">{openScoreDetails.score ?? 50}/100</p>
                 </div>
                 <Button
                   size="sm"
                   variant="outline"
-                  className="h-8 text-xs border-[rgba(0,128,128,0.3)] text-[#008080] hover:bg-[rgba(0,128,128,0.08)]"
+                  className="h-8 text-xs border-[rgba(0,128,128,0.3)] dark:border-teal-500/30 text-[#008080] dark:text-teal-300 hover:bg-[rgba(0,128,128,0.08)] dark:hover:bg-teal-500/15"
                   onClick={() => recalculateScoreMutation.mutate(openScoreDetails.id)}
                 >
                   <RefreshCw className="h-3.5 w-3.5 mr-1" /> Recalculate
@@ -640,17 +640,17 @@ export function LeadsPage() {
               </div>
 
               <div>
-                <p className="text-xs font-bold text-[#617D7B] uppercase tracking-wider mb-2">Scoring Factor Breakdown</p>
+                <p className="text-xs font-bold text-[#617D7B] dark:text-slate-400 uppercase tracking-wider mb-2">Scoring Factor Breakdown</p>
                 <div className="space-y-2">
                   {openScoreDetails.scoringFactors && typeof openScoreDetails.scoringFactors === 'object' ? (
                     Object.entries(openScoreDetails.scoringFactors).map(([k, v]: any) => (
-                      <div key={k} className="flex items-center justify-between p-2.5 rounded-xl border border-[rgba(0,128,128,0.14)] bg-[#EDF4F3]/40 text-xs">
-                        <span className="font-semibold text-[#0F2423]">{v?.reason || k}</span>
-                        <span className="font-bold text-emerald-600">+{v?.points || 0} pts</span>
+                      <div key={k} className="flex items-center justify-between p-2.5 rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/25 bg-[#EDF4F3]/40 dark:bg-teal-950/30 text-xs">
+                        <span className="font-semibold text-[#0F2423] dark:text-white">{v?.reason || k}</span>
+                        <span className="font-bold text-emerald-600 dark:text-emerald-400">+{v?.points || 0} pts</span>
                       </div>
                     ))
                   ) : (
-                    <p className="text-xs text-[#617D7B]">Standard base rule scoring applied.</p>
+                    <p className="text-xs text-[#617D7B] dark:text-slate-400">Standard base rule scoring applied.</p>
                   )}
                 </div>
               </div>

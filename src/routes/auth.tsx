@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
@@ -10,8 +10,10 @@ import {
   KeyRound,
   Loader2,
   Lock,
+  Moon,
   ShieldCheck,
   Sparkles,
+  Sun,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,7 +21,8 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { initiateGoogleOAuth } from "@/lib/auth.functions";
-import { authApi } from "@/lib/api";
+import { authApi, authStorage } from "@/lib/api";
+import { useTheme } from "@/hooks/use-theme";
 
 const title = "Sign in — opteraOS";
 const description =
@@ -59,6 +62,7 @@ function calculatePasswordStrength(pass: string): { score: number; label: string
 
 function AuthPage() {
   const navigate = useNavigate();
+  const { isDark, toggleTheme } = useTheme();
   const [authMode, setAuthMode] = useState<AuthMode>("signin");
 
   const startGoogleOAuth = useServerFn(initiateGoogleOAuth);
@@ -77,6 +81,7 @@ function AuthPage() {
   const [sentSignUp, setSentSignUp] = useState(false);
   const [sentForgot, setSentForgot] = useState(false);
   const [passwordUpdated, setPasswordUpdated] = useState(false);
+
 
   useEffect(() => {
     const hash = typeof window !== "undefined" ? window.location.hash : "";
@@ -118,56 +123,83 @@ function AuthPage() {
 
   async function signIn(e: React.FormEvent): Promise<void> {
     e.preventDefault();
+    if (!email.trim()) {
+      toast.error("Please enter your work email");
+      return;
+    }
+    if (!password) {
+      toast.error("Please enter your password");
+      return;
+    }
+
     setLoading(true);
     try {
-      await authApi.login({ email, password });
-      setLoading(false);
-      toast.success("Welcome back to opteraOS!");
-      window.location.replace("/dashboard");
-    } catch (apiErr: any) {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
+      });
+
       setLoading(false);
       if (error) {
-        toast.error(apiErr?.message || error.message);
+        toast.error(error.message || "Invalid login credentials");
         return;
       }
+
+      if (data.session) {
+        authStorage.setToken(data.session.access_token);
+        if (data.session.refresh_token) {
+          authStorage.setRefreshToken(data.session.refresh_token);
+        }
+      }
+
+      toast.success("Welcome back to opteraOS!");
       window.location.replace("/dashboard");
+    } catch (err: any) {
+      setLoading(false);
+      toast.error(err?.message || "An unexpected error occurred during sign in");
     }
   }
 
   async function signUp(e: React.FormEvent): Promise<void> {
     e.preventDefault();
+    if (!email.trim()) {
+      toast.error("Please enter your work email");
+      return;
+    }
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters long");
+      return;
+    }
+
     setLoading(true);
     try {
-      const res = await authApi.register({
-        firstName: email.split("@")[0] || "User",
-        lastName: "Member",
-        email,
-        password,
-      });
-      setLoading(false);
-      toast.success("Account created successfully!");
-      if (res.accessToken) {
-        window.location.replace("/dashboard");
-        return;
-      }
-      setSentSignUp(true);
-    } catch (apiErr: any) {
       const { data, error } = await supabase.auth.signUp({
-        email,
+        email: email.trim(),
         password,
         options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
       });
+
       setLoading(false);
       if (error) {
-        toast.error(apiErr?.message || error.message);
+        toast.error(error.message);
         return;
       }
+
       if (data.session) {
+        authStorage.setToken(data.session.access_token);
+        if (data.session.refresh_token) {
+          authStorage.setRefreshToken(data.session.refresh_token);
+        }
+        toast.success("Account created successfully!");
         window.location.replace("/dashboard");
         return;
       }
+
       setSentSignUp(true);
+      toast.success("Confirmation link sent to your email!");
+    } catch (err: any) {
+      setLoading(false);
+      toast.error(err?.message || "Failed to create account");
     }
   }
 
@@ -254,15 +286,41 @@ function AuthPage() {
   );
 
   return (
-    <div className="min-h-screen relative flex flex-col items-center justify-center px-4 py-12 overflow-hidden">
+    <div className="min-h-screen relative flex flex-col items-center justify-center px-4 py-16 overflow-hidden bg-[#EDF4F3] dark:bg-[#061212] transition-colors duration-200">
+      {/* ── Top controls: Back to Home + Theme Toggle ── */}
+      <div className="absolute top-4 left-4 right-4 z-20 flex items-center justify-between max-w-4xl mx-auto w-full px-2 sm:px-4">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-semibold text-[#3D5A58] dark:text-teal-300 hover:text-[#0F2423] dark:hover:text-white bg-white/80 dark:bg-[#091b1f]/90 backdrop-blur-md border border-[rgba(0,128,128,0.18)] dark:border-teal-500/30 transition-all shadow-xs"
+        >
+          <ArrowLeft className="h-3.5 w-3.5" />
+          <span>Home</span>
+        </Link>
+
+        <button
+          onClick={toggleTheme}
+          type="button"
+          aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+          title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+          className="inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-semibold border border-[rgba(0,128,128,0.22)] dark:border-teal-500/35 bg-white/80 dark:bg-[#091b1f]/90 text-[#0F2423] dark:text-teal-200 hover:bg-[rgba(0,128,128,0.08)] dark:hover:bg-teal-500/20 shadow-xs backdrop-blur-md transition-all cursor-pointer"
+        >
+          {isDark ? (
+            <Sun className="h-3.5 w-3.5 text-amber-400" />
+          ) : (
+            <Moon className="h-3.5 w-3.5 text-[#008080]" />
+          )}
+          <span>{isDark ? "Light mode" : "Dark mode"}</span>
+        </button>
+      </div>
+
       {/* ── Ambient background ── */}
       <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden>
-        <div className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full bg-[#008080] opacity-[0.06] blur-[120px]" />
-        <div className="absolute top-0 right-0 h-[400px] w-[400px] rounded-full bg-[#22D3EE] opacity-[0.05] blur-[100px]" />
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[350px] w-[600px] rounded-full bg-[#8B5CF6] opacity-[0.05] blur-[100px]" />
+        <div className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full bg-[#008080] opacity-[0.06] dark:opacity-[0.12] blur-[120px]" />
+        <div className="absolute top-0 right-0 h-[400px] w-[400px] rounded-full bg-[#22D3EE] opacity-[0.05] dark:opacity-[0.10] blur-[100px]" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[350px] w-[600px] rounded-full bg-[#8B5CF6] opacity-[0.05] dark:opacity-[0.08] blur-[100px]" />
         {/* Grid */}
         <div
-          className="absolute inset-0 opacity-[0.025]"
+          className="absolute inset-0 opacity-[0.025] dark:opacity-[0.05]"
           style={{
             backgroundImage:
               "linear-gradient(rgba(0,128,128,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(0,128,128,0.5) 1px, transparent 1px)",
@@ -273,44 +331,44 @@ function AuthPage() {
 
       <div className="relative z-10 w-full max-w-md">
         {/* Logo */}
-        <div className="mb-8 flex flex-col items-center gap-3">
+        <div className="mb-6 flex flex-col items-center gap-2.5">
           <Link to="/" className="flex items-center gap-2.5" aria-label="opteraOS Home">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#008080] to-[#0D9488] text-white text-lg font-bold shadow-[0_0_16px_rgba(0,128,128,0.5)]">
               O
             </div>
-            <span className="text-2xl font-bold tracking-tight text-[#0F2423]">
+            <span className="text-2xl font-bold tracking-tight text-[#0F2423] dark:text-white">
               optera<span className="text-gradient">OS</span>
             </span>
           </Link>
-          <div className="flex items-center gap-1.5 text-xs font-medium text-[#617D7B]">
-            <Sparkles className="h-3 w-3 text-[#008080]" />
+          <div className="flex items-center gap-1.5 text-xs font-medium text-[#617D7B] dark:text-teal-300/80">
+            <Sparkles className="h-3 w-3 text-[#008080] dark:text-teal-400" />
             <span>AI Business Operating System</span>
           </div>
         </div>
 
         {/* Auth Card */}
-        <div className="rounded-2xl border border-[rgba(0,128,128,0.2)] bg-white/95 backdrop-blur-xl p-6 shadow-[0_20px_50px_rgba(0,64,64,0.08),0_0_0_1px_rgba(0,128,128,0.12)] sm:p-8">
+        <div className="rounded-2xl border border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 bg-white/95 dark:bg-[#091b1f]/95 backdrop-blur-xl p-6 shadow-[0_20px_50px_rgba(0,64,64,0.08),0_0_0_1px_rgba(0,128,128,0.12)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5),0_0_0_1px_rgba(0,179,179,0.2)] sm:p-8">
 
           {/* VIEW 1: UPDATE PASSWORD */}
           {authMode === "update-password" ? (
             <div>
               <div className="text-center">
-                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-[rgba(0,128,128,0.15)] border border-[rgba(0,128,128,0.25)] text-[#008080]">
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-[rgba(0,128,128,0.15)] dark:bg-teal-500/20 border border-[rgba(0,128,128,0.25)] dark:border-teal-500/40 text-[#008080] dark:text-teal-300">
                   <KeyRound className="h-6 w-6" />
                 </div>
-                <h1 className="text-xl font-bold tracking-tight text-[#0F2423] sm:text-2xl">
+                <h1 className="text-xl font-bold tracking-tight text-[#0F2423] dark:text-white sm:text-2xl">
                   Create New Password
                 </h1>
-                <p className="mt-1.5 text-sm text-[#3D5A58]">
+                <p className="mt-1.5 text-sm text-[#3D5A58] dark:text-slate-300">
                   Set a secure password for your opteraOS account.
                 </p>
               </div>
 
               {passwordUpdated ? (
-                <div className="mt-8 rounded-xl border border-[rgba(16,185,129,0.25)] bg-[rgba(16,185,129,0.1)] p-6 text-center">
+                <div className="mt-8 rounded-xl border border-[rgba(16,185,129,0.25)] bg-[rgba(16,185,129,0.1)] dark:bg-emerald-950/30 p-6 text-center">
                   <CheckCircle2 className="mx-auto h-10 w-10 text-[#10B981]" />
-                  <h3 className="mt-3 text-sm font-bold text-[#0F2423]">Password Updated!</h3>
-                  <p className="mt-1.5 text-xs text-[#3D5A58]">
+                  <h3 className="mt-3 text-sm font-bold text-[#0F2423] dark:text-white">Password Updated!</h3>
+                  <p className="mt-1.5 text-xs text-[#3D5A58] dark:text-slate-300">
                     Your password has been changed. Redirecting to your workspace...
                   </p>
                   <Button
@@ -323,7 +381,7 @@ function AuthPage() {
               ) : (
                 <form className="mt-6 grid gap-4" onSubmit={handleUpdatePassword}>
                   <div className="grid gap-1.5">
-                    <Label htmlFor="new-password" className="text-sm font-medium text-[#3D5A58]">
+                    <Label htmlFor="new-password" className="text-sm font-medium text-[#3D5A58] dark:text-slate-200">
                       New Password
                     </Label>
                     <div className="relative">
@@ -335,12 +393,12 @@ function AuthPage() {
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         placeholder="At least 8 characters"
-                        className="h-10 pr-10 bg-[#F8FBFA] border-[rgba(0,128,128,0.2)] text-[#0F2423] placeholder:text-[#617D7B] focus:border-[#008080] focus:ring-[rgba(0,128,128,0.2)]"
+                        className="h-10 pr-10 bg-[#F8FBFA] dark:bg-[#061417] border-[rgba(0,128,128,0.2)] dark:border-teal-500/35 text-[#0F2423] dark:text-white placeholder:text-[#617D7B] dark:placeholder:text-slate-500 focus:border-[#008080] dark:focus:border-teal-400 focus:ring-[rgba(0,128,128,0.2)]"
                       />
                       <button
                         type="button"
                         onClick={() => setShowNewPassword(!showNewPassword)}
-                        className="absolute inset-y-0 right-0 flex items-center pr-3 text-[#617D7B] hover:text-[#3D5A58]"
+                        className="absolute inset-y-0 right-0 flex items-center pr-3 text-[#617D7B] dark:text-slate-400 hover:text-[#3D5A58] dark:hover:text-white"
                       >
                         {showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </button>
@@ -349,15 +407,15 @@ function AuthPage() {
                     {newPassword && (
                       <div className="mt-1.5 space-y-1.5">
                         <div className="flex items-center justify-between text-[11px]">
-                          <span className="text-[#617D7B] font-medium">Strength:</span>
-                          <span className="font-semibold text-[#0F2423]">{strength.label}</span>
+                          <span className="text-[#617D7B] dark:text-slate-400 font-medium">Strength:</span>
+                          <span className="font-semibold text-[#0F2423] dark:text-white">{strength.label}</span>
                         </div>
                         <div className="grid grid-cols-4 gap-1.5">
                           {[1, 2, 3, 4].map((level) => (
                             <div
                               key={level}
                               className={`h-1.5 rounded-full transition-all duration-300 ${
-                                strength.score >= level ? strength.color : "bg-[rgba(148,163,184,0.15)]"
+                                strength.score >= level ? strength.color : "bg-[rgba(148,163,184,0.15)] dark:bg-slate-800"
                               }`}
                             />
                           ))}
@@ -367,7 +425,7 @@ function AuthPage() {
                   </div>
 
                   <div className="grid gap-1.5">
-                    <Label htmlFor="confirm-password" className="text-sm font-medium text-[#3D5A58]">
+                    <Label htmlFor="confirm-password" className="text-sm font-medium text-[#3D5A58] dark:text-slate-200">
                       Confirm New Password
                     </Label>
                     <Input
@@ -378,7 +436,7 @@ function AuthPage() {
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="Re-enter your new password"
-                      className="h-10 bg-[#F8FBFA] border-[rgba(0,128,128,0.2)] text-[#0F2423] placeholder:text-[#617D7B]"
+                      className="h-10 bg-[#F8FBFA] dark:bg-[#061417] border-[rgba(0,128,128,0.2)] dark:border-teal-500/35 text-[#0F2423] dark:text-white placeholder:text-[#617D7B] dark:placeholder:text-slate-500"
                     />
                     {confirmPassword && newPassword !== confirmPassword && (
                       <p className="text-xs font-medium text-[#F43F5E]">Passwords do not match</p>
@@ -399,24 +457,24 @@ function AuthPage() {
             /* VIEW 2: FORGOT PASSWORD */
             <div>
               <div className="text-center">
-                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-[rgba(0,128,128,0.15)] border border-[rgba(0,128,128,0.25)] text-[#008080]">
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-[rgba(0,128,128,0.15)] dark:bg-teal-500/20 border border-[rgba(0,128,128,0.25)] dark:border-teal-500/40 text-[#008080] dark:text-teal-300">
                   <Lock className="h-6 w-6" />
                 </div>
-                <h1 className="text-xl font-bold tracking-tight text-[#0F2423] sm:text-2xl">
+                <h1 className="text-xl font-bold tracking-tight text-[#0F2423] dark:text-white sm:text-2xl">
                   Reset Password
                 </h1>
-                <p className="mt-1.5 text-sm text-[#3D5A58]">
+                <p className="mt-1.5 text-sm text-[#3D5A58] dark:text-slate-300">
                   Enter your work email and we&apos;ll send you a password recovery link.
                 </p>
               </div>
 
               {sentForgot ? (
-                <div className="mt-8 rounded-xl border border-[rgba(16,185,129,0.25)] bg-[rgba(16,185,129,0.1)] p-5 text-center">
+                <div className="mt-8 rounded-xl border border-[rgba(16,185,129,0.25)] bg-[rgba(16,185,129,0.1)] dark:bg-emerald-950/30 p-5 text-center">
                   <ShieldCheck className="mx-auto h-8 w-8 text-[#10B981]" />
-                  <h3 className="mt-2 text-sm font-bold text-[#0F2423]">Reset Link Sent</h3>
-                  <p className="mt-1 text-sm leading-relaxed text-[#3D5A58]">
+                  <h3 className="mt-2 text-sm font-bold text-[#0F2423] dark:text-white">Reset Link Sent</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-[#3D5A58] dark:text-slate-300">
                     We sent password reset instructions to{" "}
-                    <span className="font-semibold text-[#0F2423]">{email}</span>. Click the link in
+                    <span className="font-semibold text-[#0F2423] dark:text-white">{email}</span>. Click the link in
                     your email to create a new password.
                   </p>
                   <div className="mt-4 flex flex-col gap-2">
@@ -424,7 +482,7 @@ function AuthPage() {
                       variant="outline"
                       size="sm"
                       onClick={() => setSentForgot(false)}
-                      className="border-[rgba(0,128,128,0.2)] text-[#3D5A58] bg-transparent hover:bg-[rgba(0,128,128,0.06)] hover:text-[#0F2423]"
+                      className="border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#3D5A58] dark:text-slate-200 bg-transparent hover:bg-[rgba(0,128,128,0.06)] dark:hover:bg-teal-500/10 hover:text-[#0F2423] dark:hover:text-white"
                     >
                       Send again
                     </Button>
@@ -432,7 +490,7 @@ function AuthPage() {
                       variant="ghost"
                       size="sm"
                       onClick={() => setAuthMode("signin")}
-                      className="text-xs text-[#617D7B] hover:text-[#3D5A58]"
+                      className="text-xs text-[#617D7B] dark:text-slate-400 hover:text-[#3D5A58] dark:hover:text-white"
                     >
                       ← Back to Sign in
                     </Button>
@@ -441,7 +499,7 @@ function AuthPage() {
               ) : (
                 <form className="mt-6 grid gap-4" onSubmit={handleForgotPassword}>
                   <div className="grid gap-1.5">
-                    <Label htmlFor="forgot-email" className="text-sm font-medium text-[#3D5A58]">
+                    <Label htmlFor="forgot-email" className="text-sm font-medium text-[#3D5A58] dark:text-slate-200">
                       Work email
                     </Label>
                     <Input
@@ -451,7 +509,7 @@ function AuthPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="you@company.com"
-                      className="h-10 bg-[#F8FBFA] border-[rgba(0,128,128,0.2)] text-[#0F2423] placeholder:text-[#617D7B]"
+                      className="h-10 bg-[#F8FBFA] dark:bg-[#061417] border-[rgba(0,128,128,0.2)] dark:border-teal-500/35 text-[#0F2423] dark:text-white placeholder:text-[#617D7B] dark:placeholder:text-slate-500"
                     />
                   </div>
 
@@ -467,7 +525,7 @@ function AuthPage() {
                     <button
                       type="button"
                       onClick={() => setAuthMode("signin")}
-                      className="text-xs font-semibold text-[#617D7B] transition-colors hover:text-[#3D5A58] cursor-pointer"
+                      className="text-xs font-semibold text-[#617D7B] dark:text-slate-400 transition-colors hover:text-[#3D5A58] dark:hover:text-white cursor-pointer"
                     >
                       ← Back to Sign in
                     </button>
@@ -479,24 +537,24 @@ function AuthPage() {
             /* VIEW 3: SIGN IN & CREATE ACCOUNT */
             <div>
               <div className="text-center">
-                <h1 className="text-xl font-bold tracking-tight text-[#0F2423] sm:text-2xl">
+                <h1 className="text-xl font-bold tracking-tight text-[#0F2423] dark:text-white sm:text-2xl">
                   Welcome to opteraOS
                 </h1>
-                <p className="mt-1.5 text-sm text-[#3D5A58]">AI Business Operating System</p>
+                <p className="mt-1.5 text-sm text-[#3D5A58] dark:text-slate-300">AI Business Operating System</p>
               </div>
 
               {sentSignUp ? (
-                <div className="mt-8 rounded-xl border border-[rgba(16,185,129,0.25)] bg-[rgba(16,185,129,0.1)] p-5 text-center">
+                <div className="mt-8 rounded-xl border border-[rgba(16,185,129,0.25)] bg-[rgba(16,185,129,0.1)] dark:bg-emerald-950/30 p-5 text-center">
                   <ShieldCheck className="mx-auto h-8 w-8 text-[#10B981]" />
-                  <h3 className="mt-2 text-sm font-bold text-[#0F2423]">Check your email</h3>
-                  <p className="mt-1 text-sm leading-relaxed text-[#3D5A58]">
+                  <h3 className="mt-2 text-sm font-bold text-[#0F2423] dark:text-white">Check your email</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-[#3D5A58] dark:text-slate-300">
                     We sent a confirmation link to verify your account. Once verified, you can sign in.
                   </p>
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => setSentSignUp(false)}
-                    className="mt-4 border-[rgba(0,128,128,0.2)] text-[#3D5A58] bg-transparent hover:bg-[rgba(0,128,128,0.06)]"
+                    className="mt-4 border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#3D5A58] dark:text-slate-200 bg-transparent hover:bg-[rgba(0,128,128,0.06)] dark:hover:bg-teal-500/10"
                   >
                     Back to Sign in
                   </Button>
@@ -510,7 +568,7 @@ function AuthPage() {
                       variant="outline"
                       disabled={!!oauthLoading || loading}
                       onClick={handleGoogleOAuth}
-                      className="h-10 w-full font-semibold border-[rgba(0,128,128,0.2)] text-[#3D5A58] bg-white hover:bg-[rgba(0,128,128,0.06)] hover:text-[#0F2423] hover:border-[rgba(0,128,128,0.25)] transition-all"
+                      className="h-10 w-full font-semibold border border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#3D5A58] dark:text-slate-200 bg-white dark:bg-[#07171a] hover:bg-[rgba(0,128,128,0.06)] dark:hover:bg-teal-500/15 hover:text-[#0F2423] dark:hover:text-white hover:border-[rgba(0,128,128,0.25)] dark:hover:border-teal-500/50 transition-all"
                     >
                       {oauthLoading === "google" ? (
                         <Loader2 className="mr-2.5 h-4 w-4 animate-spin text-[#008080]" />
@@ -527,10 +585,10 @@ function AuthPage() {
                   </div>
 
                   {/* Divider */}
-                  <div className="my-5 flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-[#617D7B]">
-                    <span className="h-px flex-1 bg-[rgba(148,163,184,0.1)]" />
+                  <div className="my-5 flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-[#617D7B] dark:text-slate-400">
+                    <span className="h-px flex-1 bg-[rgba(148,163,184,0.15)] dark:bg-teal-500/20" />
                     <span>or continue with email</span>
-                    <span className="h-px flex-1 bg-[rgba(148,163,184,0.1)]" />
+                    <span className="h-px flex-1 bg-[rgba(148,163,184,0.15)] dark:bg-teal-500/20" />
                   </div>
 
                   {/* Tabs */}
@@ -539,16 +597,16 @@ function AuthPage() {
                     onValueChange={(v) => setAuthMode(v as AuthMode)}
                     className="w-full"
                   >
-                    <TabsList className="grid w-full grid-cols-2 rounded-lg border border-[rgba(0,128,128,0.15)] bg-[#E8F1F0] p-1">
+                    <TabsList className="grid w-full grid-cols-2 rounded-lg border border-[rgba(0,128,128,0.15)] dark:border-teal-500/25 bg-[#E8F1F0] dark:bg-[#061417] p-1">
                       <TabsTrigger
                         value="signin"
-                        className="rounded-md text-xs font-semibold text-[#617D7B] transition-all data-[state=active]:bg-[rgba(0,128,128,0.15)] data-[state=active]:text-[#008080] data-[state=active]:border data-[state=active]:border-[rgba(0,128,128,0.25)] cursor-pointer"
+                        className="rounded-md text-xs font-semibold text-[#617D7B] dark:text-slate-400 transition-all data-[state=active]:bg-[rgba(0,128,128,0.15)] data-[state=active]:dark:bg-teal-500/25 data-[state=active]:text-[#008080] data-[state=active]:dark:text-teal-300 data-[state=active]:border data-[state=active]:border-[rgba(0,128,128,0.25)] data-[state=active]:dark:border-teal-500/40 cursor-pointer"
                       >
                         Sign in
                       </TabsTrigger>
                       <TabsTrigger
                         value="signup"
-                        className="rounded-md text-xs font-semibold text-[#617D7B] transition-all data-[state=active]:bg-[rgba(0,128,128,0.15)] data-[state=active]:text-[#008080] data-[state=active]:border data-[state=active]:border-[rgba(0,128,128,0.25)] cursor-pointer"
+                        className="rounded-md text-xs font-semibold text-[#617D7B] dark:text-slate-400 transition-all data-[state=active]:bg-[rgba(0,128,128,0.15)] data-[state=active]:dark:bg-teal-500/25 data-[state=active]:text-[#008080] data-[state=active]:dark:text-teal-300 data-[state=active]:border data-[state=active]:border-[rgba(0,128,128,0.25)] data-[state=active]:dark:border-teal-500/40 cursor-pointer"
                       >
                         Create account
                       </TabsTrigger>
@@ -558,7 +616,7 @@ function AuthPage() {
                     <TabsContent value="signin" className="mt-4">
                       <form className="grid gap-4" onSubmit={signIn}>
                         <div className="grid gap-1.5">
-                          <Label htmlFor="email" className="text-sm font-medium text-[#3D5A58]">
+                          <Label htmlFor="email" className="text-sm font-medium text-[#3D5A58] dark:text-slate-200">
                             Work email
                           </Label>
                           <Input
@@ -568,19 +626,19 @@ function AuthPage() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="you@company.com"
-                            className="h-10 bg-[#F8FBFA] border-[rgba(0,128,128,0.2)] text-[#0F2423] placeholder:text-[#617D7B]"
+                            className="h-10 bg-[#F8FBFA] dark:bg-[#061417] border-[rgba(0,128,128,0.2)] dark:border-teal-500/35 text-[#0F2423] dark:text-white placeholder:text-[#617D7B] dark:placeholder:text-slate-500"
                           />
                         </div>
 
                         <div className="grid gap-1.5">
                           <div className="flex items-center justify-between">
-                            <Label htmlFor="password" className="text-sm font-medium text-[#3D5A58]">
+                            <Label htmlFor="password" className="text-sm font-medium text-[#3D5A58] dark:text-slate-200">
                               Password
                             </Label>
                             <button
                               type="button"
                               onClick={() => setAuthMode("forgot")}
-                              className="text-xs font-semibold text-[#008080] transition-colors hover:text-[#008080] cursor-pointer"
+                              className="text-xs font-semibold text-[#008080] dark:text-teal-400 transition-colors hover:text-[#006666] dark:hover:text-teal-300 cursor-pointer"
                             >
                               Forgot password?
                             </button>
@@ -593,12 +651,12 @@ function AuthPage() {
                               value={password}
                               onChange={(e) => setPassword(e.target.value)}
                               placeholder="Enter your password"
-                              className="h-10 pr-10 bg-[#F8FBFA] border-[rgba(0,128,128,0.2)] text-[#0F2423] placeholder:text-[#617D7B]"
+                              className="h-10 pr-10 bg-[#F8FBFA] dark:bg-[#061417] border-[rgba(0,128,128,0.2)] dark:border-teal-500/35 text-[#0F2423] dark:text-white placeholder:text-[#617D7B] dark:placeholder:text-slate-500"
                             />
                             <button
                               type="button"
                               onClick={() => setShowPassword(!showPassword)}
-                              className="absolute inset-y-0 right-0 flex items-center pr-3 text-[#617D7B] hover:text-[#3D5A58]"
+                              className="absolute inset-y-0 right-0 flex items-center pr-3 text-[#617D7B] dark:text-slate-400 hover:text-[#3D5A58] dark:hover:text-white"
                             >
                               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                             </button>
@@ -619,7 +677,7 @@ function AuthPage() {
                     <TabsContent value="signup" className="mt-4">
                       <form className="grid gap-4" onSubmit={signUp}>
                         <div className="grid gap-1.5">
-                          <Label htmlFor="signup-email" className="text-sm font-medium text-[#3D5A58]">
+                          <Label htmlFor="signup-email" className="text-sm font-medium text-[#3D5A58] dark:text-slate-200">
                             Work email
                           </Label>
                           <Input
@@ -629,12 +687,12 @@ function AuthPage() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="you@company.com"
-                            className="h-10 bg-[#F8FBFA] border-[rgba(0,128,128,0.2)] text-[#0F2423] placeholder:text-[#617D7B]"
+                            className="h-10 bg-[#F8FBFA] dark:bg-[#061417] border-[rgba(0,128,128,0.2)] dark:border-teal-500/35 text-[#0F2423] dark:text-white placeholder:text-[#617D7B] dark:placeholder:text-slate-500"
                           />
                         </div>
 
                         <div className="grid gap-1.5">
-                          <Label htmlFor="signup-password" className="text-sm font-medium text-[#3D5A58]">
+                          <Label htmlFor="signup-password" className="text-sm font-medium text-[#3D5A58] dark:text-slate-200">
                             Password
                           </Label>
                           <div className="relative">
@@ -646,12 +704,12 @@ function AuthPage() {
                               value={password}
                               onChange={(e) => setPassword(e.target.value)}
                               placeholder="At least 8 characters"
-                              className="h-10 pr-10 bg-[#F8FBFA] border-[rgba(0,128,128,0.2)] text-[#0F2423] placeholder:text-[#617D7B]"
+                              className="h-10 pr-10 bg-[#F8FBFA] dark:bg-[#061417] border-[rgba(0,128,128,0.2)] dark:border-teal-500/35 text-[#0F2423] dark:text-white placeholder:text-[#617D7B] dark:placeholder:text-slate-500"
                             />
                             <button
                               type="button"
                               onClick={() => setShowPassword(!showPassword)}
-                              className="absolute inset-y-0 right-0 flex items-center pr-3 text-[#617D7B] hover:text-[#3D5A58]"
+                              className="absolute inset-y-0 right-0 flex items-center pr-3 text-[#617D7B] dark:text-slate-400 hover:text-[#3D5A58] dark:hover:text-white"
                             >
                               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                             </button>
@@ -660,15 +718,15 @@ function AuthPage() {
                           {password && (
                             <div className="mt-1 space-y-1">
                               <div className="flex items-center justify-between text-[11px]">
-                                <span className="text-[#617D7B] font-medium">Password strength:</span>
-                                <span className="font-semibold text-[#0F2423]">{strength.label}</span>
+                                <span className="text-[#617D7B] dark:text-slate-400 font-medium">Password strength:</span>
+                                <span className="font-semibold text-[#0F2423] dark:text-white">{strength.label}</span>
                               </div>
                               <div className="grid grid-cols-4 gap-1.5">
                                 {[1, 2, 3, 4].map((level) => (
                                   <div
                                     key={level}
                                     className={`h-1.5 rounded-full transition-all duration-300 ${
-                                      strength.score >= level ? strength.color : "bg-[rgba(148,163,184,0.15)]"
+                                      strength.score >= level ? strength.color : "bg-[rgba(148,163,184,0.15)] dark:bg-slate-800"
                                     }`}
                                   />
                                 ))}
@@ -689,13 +747,13 @@ function AuthPage() {
                   </Tabs>
 
                   {/* Terms */}
-                  <p className="mt-5 text-center text-xs text-[#617D7B]">
+                  <p className="mt-5 text-center text-xs text-[#617D7B] dark:text-slate-400">
                     By continuing, you agree to our{" "}
-                    <Link to="/terms" className="text-[#008080] underline underline-offset-4 hover:text-[#008080]">
+                    <Link to="/terms" className="text-[#008080] dark:text-teal-400 underline underline-offset-4 hover:text-[#006666] dark:hover:text-teal-300">
                       Terms
                     </Link>{" "}
                     and{" "}
-                    <Link to="/privacy" className="text-[#008080] underline underline-offset-4 hover:text-[#008080]">
+                    <Link to="/privacy" className="text-[#008080] dark:text-teal-400 underline underline-offset-4 hover:text-[#006666] dark:hover:text-teal-300">
                       Privacy Policy
                     </Link>
                     .
@@ -710,7 +768,7 @@ function AuthPage() {
         <div className="mt-6 text-center">
           <Link
             to="/"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#617D7B] transition-colors hover:text-[#3D5A58]"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#617D7B] dark:text-teal-300/80 transition-colors hover:text-[#3D5A58] dark:hover:text-white"
           >
             <ArrowLeft className="h-3.5 w-3.5" /> Back to opteraOS home
           </Link>

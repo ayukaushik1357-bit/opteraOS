@@ -14,19 +14,19 @@ export function LogoMark({ className }: { className?: string }) {
   );
 }
 
-export function Wordmark({ className }: { className?: string }) {
+export function Wordmark({ className }: { className?: string | undefined }) {
   return (
-    <span className={cn("text-lg font-bold tracking-tight text-[#0F2423]", className)}>
+    <span className={cn("text-lg font-bold tracking-tight", className || "text-[#0F2423]")}>
       optera<span className="text-gradient">OS</span>
     </span>
   );
 }
 
-export function BrandLockup({ className }: { className?: string }) {
+export function BrandLockup({ className, wordmarkClassName }: { className?: string | undefined; wordmarkClassName?: string | undefined }) {
   return (
     <div className={cn("flex items-center gap-2.5", className)}>
       <LogoMark />
-      <Wordmark />
+      <Wordmark className={wordmarkClassName} />
     </div>
   );
 }

@@ -757,7 +757,7 @@ function CustomersPage() {
       </div>
 
       {/* ── Table ────────────────────────────────────────────────────────────── */}
-      <div className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-white shadow-teal-xs overflow-hidden">
+      <div className="rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/20 bg-white dark:bg-[#091b1f] shadow-teal-xs overflow-hidden">
         {isLoading && !data ? (
           <div className="grid gap-2 p-5">
             {Array.from({ length: 6 }).map((_, i) => (
@@ -767,12 +767,12 @@ function CustomersPage() {
         ) : error ? (
           <div className="flex flex-col items-center gap-3 p-10 text-center">
             <p className="text-sm text-red-600 font-medium">{(error as Error).message}</p>
-            <Button variant="outline" size="sm" onClick={() => refetch()} className="border-[rgba(0,128,128,0.2)] text-[#0F2423]">
+            <Button variant="outline" size="sm" onClick={() => refetch()} className="border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#0F2423] dark:text-slate-200">
               Try again
             </Button>
           </div>
         ) : (data?.rows ?? []).length === 0 ? (
-          <div className="p-10 text-center text-sm text-[#617D7B]">
+          <div className="p-10 text-center text-sm text-[#617D7B] dark:text-slate-400">
             {debouncedSearch || statusFilter !== "all"
               ? "No customers match your filters."
               : "No customers yet — add your first one or import a CSV."}
@@ -781,21 +781,21 @@ function CustomersPage() {
           <>
             <Table>
               <TableHeader>
-                <TableRow className="bg-[rgba(0,128,128,0.03)] border-b border-[rgba(0,128,128,0.1)] hover:bg-transparent">
-                  <TableHead className="text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Name</TableHead>
-                  <TableHead className="text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Company</TableHead>
-                  <TableHead className="text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Contact</TableHead>
-                  <TableHead className="text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Status</TableHead>
-                  <TableHead className="text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Added</TableHead>
-                  <TableHead className="w-24 text-right text-[#617D7B] font-semibold text-xs uppercase tracking-wider">Actions</TableHead>
+                <TableRow className="bg-[rgba(0,128,128,0.03)] dark:bg-teal-950/20 border-b border-[rgba(0,128,128,0.1)] dark:border-teal-500/20 hover:bg-transparent">
+                  <TableHead className="text-[#617D7B] dark:text-slate-400 font-semibold text-xs uppercase tracking-wider">Name</TableHead>
+                  <TableHead className="text-[#617D7B] dark:text-slate-400 font-semibold text-xs uppercase tracking-wider">Company</TableHead>
+                  <TableHead className="text-[#617D7B] dark:text-slate-400 font-semibold text-xs uppercase tracking-wider">Contact</TableHead>
+                  <TableHead className="text-[#617D7B] dark:text-slate-400 font-semibold text-xs uppercase tracking-wider">Status</TableHead>
+                  <TableHead className="text-[#617D7B] dark:text-slate-400 font-semibold text-xs uppercase tracking-wider">Added</TableHead>
+                  <TableHead className="w-24 text-right text-[#617D7B] dark:text-slate-400 font-semibold text-xs uppercase tracking-wider">Actions</TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody className="divide-y divide-[rgba(0,128,128,0.08)]">
+              <TableBody className="divide-y divide-[rgba(0,128,128,0.08)] dark:divide-teal-500/15">
                 {(data?.rows ?? []).map((c) => (
-                  <TableRow key={c.id} className="group hover:bg-[rgba(0,128,128,0.02)] border-b border-[rgba(0,128,128,0.08)] transition-colors">
-                    <TableCell className="font-semibold text-[#0F2423]">{c.name}</TableCell>
-                    <TableCell className="text-[#3D5A58] font-medium">{c.company ?? "—"}</TableCell>
-                    <TableCell className="text-[#617D7B]">
+                  <TableRow key={c.id} className="group hover:bg-[rgba(0,128,128,0.02)] dark:hover:bg-teal-500/5 border-b border-[rgba(0,128,128,0.08)] dark:border-teal-500/15 transition-colors">
+                    <TableCell className="font-semibold text-[#0F2423] dark:text-white">{c.name}</TableCell>
+                    <TableCell className="text-[#3D5A58] dark:text-slate-300 font-medium">{c.company ?? "—"}</TableCell>
+                    <TableCell className="text-[#617D7B] dark:text-slate-400">
                       {c.email ?? c.phone ?? "—"}
                     </TableCell>
                     <TableCell>
@@ -805,22 +805,22 @@ function CustomersPage() {
                         {c.status}
                       </span>
                     </TableCell>
-                    <TableCell className="text-[#617D7B]">{shortDate(c.created_at)}</TableCell>
+                    <TableCell className="text-[#617D7B] dark:text-slate-400">{shortDate(c.created_at)}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                         <Button
                           size="sm"
                           variant="ghost"
                           onClick={() => openAssignTask(c)}
-                          className="h-7 gap-1 text-xs text-[#008080] hover:text-[#006666] hover:bg-[rgba(0,128,128,0.08)] px-2 font-medium"
+                          className="h-7 gap-1 text-xs text-[#008080] dark:text-teal-300 hover:text-[#006666] dark:hover:text-teal-200 hover:bg-[rgba(0,128,128,0.08)] dark:hover:bg-teal-500/15 px-2 font-medium"
                         >
-                          <Zap className="h-3 w-3 text-[#008080]" />
+                          <Zap className="h-3 w-3 text-[#008080] dark:text-teal-400" />
                           <span>Autopilot</span>
                         </Button>
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="text-[#3D5A58] hover:text-[#008080] hover:bg-[rgba(0,128,128,0.06)] h-7 px-2 text-xs"
+                          className="text-[#3D5A58] dark:text-slate-300 hover:text-[#008080] dark:hover:text-white hover:bg-[rgba(0,128,128,0.06)] dark:hover:bg-teal-500/10 h-7 px-2 text-xs"
                           onClick={() => {
                             setEditing({
                               id: c.id,
@@ -838,7 +838,7 @@ function CustomersPage() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="text-[#617D7B] hover:text-red-600 hover:bg-rose-50 h-7 w-7 p-0"
+                          className="text-[#617D7B] dark:text-slate-400 hover:text-red-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 h-7 w-7 p-0"
                           onClick={() => deleteMutation.mutate(c.id)}
                           disabled={deleteMutation.isPending}
                           aria-label={`Delete ${c.name}`}

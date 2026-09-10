@@ -47,17 +47,17 @@ function Hero() {
         {/* Subtle Tech Grid */}
         <div className="grid-lines absolute inset-0 opacity-40" />
 
-        {/* Top Glow Orb */}
+        {/* Top Glow Orb — teal-dominant to bridge header teal into hero */}
         <div
-          className="absolute -top-40 left-1/2 h-[550px] w-[850px] -translate-x-1/2 rounded-full opacity-35 blur-[120px]"
+          className="absolute -top-40 left-1/2 h-[550px] w-[850px] -translate-x-1/2 rounded-full opacity-40 blur-[120px]"
           style={{
             background:
-              "radial-gradient(ellipse at center, rgba(99, 102, 241, 0.4), rgba(168, 85, 247, 0.25), rgba(6, 182, 212, 0.15), transparent 70%)",
+              "radial-gradient(ellipse at center, rgba(13,148,136,0.45), rgba(99,102,241,0.3), rgba(168,85,247,0.2), transparent 70%)",
           }}
         />
 
         {/* Secondary Side Glows */}
-        <div className="absolute top-1/4 -left-32 h-96 w-96 rounded-full bg-cyan-600/10 blur-[100px]" />
+        <div className="absolute top-1/4 -left-32 h-96 w-96 rounded-full bg-teal-600/12 blur-[100px]" />
         <div className="absolute top-1/3 -right-32 h-96 w-96 rounded-full bg-purple-600/10 blur-[100px]" />
       </div>
 

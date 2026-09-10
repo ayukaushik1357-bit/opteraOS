@@ -175,10 +175,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
+  // Inline blocking script — runs BEFORE React renders.
+  // Restores user's theme preference on ALL pages to prevent flash.
+  const themeScript = `(function(){
+    var theme = localStorage.getItem('opteraos_theme');
+    if(theme === 'dark') document.documentElement.classList.add('dark');
+    else document.documentElement.classList.remove('dark');
+  })();`;
+
   return (
     <html lang="en">
       <head>
         <HeadContent />
+        {/* Blocking script: prevents dark mode flash on auth/app routes */}
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>
         {children}

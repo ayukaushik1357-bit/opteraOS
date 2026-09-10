@@ -21,13 +21,13 @@ export function PageHeader({
   return (
     <div className="mb-6">
       {breadcrumb && (
-        <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-[#008080]">{breadcrumb}</p>
+        <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-[#008080] dark:text-teal-400">{breadcrumb}</p>
       )}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="min-w-0">
-          <h1 className="text-xl font-bold tracking-tight text-[#0F2423] sm:text-2xl">{title}</h1>
+          <h1 className="text-xl font-bold tracking-tight text-[#0F2423] dark:text-white sm:text-2xl">{title}</h1>
           {subtitle && (
-            <p className="mt-0.5 text-sm text-[#617D7B] leading-relaxed">{subtitle}</p>
+            <p className="mt-0.5 text-sm text-[#617D7B] dark:text-slate-300 leading-relaxed">{subtitle}</p>
           )}
         </div>
         {actions && (
@@ -67,9 +67,9 @@ export function StatCard({
   };
 
   return (
-    <div className="rounded-xl border border-[rgba(0,128,128,0.14)] bg-white p-5 shadow-teal-xs hover:border-[#008080] hover:shadow-teal-sm transition-all">
+    <div className="rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/25 bg-white dark:bg-[#091b1f] p-5 shadow-teal-xs hover:border-[#008080] dark:hover:border-teal-400 hover:shadow-teal-sm transition-all">
       <div className="flex items-start justify-between">
-        <p className="text-xs font-semibold uppercase tracking-wider text-[#617D7B]">{label}</p>
+        <p className="text-xs font-semibold uppercase tracking-wider text-[#617D7B] dark:text-slate-300">{label}</p>
         {icon && (
           <div className={cn("flex h-8 w-8 items-center justify-center rounded-lg", iconBg[iconColor])}>
             {icon}
@@ -83,13 +83,13 @@ export function StatCard({
         </>
       ) : (
         <>
-          <p className="mt-2.5 text-2xl font-bold tracking-tight text-[#0F2423]">{value}</p>
+          <p className="mt-2.5 text-2xl font-bold tracking-tight text-[#0F2423] dark:text-white">{value}</p>
           {trend && (
-            <p className={cn("mt-1 text-xs font-semibold", trend.positive ? "text-emerald-700" : "text-rose-600")}>
+            <p className={cn("mt-1 text-xs font-semibold", trend.positive ? "text-emerald-700 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400")}>
               {trend.value}
             </p>
           )}
-          {hint && <p className="mt-1 text-xs text-[#617D7B]">{hint}</p>}
+          {hint && <p className="mt-1 text-xs text-[#617D7B] dark:text-slate-400">{hint}</p>}
         </>
       )}
     </div>
@@ -181,7 +181,7 @@ export function SearchInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="h-9 pl-9 text-sm text-[#0F2423] border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] bg-white placeholder:text-[#617D7B]/60"
+        className="h-9 pl-9 text-sm text-[#0F2423] dark:text-white border-[rgba(0,128,128,0.2)] dark:border-teal-500/35 focus-visible:ring-[#008080] dark:focus-visible:ring-teal-400 bg-white dark:bg-[#061417] placeholder:text-[#617D7B]/60 dark:placeholder:text-slate-400"
       />
     </div>
   );
@@ -199,12 +199,12 @@ export function EmptyState({
   action?: ReactNode;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[rgba(0,128,128,0.25)] bg-[#EDF4F3]/30 px-6 py-14 text-center shadow-xs">
-      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[rgba(0,128,128,0.1)] text-[#008080]">
+    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[rgba(0,128,128,0.25)] dark:border-teal-500/30 bg-[#EDF4F3]/30 dark:bg-[#061417]/50 px-6 py-14 text-center shadow-xs">
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[rgba(0,128,128,0.1)] dark:bg-teal-500/20 text-[#008080] dark:text-teal-300">
         <Inbox className="h-6 w-6" aria-hidden />
       </div>
-      <h3 className="mt-3 text-sm font-bold text-[#0F2423]">{title}</h3>
-      <p className="mt-1 text-sm text-[#617D7B] max-w-sm">{description}</p>
+      <h3 className="mt-3 text-sm font-bold text-[#0F2423] dark:text-white">{title}</h3>
+      <p className="mt-1 text-sm text-[#617D7B] dark:text-slate-300 max-w-sm">{description}</p>
       {action && <div className="mt-5">{action}</div>}
     </div>
   );
@@ -214,16 +214,16 @@ export function EmptyState({
 
 export function ErrorState({ message, onRetry }: { message: string; onRetry?: () => void }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-xl border border-red-200 bg-red-50 px-6 py-10 text-center" role="alert">
-      <AlertTriangle className="h-8 w-8 text-red-600" aria-hidden />
-      <p className="mt-3 text-sm font-bold text-red-900">Something went wrong</p>
-      <p className="mt-1 text-sm text-red-700">{message}</p>
+    <div className="flex flex-col items-center justify-center rounded-xl border border-red-200 dark:border-rose-500/30 bg-red-50 dark:bg-rose-950/20 px-6 py-10 text-center" role="alert">
+      <AlertTriangle className="h-8 w-8 text-red-600 dark:text-rose-400" aria-hidden />
+      <p className="mt-3 text-sm font-bold text-red-900 dark:text-rose-200">Something went wrong</p>
+      <p className="mt-1 text-sm text-red-700 dark:text-rose-300">{message}</p>
       {onRetry && (
         <Button
           variant="outline"
           size="sm"
           onClick={onRetry}
-          className="mt-4 border-red-300 text-red-700 hover:bg-red-100 hover:border-red-400 bg-white"
+          className="mt-4 border-red-300 dark:border-rose-500/40 text-red-700 dark:text-rose-300 hover:bg-red-100 dark:hover:bg-rose-900/30 hover:border-red-400 bg-white dark:bg-transparent"
         >
           <RefreshCw className="mr-1.5 h-3.5 w-3.5" />
           Try again
@@ -237,18 +237,18 @@ export function ErrorState({ message, onRetry }: { message: string; onRetry?: ()
 
 export function TableSkeleton({ rows = 5, cols = 4 }: { rows?: number; cols?: number }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-[rgba(0,128,128,0.14)] bg-white shadow-teal-xs" aria-hidden>
+    <div className="overflow-hidden rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/25 bg-white dark:bg-[#091b1f] shadow-teal-xs" aria-hidden>
       {/* Header skeleton */}
-      <div className="flex gap-4 border-b border-[rgba(0,128,128,0.1)] bg-[rgba(0,128,128,0.03)] px-4 py-3.5">
+      <div className="flex gap-4 border-b border-[rgba(0,128,128,0.1)] dark:border-teal-500/20 bg-[rgba(0,128,128,0.03)] dark:bg-[#061417] px-4 py-3.5">
         {Array.from({ length: cols }).map((_, i) => (
-          <Skeleton key={i} className="h-4 flex-1 rounded bg-[rgba(0,128,128,0.08)]" />
+          <Skeleton key={i} className="h-4 flex-1 rounded bg-[rgba(0,128,128,0.08)] dark:bg-teal-500/15" />
         ))}
       </div>
       {/* Row skeletons */}
       {Array.from({ length: rows }).map((_, i) => (
-        <div key={i} className="flex gap-4 border-b border-[rgba(0,128,128,0.06)] px-4 py-4 last:border-b-0">
+        <div key={i} className="flex gap-4 border-b border-[rgba(0,128,128,0.06)] dark:border-teal-500/10 px-4 py-4 last:border-b-0">
           {Array.from({ length: cols }).map((_, j) => (
-            <Skeleton key={j} className="h-4 flex-1 rounded bg-[rgba(0,128,128,0.04)]" style={{ opacity: 1 - j * 0.1 }} />
+            <Skeleton key={j} className="h-4 flex-1 rounded bg-[rgba(0,128,128,0.04)] dark:bg-teal-500/10" style={{ opacity: 1 - j * 0.1 }} />
           ))}
         </div>
       ))}
@@ -271,8 +271,8 @@ export function Pager({
 }) {
   if (pages <= 1) return null;
   return (
-    <nav className="flex items-center justify-between border-t border-[rgba(0,128,128,0.1)] bg-white px-4 py-3" aria-label="Pagination">
-      <p className="text-xs text-[#617D7B] font-medium">
+    <nav className="flex items-center justify-between border-t border-[rgba(0,128,128,0.1)] dark:border-teal-500/20 bg-white dark:bg-[#091b1f] px-4 py-3" aria-label="Pagination">
+      <p className="text-xs text-[#617D7B] dark:text-slate-300 font-medium">
         {total !== undefined ? `${total} total` : `Page ${page} of ${pages}`}
       </p>
       <div className="flex items-center gap-1.5">
@@ -281,12 +281,12 @@ export function Pager({
           size="sm"
           onClick={() => onPage(Math.max(1, page - 1))}
           disabled={page === 1}
-          className="h-8 px-2.5 text-xs border-[rgba(0,128,128,0.2)] text-[#0F2423] hover:border-[#008080] hover:bg-[rgba(0,128,128,0.04)]"
+          className="h-8 px-2.5 text-xs border border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#0F2423] dark:text-slate-200 hover:border-[#008080] dark:hover:border-teal-400 hover:bg-[rgba(0,128,128,0.04)] dark:hover:bg-teal-500/10"
         >
           <ChevronLeft className="h-3.5 w-3.5" />
           Previous
         </Button>
-        <span className="min-w-[2.5rem] text-center text-xs font-semibold text-[#0F2423]">
+        <span className="min-w-[2.5rem] text-center text-xs font-semibold text-[#0F2423] dark:text-white">
           {page} / {pages}
         </span>
         <Button
@@ -294,7 +294,7 @@ export function Pager({
           size="sm"
           onClick={() => onPage(Math.min(pages, page + 1))}
           disabled={page === pages}
-          className="h-8 px-2.5 text-xs border-[rgba(0,128,128,0.2)] text-[#0F2423] hover:border-[#008080] hover:bg-[rgba(0,128,128,0.04)]"
+          className="h-8 px-2.5 text-xs border border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#0F2423] dark:text-slate-200 hover:border-[#008080] dark:hover:border-teal-400 hover:bg-[rgba(0,128,128,0.04)] dark:hover:bg-teal-500/10"
         >
           Next
           <ChevronRight className="h-3.5 w-3.5" />
@@ -325,7 +325,7 @@ export function useCountUp(target: number, duration = 1100) {
   return value;
 }
 
-// ── SectionCard — consistent white card wrapper ───────────────────────────────
+// ── SectionCard — consistent card wrapper ────────────────────────────────────
 
 export function SectionCard({
   children,
@@ -338,7 +338,7 @@ export function SectionCard({
 }) {
   return (
     <div className={cn(
-      "rounded-xl border border-[rgba(0,128,128,0.14)] bg-white shadow-teal-xs",
+      "rounded-xl border border-[rgba(0,128,128,0.14)] dark:border-teal-500/25 bg-white dark:bg-[#091b1f] shadow-teal-xs",
       padding && "p-5",
       className,
     )}>
@@ -361,8 +361,8 @@ export function SectionHeader({
   return (
     <div className="flex items-center justify-between mb-4">
       <div>
-        <h2 className="text-sm font-bold text-[#0F2423]">{title}</h2>
-        {subtitle && <p className="text-xs text-[#617D7B] mt-0.5">{subtitle}</p>}
+        <h2 className="text-sm font-bold text-[#0F2423] dark:text-white">{title}</h2>
+        {subtitle && <p className="text-xs text-[#617D7B] dark:text-slate-300 mt-0.5">{subtitle}</p>}
       </div>
       {action}
     </div>

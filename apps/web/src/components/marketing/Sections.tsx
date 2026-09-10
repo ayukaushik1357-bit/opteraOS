@@ -672,26 +672,37 @@ const footerCols: { title: string; links: FooterLink[] }[] = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-border/60">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
+    <footer
+      className="relative border-t border-[#008080]/30 bg-[#062D2A]"
+      style={{ boxShadow: '0 -1px 0 0 rgba(0,128,128,0.25), 0 -4px 32px 0 rgba(0,32,30,0.35)' }}
+    >
+      {/* Subtle teal ambient glow */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+        <div
+          className="absolute -bottom-20 left-1/2 h-[300px] w-[700px] -translate-x-1/2 rounded-full opacity-20 blur-[100px]"
+          style={{ background: 'radial-gradient(ellipse at center, rgba(0,128,128,0.5), rgba(13,148,136,0.2), transparent 70%)' }}
+        />
+      </div>
+
+      <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {footerCols.map((c) => (
             <div key={c.title}>
-              <p className="text-sm font-medium">{c.title}</p>
+              <p className="text-sm font-semibold text-teal-400 tracking-wide">{c.title}</p>
               <ul className="mt-4 space-y-2">
                 {c.links.map((l) => (
                   <li key={l.label}>
                     {l.to ? (
                       <Link
                         to={l.to}
-                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                        className="text-sm text-slate-400 transition-colors duration-200 hover:text-teal-300 relative after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-teal-400/50 after:transition-all after:duration-300 hover:after:w-full"
                       >
                         {l.label}
                       </Link>
                     ) : (
                       <a
                         href={l.href}
-                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                        className="text-sm text-slate-400 transition-colors duration-200 hover:text-teal-300 relative after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-teal-400/50 after:transition-all after:duration-300 hover:after:w-full"
                       >
                         {l.label}
                       </a>
@@ -702,14 +713,14 @@ export function Footer() {
             </div>
           ))}
         </div>
-        <div className="mt-12 border-t border-border/60 pt-8">
-          <p className="text-lg font-semibold tracking-tight">
+        <div className="mt-12 border-t border-teal-500/20 pt-8">
+          <p className="text-lg font-semibold tracking-tight text-white">
             optera<span className="text-gradient">OS</span>
           </p>
-          <p className="mt-2 text-xs uppercase tracking-[0.25em] text-muted-foreground">
+          <p className="mt-2 text-xs uppercase tracking-[0.25em] text-slate-500">
             AI Business Operating System
           </p>
-          <p className="mt-1 text-xs uppercase tracking-[0.25em] text-gradient">
+          <p className="mt-1 text-xs uppercase tracking-[0.25em] text-teal-400/70">
             One system. Smarter business.
           </p>
         </div>

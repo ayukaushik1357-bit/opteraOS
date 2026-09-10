@@ -1,4 +1,5 @@
 import { apiClient, authStorage } from './client';
+export { apiClient, authStorage };
 
 // ============================================================================
 // AUTH API
