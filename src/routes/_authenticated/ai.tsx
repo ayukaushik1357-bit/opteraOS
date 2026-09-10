@@ -141,12 +141,12 @@ function AiAssistantPage() {
   ];
 
   return (
-    <div className="h-[calc(100vh-4rem)] flex flex-col md:flex-row overflow-hidden bg-[#F7F9FC] -m-4 sm:-m-6 lg:-m-8">
+    <div className="h-[calc(100vh-4rem)] flex flex-col md:flex-row overflow-hidden bg-[#F7F9FC] dark:bg-[#061212] -m-4 sm:-m-6 lg:-m-8">
       {/* Conversations Sidebar */}
-      <div className="w-full md:w-72 bg-[#F8FAFC] border-r border-[#E5EAF1] flex flex-col p-4 shrink-0">
+      <div className="w-full md:w-72 bg-[#F8FAFC] dark:bg-[#091b1f] border-r border-[#E5EAF1] dark:border-teal-500/20 flex flex-col p-4 shrink-0">
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2 text-gray-900 font-bold text-base">
-            <span className="p-1.5 rounded-lg bg-blue-50 text-blue-600 border border-blue-200">
+          <div className="flex items-center gap-2 text-[#0F2423] dark:text-slate-100 font-bold text-base">
+            <span className="p-1.5 rounded-lg bg-teal-50 dark:bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-200 dark:border-teal-500/30">
               <Bot className="w-4 h-4" />
             </span>
             optera AI
@@ -160,7 +160,7 @@ function AiAssistantPage() {
           </Button>
         </div>
 
-        <div className="text-xs uppercase font-semibold text-gray-500 mb-2 px-1">Recent Chats</div>
+        <div className="text-xs uppercase font-semibold text-[#617D7B] dark:text-teal-400/70 mb-2 px-1">Recent Chats</div>
 
         <div className="flex-1 overflow-y-auto space-y-1.5 pr-1">
           {conversations.map((c) => (
@@ -169,8 +169,8 @@ function AiAssistantPage() {
               onClick={() => setActiveConvId(c.id)}
               className={`w-full text-left px-3 py-2.5 rounded-xl text-xs flex items-center justify-between transition-all ${
                 activeConvId === c.id
-                  ? 'bg-blue-50 text-blue-700 border border-blue-200 font-semibold shadow-xs'
-                  : 'text-gray-600 hover:bg-gray-200/50 hover:text-gray-900'
+                  ? 'bg-teal-50 dark:bg-teal-500/15 text-teal-700 dark:text-teal-300 border border-teal-200 dark:border-teal-500/30 font-semibold shadow-xs'
+                  : 'text-[#3D5A58] dark:text-slate-400 hover:bg-[rgba(0,128,128,0.06)] dark:hover:bg-teal-500/10 hover:text-[#0F2423] dark:hover:text-slate-100'
               }`}
             >
               <span className="truncate pr-2">{c.title}</span>
@@ -179,14 +179,14 @@ function AiAssistantPage() {
           ))}
         </div>
 
-        <div className="pt-3 border-t border-[#E5EAF1] text-[11px] text-gray-500 flex items-center gap-1.5">
-          <Database className="w-3.5 h-3.5 text-green-600" />
+        <div className="pt-3 border-t border-[#E5EAF1] dark:border-teal-500/20 text-[11px] text-[#617D7B] dark:text-slate-500 flex items-center gap-1.5">
+          <Database className="w-3.5 h-3.5 text-green-600 dark:text-green-500" />
           Connected to Organization DB
         </div>
       </div>
 
       {/* Main Chat Workspace */}
-      <div className="flex-1 flex flex-col h-full overflow-hidden bg-[#F7F9FC] relative">
+      <div className="flex-1 flex flex-col h-full overflow-hidden bg-[#F7F9FC] dark:bg-[#061212] relative">
         {/* Messages Area */}
         <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6">
           {messages.map((m) => {
@@ -194,7 +194,7 @@ function AiAssistantPage() {
             return (
               <div key={m.id} className={`flex gap-3 max-w-3xl ${isUser ? 'ml-auto justify-end' : ''}`}>
                 {!isUser && (
-                  <div className="w-8 h-8 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 shrink-0 shadow-xs mt-1">
+                  <div className="w-8 h-8 rounded-xl bg-teal-50 dark:bg-teal-500/10 border border-teal-200 dark:border-teal-500/30 flex items-center justify-center text-teal-600 dark:text-teal-400 shrink-0 shadow-xs mt-1">
                     <Bot className="w-4 h-4" />
                   </div>
                 )}
@@ -202,15 +202,15 @@ function AiAssistantPage() {
                 <div
                   className={`p-4 md:p-5 rounded-2xl text-sm leading-relaxed ${
                     isUser
-                      ? 'bg-blue-600 text-white rounded-tr-none shadow-xs'
-                      : 'bg-white border border-[#E5EAF1] text-gray-800 rounded-tl-none shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
+                      ? 'bg-[#008080] dark:bg-teal-600 text-white rounded-tr-none shadow-xs'
+                      : 'bg-white dark:bg-[#0c2429] border border-[#E5EAF1] dark:border-teal-500/20 text-[#0F2423] dark:text-slate-100 rounded-tl-none shadow-[0_1px_3px_rgba(0,0,0,0.05)] dark:shadow-none'
                   }`}
                 >
                   <div className="whitespace-pre-wrap font-sans">{m.content}</div>
                 </div>
 
                 {isUser && (
-                  <div className="w-8 h-8 rounded-xl bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-600 shrink-0 mt-1">
+                  <div className="w-8 h-8 rounded-xl bg-[#E8F1F0] dark:bg-[#0f2a30] border border-[#D0E4E2] dark:border-teal-500/20 flex items-center justify-center text-[#3D5A58] dark:text-slate-300 shrink-0 mt-1">
                     <User className="w-4 h-4" />
                   </div>
                 )}
@@ -220,11 +220,11 @@ function AiAssistantPage() {
 
           {loading && (
             <div className="flex gap-3 max-w-xl">
-              <div className="w-8 h-8 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 shrink-0 animate-pulse">
+              <div className="w-8 h-8 rounded-xl bg-teal-50 dark:bg-teal-500/10 border border-teal-200 dark:border-teal-500/30 flex items-center justify-center text-teal-600 dark:text-teal-400 shrink-0 animate-pulse">
                 <Bot className="w-4 h-4" />
               </div>
-              <div className="p-4 rounded-xl bg-white border border-[#E5EAF1] text-gray-500 text-xs flex items-center gap-2 shadow-xs">
-                <RefreshCw className="w-4 h-4 animate-spin text-blue-600" />
+              <div className="p-4 rounded-xl bg-white dark:bg-[#0c2429] border border-[#E5EAF1] dark:border-teal-500/20 text-[#617D7B] dark:text-slate-400 text-xs flex items-center gap-2 shadow-xs">
+                <RefreshCw className="w-4 h-4 animate-spin text-teal-600 dark:text-teal-400" />
                 optera AI is querying business databases and executing tools...
               </div>
             </div>
@@ -240,9 +240,9 @@ function AiAssistantPage() {
               <button
                 key={idx}
                 onClick={() => handleSendMessage(p)}
-                className="text-xs px-3.5 py-1.5 rounded-full bg-white border border-[#E5EAF1] text-gray-700 hover:border-blue-300 hover:bg-blue-50/50 hover:text-blue-700 transition-all shrink-0 flex items-center gap-1.5 shadow-xs"
+                className="text-xs px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0c2429] border border-[#E5EAF1] dark:border-teal-500/20 text-[#3D5A58] dark:text-slate-300 hover:border-teal-300 dark:hover:border-teal-400/50 hover:bg-teal-50/50 dark:hover:bg-teal-500/10 hover:text-teal-700 dark:hover:text-teal-300 transition-all shrink-0 flex items-center gap-1.5 shadow-xs"
               >
-                <Sparkles className="w-3 h-3 text-blue-600" />
+                <Sparkles className="w-3 h-3 text-teal-600 dark:text-teal-400" />
                 {p}
               </button>
             ))}
@@ -250,7 +250,7 @@ function AiAssistantPage() {
         )}
 
         {/* Composer Bar */}
-        <div className="p-4 md:p-5 bg-white border-t border-[#E5EAF1]">
+        <div className="p-4 md:p-5 bg-white dark:bg-[#091b1f] border-t border-[#E5EAF1] dark:border-teal-500/20">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -262,7 +262,7 @@ function AiAssistantPage() {
               placeholder="Ask optera AI anything about revenue, customers, tasks, or request an action..."
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
-              className="bg-[#F8FAFC] border-[#E5EAF1] text-gray-900 placeholder:text-gray-400 py-5 px-4 rounded-xl text-xs"
+              className="bg-[#F8FAFC] dark:bg-[#0a1e22] border-[#E5EAF1] dark:border-teal-500/20 text-[#0F2423] dark:text-slate-100 placeholder:text-[#617D7B] dark:placeholder:text-slate-500 py-5 px-4 rounded-xl text-xs"
             />
             <Button
               type="submit"
@@ -272,7 +272,7 @@ function AiAssistantPage() {
               <Send className="w-4 h-4" />
             </Button>
           </form>
-          <div className="text-[11px] text-center text-gray-400 mt-2">
+          <div className="text-[11px] text-center text-[#617D7B] dark:text-slate-500 mt-2">
             optera AI queries live PostgreSQL records securely under your organization's tenant permissions.
           </div>
         </div>

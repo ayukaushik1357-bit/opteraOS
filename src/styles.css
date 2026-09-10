@@ -631,3 +631,219 @@ label {
   transition-duration: 0.2s;
   transition-timing-function: ease;
 }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   DARK MODE — Global Surface Overrides
+   Targets hardcoded light colors used across authenticated route pages
+   so they automatically render correctly in dark mode.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* ── ANY element with .bg-white inside .dark → use card surface ── */
+.dark .bg-white {
+  background-color: var(--card) !important;
+  color: var(--card-foreground) !important;
+}
+
+/* ── Table markup — clear hardcoded whites from table wrappers ── */
+.dark table {
+  background-color: transparent;
+}
+.dark thead {
+  background-color: var(--surface-muted);
+}
+.dark th {
+  background-color: var(--surface-muted) !important;
+  color: var(--text-secondary) !important;
+  border-color: var(--border) !important;
+}
+.dark td {
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+.dark tbody tr:hover td {
+  background-color: rgba(0, 179, 179, 0.05);
+}
+
+/* ── Light border override — #E5EAF1 is a light-mode-only border ── */
+.dark .border-\[\#E5EAF1\] {
+  border-color: var(--border) !important;
+}
+
+/* ── Light text overrides ── */
+.dark .text-gray-900 { color: var(--foreground) !important; }
+.dark .text-gray-800 { color: var(--foreground) !important; }
+.dark .text-gray-700 { color: var(--text-secondary) !important; }
+.dark .text-gray-600 { color: var(--muted-foreground) !important; }
+.dark .text-gray-500 { color: var(--muted-foreground) !important; }
+.dark .text-slate-900 { color: var(--foreground) !important; }
+.dark .text-slate-700 { color: var(--text-secondary) !important; }
+.dark .text-slate-600 { color: var(--muted-foreground) !important; }
+.dark .text-slate-500 { color: var(--muted-foreground) !important; }
+.dark .text-zinc-900 { color: var(--foreground) !important; }
+
+/* ── Select content / popovers from Radix ── */
+.dark [role="listbox"] {
+  background-color: var(--popover) !important;
+  border-color: var(--border) !important;
+  color: var(--popover-foreground) !important;
+}
+
+/* ── Tab trigger active state with hardcoded bg-white ── */
+.dark [role="tab"][data-state="active"].bg-white {
+  background-color: var(--surface-secondary) !important;
+  color: var(--primary) !important;
+  box-shadow: var(--shadow-xs) !important;
+}
+
+/* ── Inputs / textareas with hardcoded white bg ── */
+.dark input.bg-white,
+.dark textarea.bg-white,
+.dark select.bg-white {
+  background-color: var(--muted) !important;
+  border-color: var(--border) !important;
+  color: var(--foreground) !important;
+}
+
+/* ── Focus ring for inputs ── */
+.dark input:focus-visible,
+.dark textarea:focus-visible,
+.dark select:focus-visible {
+  outline-color: var(--ring);
+}
+
+/* ── Placeholder text ── */
+.dark ::placeholder {
+  color: var(--muted-foreground);
+  opacity: 0.7;
+}
+
+/* ── bg-gray-50 / bg-gray-100 page wrappers ── */
+.dark .bg-gray-50,
+.dark .bg-gray-100,
+.dark .bg-zinc-50,
+.dark .bg-slate-50,
+.dark .bg-slate-100 {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   DARK MODE — Hardcoded hex color text overrides
+   These target Tailwind arbitrary-value classes compiled from inline colors.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* ── Deep spruce charcoal text (#0F2423) → light in dark mode ── */
+.dark .text-\[\#0F2423\] {
+  color: var(--foreground) !important;
+}
+
+/* ── Secondary text (#3D5A58) → muted light in dark mode ── */
+.dark .text-\[\#3D5A58\] {
+  color: var(--text-secondary) !important;
+}
+
+/* ── Muted text (#617D7B) → teal-tinted muted in dark mode ── */
+.dark .text-\[\#617D7B\],
+.dark .text-\[\#5A7573\] {
+  color: var(--muted-foreground) !important;
+}
+
+/* ── Light border & surface overrides ── */
+/* bg-[#F8FAFC], bg-[#F7F9FC], bg-[#F8FBFA] are near-white, need dark surfaces */
+.dark .bg-\[\#F8FAFC\],
+.dark .bg-\[\#F7F9FC\],
+.dark .bg-\[\#F8FBFA\],
+.dark .bg-\[\#F3F8F7\],
+.dark .bg-\[\#E6EFEF\] {
+  background-color: var(--surface-muted) !important;
+  color: var(--foreground) !important;
+}
+
+/* ── Hero card light gradient bg ── */
+.dark .from-white,
+.dark .via-\[\#F3F8F7\] {
+  --tw-gradient-from: var(--surface-muted) !important;
+  --tw-gradient-via: var(--surface-secondary) !important;
+}
+
+/* ── Light border overrides for rgba(0,128,128,x) — these are OK in dark ── */
+/* (teal borders work in both modes) — no override needed */
+
+/* ── Connectivity banner & autopilot cards ── */
+.dark .text-\[\#0F2423\].font-medium,
+.dark strong.text-\[\#0F2423\] {
+  color: var(--foreground) !important;
+}
+
+/* ── KPI card header text (small uppercase labels) ── */
+.dark .text-xs.uppercase.tracking-wider.font-semibold.text-\[\#617D7B\],
+.dark .text-xs.uppercase.tracking-wider.font-semibold.text-\[\#5A7573\] {
+  color: var(--muted-foreground) !important;
+}
+
+/* ── Large number values in KPI cards ── */
+.dark .text-2xl.font-bold.text-\[\#0F2423\] {
+  color: var(--foreground) !important;
+}
+
+/* ── Catch-all: any remaining label element text in dark ── */
+.dark label {
+  color: var(--text-secondary) !important;
+}
+
+/* ── Light teal wash (#EDF4F3) — used in summary panels & modals ── */
+.dark .bg-\[\#EDF4F3\],
+.dark .bg-\[\#EDF4F3\]\/60,
+.dark .bg-\[\#EDF4F3\]\/80,
+.dark .bg-\[\#EDF4F3\]\/40 {
+  background-color: rgba(0, 179, 179, 0.07) !important;
+  color: var(--foreground) !important;
+}
+
+/* ── Blue-50 banners (AI recommendation, alerts) ── */
+.dark .bg-blue-50,
+.dark .bg-blue-50\/60,
+.dark .bg-blue-50\/40,
+.dark .bg-blue-100 {
+  background-color: rgba(0, 128, 128, 0.1) !important;
+  color: var(--foreground) !important;
+}
+
+/* ── Blue text in banner headings ── */
+.dark .text-blue-700,
+.dark .text-blue-800,
+.dark .text-blue-900 {
+  color: var(--foreground) !important;
+}
+.dark .text-blue-600 {
+  color: var(--primary) !important;
+}
+
+/* ── Dialog / Modal inputs without explicit dark bg ── */
+.dark [role="dialog"] input,
+.dark [role="dialog"] select,
+.dark [role="dialog"] textarea {
+  background-color: #0a1e22 !important;
+  border-color: rgba(0, 179, 179, 0.3) !important;
+  color: #f0fafa !important;
+}
+
+/* ── Select triggers inside dialogs ── */
+.dark [role="dialog"] [data-slot="select-trigger"] {
+  background-color: #0a1e22 !important;
+  border-color: rgba(0, 179, 179, 0.3) !important;
+  color: #f0fafa !important;
+}
+
+/* ── SelectContent / dropdown menus ── */
+.dark [role="listbox"],
+.dark [data-radix-select-viewport] {
+  background-color: #091b1f !important;
+  border-color: rgba(0, 179, 179, 0.3) !important;
+  color: #f0fafa !important;
+}
+
+/* ── Date input calendar icon dark mode ── */
+.dark input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(0.7);
+}

@@ -321,24 +321,24 @@ function InvoicesPage() {
               {/* Invoice Number + Status */}
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="grid gap-2">
-                  <Label htmlFor="i-number" className="text-xs font-semibold text-[#0F2423]">Invoice Number</Label>
+                  <Label htmlFor="i-number" className="text-xs font-semibold text-[#0F2423] dark:text-slate-300">Invoice Number</Label>
                   <Input
                     id="i-number"
                     value={draft.number}
                     onChange={(e) => setDraft({ ...draft, number: e.target.value })}
-                    className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
+                    className="border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 focus-visible:ring-[#008080] text-[#0F2423] dark:text-white dark:bg-[#0a1e22] dark:placeholder:text-slate-500"
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label className="text-xs font-semibold text-[#0F2423]">Status</Label>
+                  <Label className="text-xs font-semibold text-[#0F2423] dark:text-slate-300">Status</Label>
                   <Select
                     value={draft.status}
                     onValueChange={(v) => setDraft({ ...draft, status: v as Status })}
                   >
-                    <SelectTrigger className="border-[rgba(0,128,128,0.2)] text-[#0F2423]">
+                    <SelectTrigger className="border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#0F2423] dark:text-white dark:bg-[#0a1e22]">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white dark:bg-[#091b1f] border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#0F2423] dark:text-white">
                       {STATUSES.map((s) => (
                         <SelectItem key={s} value={s}>
                           {s}
@@ -352,23 +352,23 @@ function InvoicesPage() {
               {/* Dates */}
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="grid gap-2">
-                  <Label htmlFor="i-issue" className="text-xs font-semibold text-[#0F2423]">Issue date</Label>
+                  <Label htmlFor="i-issue" className="text-xs font-semibold text-[#0F2423] dark:text-slate-300">Issue date</Label>
                   <Input
                     id="i-issue"
                     type="date"
                     value={draft.issueDate}
                     onChange={(e) => setDraft({ ...draft, issueDate: e.target.value })}
-                    className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
+                    className="border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 focus-visible:ring-[#008080] text-[#0F2423] dark:text-white dark:bg-[#0a1e22] [color-scheme:dark]"
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="i-due" className="text-xs font-semibold text-[#0F2423]">Due date</Label>
+                  <Label htmlFor="i-due" className="text-xs font-semibold text-[#0F2423] dark:text-slate-300">Due date</Label>
                   <Input
                     id="i-due"
                     type="date"
                     value={draft.dueDate}
                     onChange={(e) => setDraft({ ...draft, dueDate: e.target.value })}
-                    className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
+                    className="border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 focus-visible:ring-[#008080] text-[#0F2423] dark:text-white dark:bg-[#0a1e22] [color-scheme:dark]"
                   />
                 </div>
               </div>
@@ -376,17 +376,17 @@ function InvoicesPage() {
               {/* Customer + Tax Rate */}
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="grid gap-2">
-                  <Label className="text-xs font-semibold text-[#0F2423]">Customer</Label>
+                  <Label className="text-xs font-semibold text-[#0F2423] dark:text-slate-300">Customer</Label>
                   <Select
                     value={draft.customerId || "none"}
                     onValueChange={(v) =>
                       setDraft({ ...draft, customerId: v === "none" ? "" : v })
                     }
                   >
-                    <SelectTrigger className="border-[rgba(0,128,128,0.2)] text-[#0F2423]">
+                    <SelectTrigger className="border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#0F2423] dark:text-white dark:bg-[#0a1e22]">
                       <SelectValue placeholder="Unassigned" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white dark:bg-[#091b1f] border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 text-[#0F2423] dark:text-white">
                       <SelectItem value="none">Unassigned</SelectItem>
                       {customers.map((c) => (
                         <SelectItem key={c.id} value={c.id}>
@@ -397,7 +397,7 @@ function InvoicesPage() {
                   </Select>
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="i-tax" className="text-xs font-semibold text-[#0F2423]">Tax rate (%)</Label>
+                  <Label htmlFor="i-tax" className="text-xs font-semibold text-[#0F2423] dark:text-slate-300">Tax rate (%)</Label>
                   <Input
                     id="i-tax"
                     type="number"
@@ -407,7 +407,7 @@ function InvoicesPage() {
                     placeholder="e.g. 18 for 18% GST"
                     value={draft.taxRate}
                     onChange={(e) => setDraft({ ...draft, taxRate: e.target.value })}
-                    className="border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
+                    className="border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 focus-visible:ring-[#008080] text-[#0F2423] dark:text-white dark:bg-[#0a1e22] dark:placeholder:text-slate-500"
                   />
                 </div>
               </div>
@@ -415,8 +415,8 @@ function InvoicesPage() {
               {/* Line Items */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <Label className="text-xs font-semibold text-[#0F2423]">Line Items</Label>
-                  <Button type="button" variant="ghost" size="sm" onClick={addLineItem} className="text-[#008080] hover:bg-[rgba(0,128,128,0.08)] text-xs">
+                  <Label className="text-xs font-semibold text-[#0F2423] dark:text-slate-300">Line Items</Label>
+                  <Button type="button" variant="ghost" size="sm" onClick={addLineItem} className="text-[#008080] dark:text-teal-400 hover:bg-[rgba(0,128,128,0.08)] dark:hover:bg-teal-500/10 text-xs">
                     <Plus className="h-3.5 w-3.5 mr-1" /> Add item
                   </Button>
                 </div>
@@ -425,7 +425,7 @@ function InvoicesPage() {
                     <div key={idx} className="flex gap-2 items-center">
                       <Input
                         placeholder="Description"
-                        className="flex-1 border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
+                        className="flex-1 border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 focus-visible:ring-[#008080] text-[#0F2423] dark:text-white dark:bg-[#0a1e22] dark:placeholder:text-slate-500"
                         value={item.description}
                         onChange={(e) => updateLineItem(idx, "description", e.target.value)}
                       />
@@ -434,7 +434,7 @@ function InvoicesPage() {
                         min={0.001}
                         step={1}
                         placeholder="Qty"
-                        className="w-20 border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
+                        className="w-20 border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 focus-visible:ring-[#008080] text-[#0F2423] dark:text-white dark:bg-[#0a1e22]"
                         value={item.quantity}
                         onChange={(e) => updateLineItem(idx, "quantity", Number(e.target.value))}
                       />
@@ -442,7 +442,7 @@ function InvoicesPage() {
                         type="number"
                         min={0}
                         placeholder="Unit price"
-                        className="w-28 border-[rgba(0,128,128,0.2)] focus-visible:ring-[#008080] text-[#0F2423]"
+                        className="w-28 border-[rgba(0,128,128,0.2)] dark:border-teal-500/30 focus-visible:ring-[#008080] text-[#0F2423] dark:text-white dark:bg-[#0a1e22]"
                         value={item.unit_price}
                         onChange={(e) =>
                           updateLineItem(idx, "unit_price", Number(e.target.value))
@@ -455,7 +455,7 @@ function InvoicesPage() {
                         disabled={draft.lineItems.length === 1}
                         onClick={() => removeLineItem(idx)}
                         aria-label="Remove item"
-                        className="text-[#617D7B] hover:text-red-600"
+                        className="text-[#617D7B] dark:text-slate-400 hover:text-red-600 dark:hover:text-rose-400"
                       >
                         <X className="h-3.5 w-3.5" />
                       </Button>
@@ -465,20 +465,20 @@ function InvoicesPage() {
               </div>
 
               {/* Totals preview */}
-              <div className="rounded-xl bg-[#EDF4F3]/60 border border-[rgba(0,128,128,0.15)] p-4 text-sm">
+              <div className="rounded-xl bg-[rgba(0,128,128,0.06)] dark:bg-teal-500/10 border border-[rgba(0,128,128,0.15)] dark:border-teal-500/25 p-4 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-[#617D7B]">Subtotal</span>
-                  <span className="font-semibold text-[#0F2423]">{money(draftSubtotal, currency)}</span>
+                  <span className="text-[#617D7B] dark:text-slate-400">Subtotal</span>
+                  <span className="font-semibold text-[#0F2423] dark:text-white">{money(draftSubtotal, currency)}</span>
                 </div>
                 {draftTax > 0 && (
                   <div className="flex justify-between mt-1">
-                    <span className="text-[#617D7B]">Tax ({draft.taxRate}%)</span>
-                    <span className="font-semibold text-[#0F2423]">{money(draftTax, currency)}</span>
+                    <span className="text-[#617D7B] dark:text-slate-400">Tax ({draft.taxRate}%)</span>
+                    <span className="font-semibold text-[#0F2423] dark:text-white">{money(draftTax, currency)}</span>
                   </div>
                 )}
-                <div className="flex justify-between mt-2 border-t border-[rgba(0,128,128,0.15)] pt-2 font-bold text-[#0F2423]">
+                <div className="flex justify-between mt-2 border-t border-[rgba(0,128,128,0.15)] dark:border-teal-500/25 pt-2 font-bold text-[#0F2423] dark:text-white">
                   <span>Total</span>
-                  <span className="text-[#008080] font-bold text-base">{money(draftTotal, currency)}</span>
+                  <span className="text-[#008080] dark:text-teal-400 font-bold text-base">{money(draftTotal, currency)}</span>
                 </div>
               </div>
             </div>

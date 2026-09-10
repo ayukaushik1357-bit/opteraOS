@@ -409,7 +409,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     : "OP";
 
   return (
-    <div className="min-h-screen text-[#0F2423] dark:text-slate-100 flex flex-col bg-white dark:bg-[#071619] transition-colors duration-200">
+    <div className="h-screen overflow-hidden text-[#0F2423] dark:text-slate-100 flex flex-col bg-white dark:bg-[#071619] transition-colors duration-200">
 
       {/* ── Top Header ── */}
       <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center border-b border-[rgba(0,128,128,0.14)] dark:border-teal-500/20 bg-white/90 dark:bg-[#091b1f]/95 backdrop-blur-xl px-4 sm:px-6 shadow-[0_2px_12px_rgba(0,64,64,0.04)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.3)]">
@@ -542,7 +542,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         )}
 
         {/* Main Content Area */}
-        <main className="flex-1 min-w-0 overflow-x-hidden">
+        <main className="flex-1 min-w-0 overflow-y-auto overflow-x-hidden">
           <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 box-border">
             {children}
           </div>

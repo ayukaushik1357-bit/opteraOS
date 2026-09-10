@@ -38,6 +38,42 @@ export interface UnifiedWorkItem {
 // In-memory fallback task store for reliable environment operation
 const serverTaskStore = new Map<string, UnifiedWorkItem>();
 
+// SECURITY: setTaskStatus, reassignWorkItem, and deleteTask below take no orgId
+// input and touch serverTaskStore purely by task id. Without this check, any
+// authenticated user (of any org) could read/mutate/delete another org's cached
+// task just by knowing its UUID. The real DB writes are protected by RLS, but
+// the in-memory cache is not — this helper closes that gap by resolving the
+// task's real org_id (from cache or DB) and confirming the caller belongs to it.
+async function verifyCallerOwnsTask(
+  supabase: any,
+  userId: string,
+  taskId: string,
+  cached?: UnifiedWorkItem,
+): Promise<string | null> {
+  let ownerOrgId = cached?.org_id ?? null;
+  if (!ownerOrgId) {
+    try {
+      const { data: row } = await supabase.from("tasks").select("org_id").eq("id", taskId).maybeSingle();
+      ownerOrgId = row?.org_id ?? null;
+    } catch {
+      return null;
+    }
+  }
+  if (!ownerOrgId) return null;
+
+  try {
+    const { data: member, error } = await supabase
+      .from("organization_members")
+      .select("role")
+      .eq("org_id", ownerOrgId)
+      .eq("user_id", userId)
+      .single();
+    return !error && member ? ownerOrgId : null;
+  } catch {
+    return null;
+  }
+}
+
 export const listTasks = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data) =>
@@ -242,6 +278,12 @@ export const setTaskStatus = createServerFn({ method: "POST" })
       .parse(data),
   )
   .handler(async ({ data, context }) => {
+    const cached = serverTaskStore.get(data.id);
+    const ownerOrgId = await verifyCallerOwnsTask(context.supabase, context.userId, data.id, cached);
+    if (!ownerOrgId) {
+      throw new Error("Unauthorized: You do not have access to this task.");
+    }
+
     const updatePayload: any = {
       status: data.status,
       updated_at: new Date().toISOString(),
@@ -254,14 +296,13 @@ export const setTaskStatus = createServerFn({ method: "POST" })
       updatePayload.outcome_notes = data.outcomeNotes;
     }
 
-    const existing = serverTaskStore.get(data.id);
-    if (existing) {
-      Object.assign(existing, updatePayload);
-      serverTaskStore.set(data.id, existing);
+    if (cached) {
+      Object.assign(cached, updatePayload);
+      serverTaskStore.set(data.id, cached);
     }
 
     try {
-      await context.supabase.from("tasks").update(updatePayload).eq("id", data.id);
+      await context.supabase.from("tasks").update(updatePayload).eq("id", data.id).eq("org_id", ownerOrgId);
     } catch {
       // Handled
     }
@@ -282,6 +323,12 @@ export const reassignWorkItem = createServerFn({ method: "POST" })
       .parse(data),
   )
   .handler(async ({ data, context }) => {
+    const cached = serverTaskStore.get(data.id);
+    const ownerOrgId = await verifyCallerOwnsTask(context.supabase, context.userId, data.id, cached);
+    if (!ownerOrgId) {
+      throw new Error("Unauthorized: You do not have access to this task.");
+    }
+
     const updatePayload: any = {
       updated_at: new Date().toISOString(),
     };
@@ -290,14 +337,13 @@ export const reassignWorkItem = createServerFn({ method: "POST" })
     if (data.priority) updatePayload.priority = data.priority;
     if (data.dueDate !== undefined) updatePayload.due_date = data.dueDate || null;
 
-    const existing = serverTaskStore.get(data.id);
-    if (existing) {
-      Object.assign(existing, updatePayload);
-      serverTaskStore.set(data.id, existing);
+    if (cached) {
+      Object.assign(cached, updatePayload);
+      serverTaskStore.set(data.id, cached);
     }
 
     try {
-      await context.supabase.from("tasks").update(updatePayload).eq("id", data.id);
+      await context.supabase.from("tasks").update(updatePayload).eq("id", data.id).eq("org_id", ownerOrgId);
     } catch {
       // Handled
     }
@@ -399,9 +445,15 @@ export const deleteTask = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data) => z.object({ id: z.string().uuid() }).parse(data))
   .handler(async ({ data, context }) => {
+    const cached = serverTaskStore.get(data.id);
+    const ownerOrgId = await verifyCallerOwnsTask(context.supabase, context.userId, data.id, cached);
+    if (!ownerOrgId) {
+      throw new Error("Unauthorized: You do not have access to this task.");
+    }
+
     serverTaskStore.delete(data.id);
     try {
-      await context.supabase.from("tasks").delete().eq("id", data.id);
+      await context.supabase.from("tasks").delete().eq("id", data.id).eq("org_id", ownerOrgId);
     } catch {
       // Handled
     }
