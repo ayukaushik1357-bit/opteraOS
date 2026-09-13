@@ -410,14 +410,56 @@ export const resolveWorkAssignment = createServerFn({ method: "POST" })
       }
     }
 
-    // AI Assignment / Fallback
-    const chosen = pool[0]!;
-    return {
-      assignedUserId: chosen.user_id,
-      assignedUserName: chosen.full_name || chosen.email.split("@")[0],
-      workGroupId: targetWorkGroupId,
-      strategy: "ai_assignment",
-      matchedRuleName: matchedRule?.name ?? "AI Smart Dispatcher",
-      reason: `optera AI selected ${chosen.full_name} based on availability, role (${chosen.role}), and team balance`,
-    };
+    // ── AI Assignment / smart fallback ──────────────────────────────────────
+    // BUG FIX: this used to unconditionally return pool[0] (whichever candidate
+    // happened to be first in the query results) labeled as "optera AI selected
+    // ... based on availability, role, and team balance" — no such reasoning was
+    // actually happening, so every ai_assignment / unmatched-strategy request
+    // silently piled work onto the same first-listed person while showing users
+    // a fabricated justification. This now computes a real composite score from
+    // the same signals the label always claimed to use.
+    {
+      const candidateUserIds = pool.map((c) => c.user_id);
+      const { data: activeTasks } = await supabase
+        .from("tasks")
+        .select("assignee_id")
+        .eq("org_id", orgId)
+        .in("assignee_id", candidateUserIds)
+        .not("status", "in", "(Completed,Cancelled)");
+
+      const workloadMap = new Map<string, number>();
+      for (const t of activeTasks ?? []) {
+        if (t.assignee_id) workloadMap.set(t.assignee_id, (workloadMap.get(t.assignee_id) ?? 0) + 1);
+      }
+
+      const skillsRequired = requiredSkills ?? (matchedRule?.conditions?.[0]?.skills as string[]) ?? [];
+      const roleWeight: Record<string, number> = { lead: 3, senior: 2, specialist: 2, member: 1 };
+
+      const scored = pool.map((member) => {
+        const workload = workloadMap.get(member.user_id) ?? 0;
+        const maxWorkload = member.max_workload || 15;
+        const workloadHeadroom = Math.max(0, 1 - workload / maxWorkload); // 1 = fully free, 0 = at/over capacity
+        const skillMatches = skillsRequired.length
+          ? skillsRequired.filter((s) => member.skills.some((ms) => ms.toLowerCase().includes(s.toLowerCase()))).length
+          : 0;
+        const skillScore = skillsRequired.length ? skillMatches / skillsRequired.length : 0;
+        const role = roleWeight[member.role as string] ?? 1;
+
+        // Weighted composite: headroom matters most, then skill fit, then seniority as a tiebreaker.
+        const score = workloadHeadroom * 0.5 + skillScore * 0.35 + (role / 3) * 0.15;
+        return { member, score, workload, skillMatches };
+      });
+
+      scored.sort((a, b) => b.score - a.score);
+      const best = scored[0]!;
+
+      return {
+        assignedUserId: best.member.user_id,
+        assignedUserName: best.member.full_name || best.member.email.split("@")[0],
+        workGroupId: targetWorkGroupId,
+        strategy: "ai_assignment",
+        matchedRuleName: matchedRule?.name ?? "Smart Dispatcher",
+        reason: `Selected ${best.member.full_name} by composite score (workload: ${best.workload}/${best.member.max_workload}, skill matches: ${best.skillMatches}, role: ${best.member.role}).`,
+      };
+    }
   });
