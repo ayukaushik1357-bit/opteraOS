@@ -393,11 +393,11 @@ export function LeadsPage() {
         )
       ) : (
         /* Kanban Pipeline View */
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 overflow-x-auto pb-4">
+        <div className="flex flex-row gap-4 overflow-x-auto pb-4 min-w-0">
           {STAGES.map((stg) => {
             const list = (pipelineData as any)?.[stg] || [];
             return (
-              <div key={stg} className="flex flex-col rounded-xl border border-[#E5EAF1] dark:border-teal-500/20 bg-[#F8FAFC] dark:bg-[#061417] p-3 min-w-[220px]">
+              <div key={stg} className="flex flex-col rounded-xl border border-[#E5EAF1] dark:border-teal-500/20 bg-[#F8FAFC] dark:bg-[#061417] p-3 w-[220px] flex-shrink-0">
                 <div className="flex items-center justify-between pb-2 mb-2 border-b border-[#E5EAF1] dark:border-teal-500/20">
                   <span className="text-xs font-bold tracking-wider text-gray-600 dark:text-slate-300">{stg}</span>
                   <span className="rounded-full bg-white dark:bg-[#091b1f] border border-[#E5EAF1] dark:border-teal-500/25 px-2 py-0.5 text-[11px] font-semibold text-gray-600 dark:text-slate-300">

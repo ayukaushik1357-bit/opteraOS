@@ -4,8 +4,9 @@ import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { resolveWorkAssignment } from "./assignment.functions";
 import { getCapabilityById } from "./capabilities.config";
-import { generateAIResponse } from "@/lib/ai/ai.service";
+import { generateAIResponse, generateAICompletionWithSystemPrompt } from "@/lib/ai/ai.service";
 import { executeTool } from "@/lib/ai/ai.tools";
+import { fetchOrgContext } from "./ai.functions";
 
 const orgInput = z.object({ orgId: z.string().uuid() });
 
@@ -162,6 +163,12 @@ export interface AutopilotPlanResult {
     automated: boolean;
   }>;
   humanSummary: string;
+  /** A precise instruction the AI execution engine follows at run time to actually
+   * carry out this autopilot's job using real tools (search/create/update records). */
+  goalPrompt: string;
+  /** "ai" when a real LLM designed this plan for the specific prompt; "deterministic"
+   * when no AI provider was available and a keyword-based template was used instead. */
+  planningEngine: "ai" | "deterministic";
 }
 
 // In-memory server store for Autopilots (ensures reliability across environment conditions)
@@ -276,8 +283,8 @@ export const getAutopilotDashboard = createServerFn({ method: "GET" })
           ex.status === "successful"
             ? `Successfully ran in ${ex.duration_ms ?? 140}ms · Work dispatched to team`
             : ex.status === "failed"
-            ? `Execution encountered error: ${ex.error_message || "Action failed"}`
-            : `Running automated sequence...`,
+              ? `Execution encountered error: ${ex.error_message || "Action failed"}`
+              : `Running automated sequence...`,
         type: "execution",
         status: ex.status === "successful" ? "success" : ex.status === "failed" ? "error" : "running",
         targetName: wf?.name,
@@ -351,109 +358,170 @@ export const getAutopilotDashboard = createServerFn({ method: "GET" })
     };
   });
 
+function buildDeterministicPlan(prompt: string): AutopilotPlanResult {
+  const lower = prompt.toLowerCase();
+
+  let category: AutopilotPlanResult["category"] = "operations";
+  let triggerType = "manual_or_scheduled";
+  let schedule = "Every weekday at 9:00 AM";
+  let assignmentStrategy: AutopilotPlanResult["assignmentStrategy"] = "round_robin";
+  let assignmentType: AutopilotPlanResult["assignmentType"] = "work_group";
+  let title = "Custom Business Autopilot";
+  let description = prompt;
+
+  if (lower.includes("sales") || lower.includes("lead") || lower.includes("deal") || lower.includes("pipeline")) {
+    category = "sales";
+    title = "AI Sales Intelligence & Lead Routing";
+    triggerType = "new_lead";
+    schedule = "Triggered immediately on lead creation";
+    assignmentStrategy = lower.includes("workload") ? "lowest_workload" : "round_robin";
+    assignmentType = "work_group";
+  } else if (lower.includes("invoice") || lower.includes("payment") || lower.includes("overdue") || lower.includes("revenue")) {
+    category = "finance";
+    title = "Invoice Guardian & Payment Recovery";
+    triggerType = "overdue_invoice";
+    schedule = "Daily audit at 8:30 AM";
+    assignmentStrategy = "lowest_workload";
+    assignmentType = "work_group";
+  } else if (lower.includes("customer") || lower.includes("churn") || lower.includes("risk") || lower.includes("retention") || lower.includes("vip")) {
+    category = "customer_success";
+    title = "Customer Success & Retention Autopilot";
+    triggerType = "at_risk_customer";
+    schedule = "Continuous monitoring & weekly audit";
+    assignmentStrategy = "skill_based";
+    assignmentType = "work_group";
+  } else if (lower.includes("report") || lower.includes("brief") || lower.includes("summary") || lower.includes("morning") || lower.includes("executive")) {
+    category = "management";
+    title = "Executive Business Briefing Autopilot";
+    triggerType = "schedule_cron";
+    schedule = "Every weekday at 9:00 AM";
+    assignmentStrategy = "direct";
+    assignmentType = "individual";
+  }
+
+  const actions: AutopilotPlanResult["actions"] = [];
+
+  if (category === "sales") {
+    actions.push(
+      { step: 1, title: "Qualify & Score Inbound Lead", description: "AI checks company data, intent signals, and budget fit", tool: "ai_score_lead", automated: true },
+      { step: 2, title: "Resolve Target Work Group", description: "Match lead deal size to Sales or Enterprise Sales Team", tool: "resolve_work_group", automated: true },
+      { step: 3, title: "Assign Sales Representative", description: `Apply ${assignmentStrategy.replace("_", " ")} strategy across team members`, tool: "assign_lead", automated: true },
+      { step: 4, title: "Create Follow-up Work Item", description: "Generate scheduled call/email task with AI-prepared briefing notes", tool: "create_task", automated: true },
+      { step: 5, title: "Send Team Lead Notification", description: "Alert management if deal value exceeds high-value threshold", tool: "send_notification", automated: true },
+    );
+  } else if (category === "finance") {
+    actions.push(
+      { step: 1, title: "Audit Unpaid Invoices", description: "Filter sent invoices with due_date < today", tool: "audit_invoices", automated: true },
+      { step: 2, title: "Personalize Reminder Notice", description: "AI drafts professional payment reminder with invoice attachment link", tool: "draft_communication", automated: true },
+      { step: 3, title: "Assign Collection Follow-up", description: "Route escalation task to Finance Work Group with lowest workload", tool: "assign_work", automated: true },
+      { step: 4, title: "Monitor Settlement", description: "Track invoice settlement and auto-close task upon receipt", tool: "monitor_settlement", automated: true },
+    );
+  } else if (category === "customer_success") {
+    actions.push(
+      { step: 1, title: "Identify Inactive / At-Risk Accounts", description: "Detect customer accounts with no logged activity in 14+ days", tool: "detect_at_risk", automated: true },
+      { step: 2, title: "Segment into At-Risk Customer Group", description: "Tag customer profile and calculate retention urgency score", tool: "segment_customer", automated: true },
+      { step: 3, title: "Assign Customer Success Specialist", description: "Select dedicated account manager or CS team member", tool: "assign_specialist", automated: true },
+      { step: 4, title: "Generate Relationship Strategy", description: "AI produces suggested talking points and value-add outreach agenda", tool: "ai_prep_outreach", automated: true },
+    );
+  } else if (category === "management") {
+    actions.push(
+      { step: 1, title: "Aggregate Cross-Department Metrics", description: "Query revenue settled, new deals, pipeline velocity, and completed tasks", tool: "aggregate_metrics", automated: true },
+      { step: 2, title: "Analyze Period Trends & Anomalies", description: "AI compares past 7 days against prior period to flag drops or surges", tool: "ai_trend_analysis", automated: true },
+      { step: 3, title: "Compile Executive Briefing", description: "Generate structured markdown brief with key decisions and highlight items", tool: "compile_brief", automated: true },
+      { step: 4, title: "Dispatch to Leadership", description: "Deliver via notification & in-app briefing drawer", tool: "dispatch_report", automated: true },
+    );
+  } else {
+    actions.push(
+      { step: 1, title: "Detect Event Trigger", description: "Listen for matching business condition or schedule", tool: "event_listener", automated: true },
+      { step: 2, title: "Execute AI Reasoning", description: "Process context and determine required actions", tool: "ai_process", automated: true },
+      { step: 3, title: "Create & Assign Work Item", description: "Assign task to appropriate work group and team member", tool: "assign_work", automated: true },
+      { step: 4, title: "Record Execution Trace", description: "Log result and update business KPIs", tool: "log_execution", automated: true },
+    );
+  }
+
+  const humanSummary = `When triggered, opteraOS will autonomously execute ${actions.length} coordinated actions across your organization, routing required human follow-up to the selected responsibility group.`;
+
+  return {
+    title,
+    description,
+    category,
+    schedule,
+    triggerType,
+    assignmentType,
+    assignmentStrategy,
+    actions,
+    humanSummary,
+    goalPrompt: prompt,
+    planningEngine: "deterministic",
+  };
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // 2. PLAN AUTOPILOT FROM NATURAL LANGUAGE PROMPT (AI Autopilot Architect)
+//
+// This calls a real LLM (Gemini/OpenAI, whichever is configured — see
+// ai.service.ts) to design a bespoke automation plan for the exact business
+// request, including a `goalPrompt` that the execution engine (below) will
+// later hand to the AI again, with tool access, to actually carry it out.
+// If no AI provider is configured or the call fails/returns something we
+// can't parse, this transparently falls back to the deterministic keyword
+// planner above rather than failing the request.
 // ─────────────────────────────────────────────────────────────────────────────
 export const planAutopilotFromPrompt = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((data) => planPromptInput.parse(data))
   .handler(async ({ data }) => {
     const { prompt } = data;
-    const lower = prompt.toLowerCase();
 
-    let category: AutopilotPlanResult["category"] = "operations";
-    let triggerType = "manual_or_scheduled";
-    let schedule = "Every weekday at 9:00 AM";
-    let assignmentStrategy: AutopilotPlanResult["assignmentStrategy"] = "round_robin";
-    let assignmentType: AutopilotPlanResult["assignmentType"] = "work_group";
-    let title = "Custom Business Autopilot";
-    let description = prompt;
+    try {
+      const systemPrompt =
+        "You are opteraOS's Autopilot Architect, an expert at turning a plain-language business request into a " +
+        "precise, genuinely useful automation plan. Reply with ONLY a single JSON object — no markdown fences, " +
+        "no prose before or after — matching exactly this shape:\n" +
+        '{\n' +
+        '  "title": string (short, specific name for this automation),\n' +
+        '  "description": string (1 sentence, specific to this request, not generic),\n' +
+        '  "category": "sales" | "customer_success" | "finance" | "management" | "marketing" | "operations" | "custom",\n' +
+        '  "schedule": string (human-readable, e.g. "Daily at 8:30 AM" or "Triggered immediately when a lead is created"),\n' +
+        '  "triggerType": string (machine key like "new_lead", "overdue_invoice", "at_risk_customer", "schedule_cron", "deal_stage_change", "manual_or_scheduled"),\n' +
+        '  "assignmentType": "individual" | "work_group" | "multiple_members" | "ai_assignment",\n' +
+        '  "assignmentStrategy": "round_robin" | "lowest_workload" | "skill_based" | "performance_based" | "ai_assignment" | "direct",\n' +
+        '  "actions": [ { "step": number, "title": string, "description": string, "tool": string, "automated": true } ] (3 to 6 concrete steps, specific to this request),\n' +
+        '  "humanSummary": string (1-2 sentences a business owner would read to understand what happens when this runs),\n' +
+        '  "goalPrompt": string (a precise, self-contained instruction that another AI agent — with tools to search customers/deals/invoices and create/update ' +
+        'tasks, customers, and deals — could follow at execution time to actually accomplish this automation\'s job)\n' +
+        "}\n" +
+        "Design something specific to the request below — do not just restate a generic category template.";
 
-    if (lower.includes("sales") || lower.includes("lead") || lower.includes("deal") || lower.includes("pipeline")) {
-      category = "sales";
-      title = "AI Sales Intelligence & Lead Routing";
-      triggerType = "new_lead";
-      schedule = "Triggered immediately on lead creation";
-      assignmentStrategy = lower.includes("workload") ? "lowest_workload" : "round_robin";
-      assignmentType = "work_group";
-    } else if (lower.includes("invoice") || lower.includes("payment") || lower.includes("overdue") || lower.includes("revenue")) {
-      category = "finance";
-      title = "Invoice Guardian & Payment Recovery";
-      triggerType = "overdue_invoice";
-      schedule = "Daily audit at 8:30 AM";
-      assignmentStrategy = "lowest_workload";
-      assignmentType = "work_group";
-    } else if (lower.includes("customer") || lower.includes("churn") || lower.includes("risk") || lower.includes("retention") || lower.includes("vip")) {
-      category = "customer_success";
-      title = "Customer Success & Retention Autopilot";
-      triggerType = "at_risk_customer";
-      schedule = "Continuous monitoring & weekly audit";
-      assignmentStrategy = "skill_based";
-      assignmentType = "work_group";
-    } else if (lower.includes("report") || lower.includes("brief") || lower.includes("summary") || lower.includes("morning") || lower.includes("executive")) {
-      category = "management";
-      title = "Executive Business Briefing Autopilot";
-      triggerType = "schedule_cron";
-      schedule = "Every weekday at 9:00 AM";
-      assignmentStrategy = "direct";
-      assignmentType = "individual";
+      const aiRes = await generateAICompletionWithSystemPrompt([{ role: "user", content: prompt }], systemPrompt);
+
+      if (aiRes?.content && aiRes.provider !== "optera-deterministic-engine") {
+        const jsonMatch = aiRes.content.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          const parsed = JSON.parse(jsonMatch[0]);
+          if (parsed && typeof parsed.title === "string" && Array.isArray(parsed.actions) && parsed.actions.length > 0) {
+            return {
+              title: parsed.title,
+              description: typeof parsed.description === "string" ? parsed.description : prompt,
+              category: parsed.category || "operations",
+              schedule: typeof parsed.schedule === "string" ? parsed.schedule : "Manual or scheduled",
+              triggerType: typeof parsed.triggerType === "string" ? parsed.triggerType : "manual_or_scheduled",
+              assignmentType: parsed.assignmentType || "work_group",
+              assignmentStrategy: parsed.assignmentStrategy || "round_robin",
+              actions: parsed.actions,
+              humanSummary:
+                typeof parsed.humanSummary === "string" ? parsed.humanSummary : `Autonomously handles: ${prompt}`,
+              goalPrompt: typeof parsed.goalPrompt === "string" && parsed.goalPrompt.trim() ? parsed.goalPrompt : prompt,
+              planningEngine: "ai",
+            } as AutopilotPlanResult;
+          }
+        }
+      }
+    } catch (err) {
+      console.warn("[Autopilot Architect] Real AI planning failed, using deterministic fallback:", err);
     }
 
-    const actions: AutopilotPlanResult["actions"] = [];
-
-    if (category === "sales") {
-      actions.push(
-        { step: 1, title: "Qualify & Score Inbound Lead", description: "AI checks company data, intent signals, and budget fit", tool: "ai_score_lead", automated: true },
-        { step: 2, title: "Resolve Target Work Group", description: "Match lead deal size to Sales or Enterprise Sales Team", tool: "resolve_work_group", automated: true },
-        { step: 3, title: "Assign Sales Representative", description: `Apply ${assignmentStrategy.replace("_", " ")} strategy across team members`, tool: "assign_lead", automated: true },
-        { step: 4, title: "Create Follow-up Work Item", description: "Generate scheduled call/email task with AI-prepared briefing notes", tool: "create_task", automated: true },
-        { step: 5, title: "Send Team Lead Notification", description: "Alert management if deal value exceeds high-value threshold", tool: "send_notification", automated: true },
-      );
-    } else if (category === "finance") {
-      actions.push(
-        { step: 1, title: "Audit Unpaid Invoices", description: "Filter sent invoices with due_date < today", tool: "audit_invoices", automated: true },
-        { step: 2, title: "Personalize Reminder Notice", description: "AI drafts professional payment reminder with invoice attachment link", tool: "draft_communication", automated: true },
-        { step: 3, title: "Assign Collection Follow-up", description: "Route escalation task to Finance Work Group with lowest workload", tool: "assign_work", automated: true },
-        { step: 4, title: "Monitor Settlement", description: "Track invoice settlement and auto-close task upon receipt", tool: "monitor_settlement", automated: true },
-      );
-    } else if (category === "customer_success") {
-      actions.push(
-        { step: 1, title: "Identify Inactive / At-Risk Accounts", description: "Detect customer accounts with no logged activity in 14+ days", tool: "detect_at_risk", automated: true },
-        { step: 2, title: "Segment into At-Risk Customer Group", description: "Tag customer profile and calculate retention urgency score", tool: "segment_customer", automated: true },
-        { step: 3, title: "Assign Customer Success Specialist", description: "Select dedicated account manager or CS team member", tool: "assign_specialist", automated: true },
-        { step: 4, title: "Generate Relationship Strategy", description: "AI produces suggested talking points and value-add outreach agenda", tool: "ai_prep_outreach", automated: true },
-      );
-    } else if (category === "management") {
-      actions.push(
-        { step: 1, title: "Aggregate Cross-Department Metrics", description: "Query revenue settled, new deals, pipeline velocity, and completed tasks", tool: "aggregate_metrics", automated: true },
-        { step: 2, title: "Analyze Period Trends & Anomalies", description: "AI compares past 7 days against prior period to flag drops or surges", tool: "ai_trend_analysis", automated: true },
-        { step: 3, title: "Compile Executive Briefing", description: "Generate structured markdown brief with key decisions and highlight items", tool: "compile_brief", automated: true },
-        { step: 4, title: "Dispatch to Leadership", description: "Deliver via notification & in-app briefing drawer", tool: "dispatch_report", automated: true },
-      );
-    } else {
-      actions.push(
-        { step: 1, title: "Detect Event Trigger", description: "Listen for matching business condition or schedule", tool: "event_listener", automated: true },
-        { step: 2, title: "Execute AI Reasoning", description: "Process context and determine required actions", tool: "ai_process", automated: true },
-        { step: 3, title: "Create & Assign Work Item", description: "Assign task to appropriate work group and team member", tool: "assign_work", automated: true },
-        { step: 4, title: "Record Execution Trace", description: "Log result and update business KPIs", tool: "log_execution", automated: true },
-      );
-    }
-
-    const humanSummary = `When triggered, opteraOS will autonomously execute ${actions.length} coordinated actions across your organization, routing required human follow-up to the selected responsibility group.`;
-
-    const plan: AutopilotPlanResult = {
-      title,
-      description,
-      category,
-      schedule,
-      triggerType,
-      assignmentType,
-      assignmentStrategy,
-      actions,
-      humanSummary,
-    };
-
-    return plan;
+    return buildDeterministicPlan(prompt);
   });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -909,7 +977,10 @@ export const triggerAutopilotExecution = createServerFn({ method: "POST" })
     const { orgId, autopilotId, triggerEvent, payload } = data;
     const startTime = Date.now();
 
-    let autopilot = serverAutopilotStore.get(autopilotId);
+    const cachedAutopilot = serverAutopilotStore.get(autopilotId);
+    // SECURITY: never trust a cached entry unless it actually belongs to the
+    // calling org — see PredictiveRadar/workflows fixes for the same pattern.
+    let autopilot = cachedAutopilot && cachedAutopilot.org_id === orgId ? cachedAutopilot : undefined;
     if (!autopilot) {
       try {
         const { data: dbAp } = await supabase
@@ -931,7 +1002,9 @@ export const triggerAutopilotExecution = createServerFn({ method: "POST" })
       throw new Error("Autopilot is paused. Continue the Autopilot before running it manually.");
     }
 
-    // 1. Resolve work assignment
+    // 1. Resolve a default work assignment (used for fallback task creation, and
+    //    as who any AI-created follow-up tasks default to if the AI doesn't
+    //    specify an assignee).
     let assignedUser: any = null;
     try {
       const assignmentRes = await resolveWorkAssignment({
@@ -947,27 +1020,104 @@ export const triggerAutopilotExecution = createServerFn({ method: "POST" })
       // Fallback
     }
 
-    // 2. Create unified Work Item (Task) in Supabase database
-    const workTitle = `[Autopilot] ${autopilot.name} Action Item`;
-    const workDesc = (autopilot as any).human_summary || `Automated work created by ${autopilot.name} on ${new Date().toLocaleTimeString()}`;
+    // ─────────────────────────────────────────────────────────────────────────
+    // 2. REAL AI EXECUTION — this is the actual "autopilot" brain.
+    //
+    // Instead of always creating one generic, identical task, the autopilot's
+    // goal_prompt is handed to the AI along with live org data and access to
+    // real tools (search customers/deals/invoices, create/update records,
+    // create tasks). The AI decides what this specific automation actually
+    // needs to do this run and which tools to call, and every call is executed
+    // for real — this is what makes it "autonomous" rather than a template.
+    //
+    // If no AI provider is configured, or the AI produces no usable actions,
+    // this transparently falls back to the original generic task-creation
+    // behavior so the autopilot never does nothing.
+    // ─────────────────────────────────────────────────────────────────────────
+    const toolCallLog: Array<{ tool: string; payload: Record<string, any>; ok: boolean; result?: any; error?: string }> = [];
+    let aiReasoning: string | null = null;
+    let usedRealAI = false;
+    const goalPrompt = (autopilot as any).goal_prompt as string | null;
 
-    try {
-      await supabase.from("tasks").insert({
-        org_id: orgId,
-        title: workTitle,
-        description: workDesc,
-        priority: "Medium",
-        status: "Todo",
-        work_type: "ai_action",
-        work_group_id: (autopilot as any).target_work_group_id || null,
-        customer_group_id: (autopilot as any).customer_group_id || null,
-        source: "autopilot",
-        autopilot_id: autopilotId,
-        assignee_id: assignedUser?.assignedUserId || context.userId,
-        created_by: context.userId,
-      });
-    } catch {
-      // Handled
+    if (goalPrompt && goalPrompt.trim()) {
+      try {
+        const orgContext = await fetchOrgContext(supabase, orgId);
+        const executionPrompt =
+          `${goalPrompt}\n\n` +
+          `(Context: this automation was just triggered by "${triggerEvent}". If a follow-up task needs to be created, ` +
+          `assign it to user id "${assignedUser?.assignedUserId || context.userId}" unless the goal specifies otherwise.)`;
+
+        const aiRes = await generateAIResponse([{ role: "user", content: executionPrompt }], orgContext);
+
+        if (aiRes?.provider && aiRes.provider !== "optera-deterministic-engine") {
+          usedRealAI = true;
+          aiReasoning = aiRes.content;
+
+          for (const action of aiRes.pendingActions ?? []) {
+            // Auto-execute read and low-risk actions autonomously (this is the whole
+            // point of an autopilot). High-risk writes are deliberately NOT
+            // auto-executed — they're logged and a human review task is created
+            // instead, so nothing destructive ever happens unsupervised.
+            if (action.safetyLevel === "high_risk_write") {
+              toolCallLog.push({ tool: action.toolName, payload: action.payload, ok: false, error: "Skipped: requires human approval (high risk)" });
+              try {
+                await supabase.from("tasks").insert({
+                  org_id: orgId,
+                  title: `[Autopilot Review Needed] ${action.title}`,
+                  description: `${action.description}\n\nProposed by "${autopilot.name}" but requires manual approval before it can run.`,
+                  priority: "High",
+                  status: "Todo",
+                  //work_type: "ai_action_review",
+                  work_group_id: (autopilot as any).target_work_group_id || null,
+                  source: "autopilot",
+                  autopilot_id: autopilotId,
+                  assignee_id: assignedUser?.assignedUserId || context.userId,
+                  created_by: context.userId,
+                });
+              } catch {
+                // Handled
+              }
+              continue;
+            }
+
+            try {
+              const result = await executeTool(supabase, orgId, context.userId, action.toolName, action.payload);
+              toolCallLog.push({ tool: action.toolName, payload: action.payload, ok: true, result });
+            } catch (toolErr: any) {
+              toolCallLog.push({ tool: action.toolName, payload: action.payload, ok: false, error: toolErr?.message || "Tool execution failed" });
+            }
+          }
+        }
+      } catch (aiErr) {
+        console.warn(`[Autopilot ${autopilotId}] AI execution failed, using fallback:`, aiErr);
+      }
+    }
+
+    // 3. Fallback: if AI wasn't available/configured, or ran but took no
+    //    concrete action, create a generic follow-up task so the run is never
+    //    a silent no-op.
+    const workTitle = `[Autopilot] ${autopilot.name} Action Item`;
+    const workDesc = aiReasoning || (autopilot as any).human_summary || `Automated work created by ${autopilot.name} on ${new Date().toLocaleTimeString()}`;
+
+    if (!usedRealAI || toolCallLog.filter((c) => c.ok).length === 0) {
+      try {
+        await supabase.from("tasks").insert({
+          org_id: orgId,
+          title: workTitle,
+          description: workDesc,
+          priority: "Medium",
+          status: "Todo",
+          work_type: "ai_action",
+          work_group_id: (autopilot as any).target_work_group_id || null,
+          customer_group_id: (autopilot as any).customer_group_id || null,
+          source: "autopilot",
+          autopilot_id: autopilotId,
+          assignee_id: assignedUser?.assignedUserId || context.userId,
+          created_by: context.userId,
+        });
+      } catch {
+        // Handled
+      }
     }
 
     const durationMs = Math.max(12, Date.now() - startTime);
@@ -975,7 +1125,7 @@ export const triggerAutopilotExecution = createServerFn({ method: "POST" })
     const startedIso = new Date(startTime).toISOString();
     const completedIso = new Date().toISOString();
 
-    // 3. Persist execution record in Supabase workflow_executions & server memory log
+    // 4. Persist execution record in Supabase workflow_executions & server memory log
     const execLog = {
       id: executionId,
       workflow_id: autopilotId,
@@ -1006,6 +1156,9 @@ export const triggerAutopilotExecution = createServerFn({ method: "POST" })
         output_payload: {
           assignedTo: assignedUser?.assignedUserName || "Team",
           taskTitle: workTitle,
+          usedRealAI,
+          aiReasoning,
+          toolCalls: toolCallLog,
         },
       });
     } catch {
@@ -1038,6 +1191,10 @@ export const triggerAutopilotExecution = createServerFn({ method: "POST" })
       executionId,
       durationMs,
       assignedTo: assignedUser?.assignedUserName || "Team",
+      usedRealAI,
+      aiReasoning,
+      toolCallsExecuted: toolCallLog.filter((c) => c.ok).length,
+      toolCallsSkipped: toolCallLog.filter((c) => !c.ok).length,
     };
   });
 
@@ -1158,8 +1315,8 @@ export const executeCapabilityDirectly = createServerFn({ method: "POST" })
             capability.category === "sales"
               ? "lead_follow_up"
               : capability.category === "finance"
-              ? "invoice_follow_up"
-              : "ai_action",
+                ? "invoice_follow_up"
+                : "ai_action",
           work_group_id: targetWorkGroupId || null,
           source: "autopilot",
           assignee_id: assignedUser?.assignedUserId || context.userId,

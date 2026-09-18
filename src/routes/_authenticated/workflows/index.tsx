@@ -62,7 +62,8 @@ import { UnifiedWorkManager } from "@/components/autopilot/UnifiedWorkManager";
 import { type CapabilityDefinition } from "@/lib/capabilities.config";
 
 const title = "opteraOS Autopilot — Autonomous Business Operating System";
-const description = "Tell opteraOS what work needs to happen. It discovers required work, assigns to employee work groups, executes automated actions, and reports results.";
+const description =
+  "Tell opteraOS what work needs to happen. It discovers required work, assigns to employee work groups, executes automated actions, and reports results.";
 
 export const Route = createFileRoute("/_authenticated/workflows/")({
   head: () => ({
@@ -129,6 +130,7 @@ function AutopilotMasterPage() {
 
   const duplicateMutation = useMutation({
     mutationFn: (id: string) => duplicate({ data: { id, orgId: current!.id } }),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onSuccess: (res: any) => {
       toast.success("Workflow duplicated");
       queryClient.invalidateQueries({ queryKey: ["workflows", current?.id] });
@@ -165,7 +167,9 @@ function AutopilotMasterPage() {
   const sidebarCounts = {
     allWork: (kpis?.totalAutopilots ?? 0) + (kpis?.totalPendingWork ?? 0),
     running: kpis?.activeAutopilots ?? 0,
-    scheduled: kpis?.totalAutopilots ? Math.max(0, kpis.totalAutopilots - (kpis.activeAutopilots ?? 0)) : 0,
+    scheduled: kpis?.totalAutopilots
+      ? Math.max(0, kpis.totalAutopilots - (kpis.activeAutopilots ?? 0))
+      : 0,
     paused: (kpis?.totalAutopilots ?? 0) - (kpis?.activeAutopilots ?? 0),
     failed: kpis?.attentionCount ?? 0,
     completed: kpis?.workCompletedToday ?? 0,
@@ -185,7 +189,8 @@ function AutopilotMasterPage() {
                 opteraOS Autopilot
               </h1>
               <p className="mt-0.5 text-xs text-[#5A7573] dark:text-slate-400">
-                The autonomous business core. AI understands requests, assigns work to teams, executes actions, and reports results.
+                The autonomous business core. AI understands requests, assigns work to teams,
+                executes actions, and reports results.
               </p>
             </div>
           </div>
@@ -217,37 +222,58 @@ function AutopilotMasterPage() {
       {/* ── Master Platform Navigation Tabs ───────────────────────────── */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList className="h-10 w-full justify-start overflow-x-auto rounded-lg border border-[rgba(0,128,128,0.15)] dark:border-teal-500/25 bg-[#E8F1F0] dark:bg-[#061417] p-1">
-          <TabsTrigger value="command" className="gap-2 text-xs rounded-md text-[#5A7573] dark:text-slate-400 data-[state=active]:bg-white data-[state=active]:dark:bg-[#091b1f] data-[state=active]:text-[#008080] data-[state=active]:dark:text-teal-300 data-[state=active]:font-semibold data-[state=active]:shadow-xs">
+          <TabsTrigger
+            value="command"
+            className="gap-2 text-xs rounded-md text-[#5A7573] dark:text-slate-400 data-[state=active]:bg-white data-[state=active]:dark:bg-[#091b1f] data-[state=active]:text-[#008080] data-[state=active]:dark:text-teal-300 data-[state=active]:font-semibold data-[state=active]:shadow-xs"
+          >
             <Sparkles className="h-3.5 w-3.5 text-[#008080] dark:text-teal-400" />
             <span>Command Center</span>
           </TabsTrigger>
 
-          <TabsTrigger value="discovery" className="gap-2 text-xs rounded-md text-[#5A7573] dark:text-slate-400 data-[state=active]:bg-white data-[state=active]:dark:bg-[#091b1f] data-[state=active]:text-[#008080] data-[state=active]:dark:text-teal-300 data-[state=active]:font-semibold data-[state=active]:shadow-xs">
+          <TabsTrigger
+            value="discovery"
+            className="gap-2 text-xs rounded-md text-[#5A7573] dark:text-slate-400 data-[state=active]:bg-white data-[state=active]:dark:bg-[#091b1f] data-[state=active]:text-[#008080] data-[state=active]:dark:text-teal-300 data-[state=active]:font-semibold data-[state=active]:shadow-xs"
+          >
             <Zap className="h-3.5 w-3.5 text-[#D97706]" />
             <span>Capabilities Catalog</span>
           </TabsTrigger>
 
-          <TabsTrigger value="workgroups" className="gap-2 text-xs rounded-md text-[#5A7573] dark:text-slate-400 data-[state=active]:bg-white data-[state=active]:dark:bg-[#091b1f] data-[state=active]:text-[#008080] data-[state=active]:dark:text-teal-300 data-[state=active]:font-semibold data-[state=active]:shadow-xs">
+          <TabsTrigger
+            value="workgroups"
+            className="gap-2 text-xs rounded-md text-[#5A7573] dark:text-slate-400 data-[state=active]:bg-white data-[state=active]:dark:bg-[#091b1f] data-[state=active]:text-[#008080] data-[state=active]:dark:text-teal-300 data-[state=active]:font-semibold data-[state=active]:shadow-xs"
+          >
             <Briefcase className="h-3.5 w-3.5 text-[#6366F1]" />
             <span>Employee Work Groups</span>
           </TabsTrigger>
 
-          <TabsTrigger value="customergroups" className="gap-2 text-xs rounded-md text-[#5A7573] dark:text-slate-400 data-[state=active]:bg-white data-[state=active]:dark:bg-[#091b1f] data-[state=active]:text-[#008080] data-[state=active]:dark:text-teal-300 data-[state=active]:font-semibold data-[state=active]:shadow-xs">
+          <TabsTrigger
+            value="customergroups"
+            className="gap-2 text-xs rounded-md text-[#5A7573] dark:text-slate-400 data-[state=active]:bg-white data-[state=active]:dark:bg-[#091b1f] data-[state=active]:text-[#008080] data-[state=active]:dark:text-teal-300 data-[state=active]:font-semibold data-[state=active]:shadow-xs"
+          >
             <Users className="h-3.5 w-3.5 text-[#008080] dark:text-teal-400" />
             <span>Customer Segments</span>
           </TabsTrigger>
 
-          <TabsTrigger value="rules" className="gap-2 text-xs rounded-md text-[#5A7573] dark:text-slate-400 data-[state=active]:bg-white data-[state=active]:dark:bg-[#091b1f] data-[state=active]:text-[#008080] data-[state=active]:dark:text-teal-300 data-[state=active]:font-semibold data-[state=active]:shadow-xs">
+          <TabsTrigger
+            value="rules"
+            className="gap-2 text-xs rounded-md text-[#5A7573] dark:text-slate-400 data-[state=active]:bg-white data-[state=active]:dark:bg-[#091b1f] data-[state=active]:text-[#008080] data-[state=active]:dark:text-teal-300 data-[state=active]:font-semibold data-[state=active]:shadow-xs"
+          >
             <Sliders className="h-3.5 w-3.5 text-[#059669]" />
             <span>Routing Rules</span>
           </TabsTrigger>
 
-          <TabsTrigger value="work" className="gap-2 text-xs rounded-md text-[#5A7573] dark:text-slate-400 data-[state=active]:bg-white data-[state=active]:dark:bg-[#091b1f] data-[state=active]:text-[#008080] data-[state=active]:dark:text-teal-300 data-[state=active]:font-semibold data-[state=active]:shadow-xs">
+          <TabsTrigger
+            value="work"
+            className="gap-2 text-xs rounded-md text-[#5A7573] dark:text-slate-400 data-[state=active]:bg-white data-[state=active]:dark:bg-[#091b1f] data-[state=active]:text-[#008080] data-[state=active]:dark:text-teal-300 data-[state=active]:font-semibold data-[state=active]:shadow-xs"
+          >
             <CheckSquare className="h-3.5 w-3.5 text-[#E11D48]" />
             <span>Unified Work Items</span>
           </TabsTrigger>
 
-          <TabsTrigger value="advanced" className="gap-2 text-xs rounded-md text-[#5A7573] dark:text-slate-400 data-[state=active]:bg-white data-[state=active]:dark:bg-[#091b1f] data-[state=active]:text-[#008080] data-[state=active]:dark:text-teal-300 data-[state=active]:font-semibold data-[state=active]:shadow-xs ml-auto">
+          <TabsTrigger
+            value="advanced"
+            className="gap-2 text-xs rounded-md text-[#5A7573] dark:text-slate-400 data-[state=active]:bg-white data-[state=active]:dark:bg-[#091b1f] data-[state=active]:text-[#008080] data-[state=active]:dark:text-teal-300 data-[state=active]:font-semibold data-[state=active]:shadow-xs ml-auto"
+          >
             <Layers className="h-3.5 w-3.5 text-[#5A7573] dark:text-slate-400" />
             <span>Advanced Builder</span>
           </TabsTrigger>
@@ -316,7 +342,8 @@ function AutopilotMasterPage() {
                   <span>Advanced Node Workflows</span>
                 </h3>
                 <p className="text-xs text-muted-foreground">
-                  Visual node graphs with triggers, logic branches, and tool connectors for power users.
+                  Visual node graphs with triggers, logic branches, and tool connectors for power
+                  users.
                 </p>
               </div>
 
@@ -366,11 +393,16 @@ function AutopilotMasterPage() {
                             {wf.name}
                           </Link>
                           {wf.description && (
-                            <p className="text-[11px] text-muted-foreground line-clamp-1">{wf.description}</p>
+                            <p className="text-[11px] text-muted-foreground line-clamp-1">
+                              {wf.description}
+                            </p>
                           )}
                         </TableCell>
                         <TableCell>
-                          <Badge variant="outline" className="text-[10px] font-mono border-white/10">
+                          <Badge
+                            variant="outline"
+                            className="text-[10px] font-mono border-white/10"
+                          >
                             {wf.trigger_type}
                           </Badge>
                         </TableCell>
@@ -378,10 +410,14 @@ function AutopilotMasterPage() {
                           <div className="flex items-center gap-2">
                             <Switch
                               checked={wf.active}
-                              onCheckedChange={(active) => toggleMutation.mutate({ id: wf.id, active })}
+                              onCheckedChange={(active) =>
+                                toggleMutation.mutate({ id: wf.id, active })
+                              }
                               disabled={toggleMutation.isPending}
                             />
-                            <span className="text-xs text-muted-foreground">{wf.active ? "Active" : "Draft"}</span>
+                            <span className="text-xs text-muted-foreground">
+                              {wf.active ? "Active" : "Draft"}
+                            </span>
                           </div>
                         </TableCell>
                         <TableCell className="text-xs text-muted-foreground font-mono">
@@ -438,9 +474,12 @@ function AutopilotMasterPage() {
       <ExecutionHistoryDrawer
         open={historyOpen}
         onOpenChange={setHistoryOpen}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         executions={executions as any}
         isLoading={loadingExec}
-        onRefresh={() => queryClient.invalidateQueries({ queryKey: ["workflow_executions", orgId] })}
+        onRefresh={() =>
+          queryClient.invalidateQueries({ queryKey: ["workflow_executions", orgId] })
+        }
       />
     </div>
   );
