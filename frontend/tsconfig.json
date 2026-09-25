@@ -1,0 +1,54 @@
+{
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "server/**/*.ts",
+    "database/**/*.ts",
+    "payments/**/*.ts",
+    "apps/web/**/*.ts",
+    "apps/web/**/*.tsx",
+    "packages/**/*.ts",
+    "packages/**/*.tsx",
+    "vite.config.ts",
+    "eslint.config.js"
+  ],
+  "exclude": [
+    "node_modules",
+    "apps/api/**/*"
+  ],
+  "compilerOptions": {
+    "target": "ES2022",
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["vite/client", "node"],
+
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": false,
+    "noEmit": true,
+
+    "skipLibCheck": true,
+    "strict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedSideEffectImports": true,
+    "paths": {
+      "@/*": ["./src/*"],
+      "@optera/types": ["./packages/types/src/index.ts"],
+      "@optera/types/*": ["./packages/types/src/*"],
+      "@optera/validation": ["./packages/validation/src/index.ts"],
+      "@optera/validation/*": ["./packages/validation/src/*"],
+      "@optera/ui": ["./packages/ui/src/index.ts"],
+      "@optera/ui/*": ["./packages/ui/src/*"],
+      "@optera/server": ["./packages/server/src/index.ts"],
+      "@optera/server/*": ["./packages/server/src/*"]
+    }
+  }
+}

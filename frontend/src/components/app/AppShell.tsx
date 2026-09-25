@@ -1,0 +1,561 @@
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { Link, useNavigate, useRouter } from "@tanstack/react-router";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import {
+  BarChart3,
+  BookOpen,
+  Building2,
+  CheckSquare,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Contact,
+  FileText,
+  LayoutDashboard,
+  LineChart,
+  LogOut,
+  Moon,
+  Sun,
+  TrendingUp,
+  UserPlus,
+  Users,
+  Zap,
+  Sparkles,
+  Package,
+  ShoppingCart,
+  Megaphone,
+  Layers,
+  Settings,
+  Truck,
+  Factory,
+  FolderKanban,
+  LifeBuoy,
+  MessageSquare,
+  DollarSign,
+  Activity,
+  ShieldCheck,
+  Menu,
+  X,
+  Bell,
+  Search,
+  HelpCircle,
+  User,
+  Workflow,
+  Receipt,
+  IndianRupee,
+  Tags,
+  PieChart,
+  ClipboardList,
+  Brain,
+} from "lucide-react";
+import { BrandLockup } from "@/components/brand/Logo";
+import { AiAssistantDrawer } from "@/components/app/AiAssistantDrawer";
+import { NotificationsPopover } from "@/components/app/NotificationsPopover";
+import { GlobalSearchModal } from "@/components/app/GlobalSearchModal";
+import { UserProfileModal } from "@/components/app/UserProfileModal";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { supabase } from "@/integrations/supabase/client";
+import { getMyWorkspaces } from "@/lib/workspace.functions";
+import { authApi } from "@/lib/api";
+import { authStorage } from "@/lib/api/client";
+import { useTheme } from "@/hooks/use-theme";
+
+const STORAGE_KEY = "opteraos.currentOrg";
+
+export type Workspace = {
+  id: string;
+  name: string;
+  slug: string;
+  role: string;
+  plan: string;
+  currency: string;
+};
+
+type WorkspaceContextValue = {
+  organizations: Workspace[];
+  current: Workspace | null;
+  setCurrent: (id: string) => void;
+  email: string | null;
+  invites: { id: string; org_id: string; role: string; org_name: string }[];
+  isLoading: boolean;
+};
+
+const WorkspaceContext = createContext<WorkspaceContextValue | null>(null);
+
+export function useWorkspace() {
+  const ctx = useContext(WorkspaceContext);
+  if (!ctx) throw new Error("useWorkspace must be used inside WorkspaceProvider");
+  return ctx;
+}
+
+export function WorkspaceProvider({ children }: { children: ReactNode }) {
+  const fetchWorkspaces = useServerFn(getMyWorkspaces);
+  const { data, isLoading } = useQuery({
+    queryKey: ["workspaces"],
+    queryFn: () => fetchWorkspaces(),
+    staleTime: 120_000,
+  });
+  const [currentId, setCurrentId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") setCurrentId(window.localStorage.getItem(STORAGE_KEY));
+  }, []);
+
+  const defaultOrg: Workspace = {
+    id: "00000000-0000-0000-0000-000000000001",
+    name: "opteraOS Enterprise",
+    slug: "optera-enterprise",
+    role: "owner",
+    plan: "enterprise",
+    currency: "INR",
+  };
+
+  const organizations: Workspace[] = (data?.organizations && data.organizations.length > 0)
+    ? data.organizations
+    : [defaultOrg];
+  const current = organizations.find((o: Workspace) => o.id === currentId) ?? organizations[0] ?? defaultOrg;
+
+  const value = useMemo<WorkspaceContextValue>(
+    () => ({
+      organizations,
+      current,
+      email: data?.email ?? null,
+      invites: data?.invites ?? [],
+      isLoading,
+      setCurrent: (id: string) => {
+        window.localStorage.setItem(STORAGE_KEY, id);
+        authStorage.setOrgId(id);
+        setCurrentId(id);
+      },
+    }),
+    [organizations, current, data?.email, data?.invites, isLoading],
+  );
+
+  return <WorkspaceContext.Provider value={value}>{children}</WorkspaceContext.Provider>;
+}
+
+// ── Navigation structure ───────────────────────────────────────────────────────
+
+type NavItem = { to: string; label: string; icon: React.ComponentType<{ className?: string }> };
+type NavGroup = { label: string; items: NavItem[] };
+
+const navGroups: NavGroup[] = [
+  {
+    label: "Core",
+    items: [
+      { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+      { to: "/workflows", label: "Autopilot", icon: Zap },
+    ],
+  },
+  {
+    label: "CRM",
+    items: [
+      { to: "/leads", label: "Leads", icon: UserPlus },
+      { to: "/deals", label: "Opportunities", icon: TrendingUp },
+      { to: "/customers", label: "Customers", icon: Building2 },
+      { to: "/contacts", label: "Contacts", icon: Contact },
+      { to: "/activities", label: "Activities", icon: Activity },
+    ],
+  },
+  {
+    label: "Sales & Invoicing",
+    items: [
+      { to: "/quotations", label: "Quotations", icon: FileText },
+      { to: "/orders", label: "Sales Orders", icon: ShoppingCart },
+      { to: "/invoices", label: "Invoices", icon: Receipt },
+      { to: "/payments", label: "Payments", icon: IndianRupee },
+      { to: "/products", label: "Products", icon: Package },
+      { to: "/pricelists", label: "Price Lists", icon: Tags },
+    ],
+  },
+  {
+    label: "Finance",
+    items: [
+      { to: "/accounting", label: "Accounting & GL", icon: DollarSign },
+      { to: "/expenses", label: "Expenses", icon: ClipboardList },
+      { to: "/reports", label: "Financial Reports", icon: PieChart },
+    ],
+  },
+  {
+    label: "Operations",
+    items: [
+      { to: "/inventory", label: "Inventory", icon: Package },
+      { to: "/purchase", label: "Purchase", icon: Truck },
+      { to: "/projects", label: "Projects", icon: FolderKanban },
+      { to: "/manufacturing", label: "Manufacturing", icon: Factory },
+    ],
+  },
+  {
+    label: "People",
+    items: [
+      { to: "/hr", label: "HR & People", icon: Users },
+      { to: "/tasks", label: "Tasks", icon: CheckSquare },
+    ],
+  },
+  {
+    label: "Engagement",
+    items: [
+      { to: "/marketing", label: "Marketing", icon: Megaphone },
+      { to: "/helpdesk", label: "Helpdesk", icon: LifeBuoy },
+      { to: "/discuss", label: "Discuss", icon: MessageSquare },
+      { to: "/knowledge", label: "Knowledge", icon: BookOpen },
+    ],
+  },
+  {
+    label: "AI",
+    items: [
+      { to: "/ai", label: "optera AI Copilot", icon: Brain },
+    ],
+  },
+  {
+    label: "Analytics",
+    items: [
+      { to: "/analytics", label: "Analytics", icon: BarChart3 },
+      { to: "/audit-logs", label: "Audit Logs", icon: ShieldCheck },
+    ],
+  },
+  {
+    label: "Administration",
+    items: [
+      { to: "/team", label: "Team", icon: Users },
+      { to: "/settings", label: "Settings", icon: Settings },
+      { to: "/integrations", label: "Integrations", icon: Layers },
+    ],
+  },
+];
+
+// ── Sidebar component ─────────────────────────────────────────────────────────
+
+function Sidebar({
+  collapsed,
+  onClose,
+  isOverlay,
+}: {
+  collapsed: boolean;
+  onClose?: () => void;
+  isOverlay?: boolean;
+}) {
+  const { organizations, current, setCurrent, isLoading: loadingWorkspace } = useWorkspace();
+  const navigate = useNavigate();
+
+  return (
+    <aside
+      className={[
+        "flex h-full flex-col border-r border-[#0D3836] overflow-y-auto overflow-x-hidden transition-all duration-200",
+        "bg-[#082220] shadow-[2px_0_16px_rgba(0,0,0,0.18)]",
+        collapsed ? "w-[60px]" : "w-[240px]",
+        isOverlay ? "shadow-[4px_0_24px_rgba(0,0,0,0.35)]" : "",
+      ].join(" ")}
+      aria-label="Sidebar Navigation"
+    >
+      {/* Logo + Collapse */}
+      <div className={[
+        "flex h-16 shrink-0 items-center border-b border-[rgba(255,255,255,0.08)] px-4",
+        collapsed ? "justify-center" : "justify-between",
+      ].join(" ")}>
+        {collapsed ? (
+          <Link to="/dashboard" aria-label="opteraOS Home">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#008080] to-[#0D9488] text-white text-sm font-bold shadow-[0_2px_10px_rgba(0,128,128,0.5)]">
+              O
+            </div>
+          </Link>
+        ) : (
+          <Link to="/dashboard" className="flex items-center gap-2.5 transition-opacity hover:opacity-90">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#008080] to-[#0D9488] text-white text-sm font-bold shadow-[0_2px_10px_rgba(0,128,128,0.5)] shrink-0">
+              O
+            </div>
+            <span className="text-base font-bold tracking-tight text-white">
+              optera<span className="text-[#2DD4BF]">OS</span>
+            </span>
+          </Link>
+        )}
+        {isOverlay && !collapsed && (
+          <button
+            onClick={onClose}
+            className="rounded-md p-1 text-[#7FA6A3] hover:bg-[rgba(255,255,255,0.08)] hover:text-white cursor-pointer"
+            aria-label="Close sidebar"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
+      </div>
+
+      {/* Workspace Switcher */}
+      {!collapsed && (
+        <div className="shrink-0 border-b border-[rgba(255,255,255,0.08)] px-3 py-2.5">
+          {loadingWorkspace ? (
+            <Skeleton className="h-9 w-full rounded-lg bg-[rgba(255,255,255,0.08)]" />
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-sm hover:bg-[#0E3533] transition-colors cursor-pointer border border-[rgba(0,128,128,0.35)] bg-[#0B2E2C]">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#008080]/40 text-[#2DD4BF] text-xs font-bold border border-[#008080]/60">
+                    {current?.name?.slice(0, 2).toUpperCase() || "WS"}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-xs font-bold text-white">{current?.name || "Workspace"}</p>
+                    <p className="text-[11px] text-[#7FA6A3] font-medium capitalize">{current?.role || "owner"}</p>
+                  </div>
+                  <ChevronDown className="h-3.5 w-3.5 text-[#7FA6A3] shrink-0" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="start"
+                className="w-56 border border-[rgba(0,128,128,0.35)] bg-[#0B2E2C] text-white shadow-[0_12px_36px_rgba(0,0,0,0.5)]"
+              >
+                <DropdownMenuLabel className="text-[11px] font-semibold uppercase tracking-wider text-[#7FA6A3]">
+                  Workspaces
+                </DropdownMenuLabel>
+                {organizations.map((org) => (
+                  <DropdownMenuItem
+                    key={org.id}
+                    onClick={() => setCurrent(org.id)}
+                    className={[
+                      "cursor-pointer rounded-md text-sm",
+                      current?.id === org.id
+                        ? "bg-[#008080] text-white font-semibold"
+                        : "text-[#D1E6E4] hover:bg-[rgba(255,255,255,0.08)] hover:text-white",
+                    ].join(" ")}
+                  >
+                    <span className="truncate">{org.name}</span>
+                    <span className="ml-auto text-[11px] text-[#7FA6A3] capitalize">{org.role}</span>
+                  </DropdownMenuItem>
+                ))}
+                <DropdownMenuSeparator className="bg-[rgba(255,255,255,0.08)]" />
+                <DropdownMenuItem
+                  onClick={() => navigate({ to: "/onboarding" })}
+                  className="cursor-pointer text-sm text-[#2DD4BF] font-medium hover:bg-[rgba(0,128,128,0.25)] hover:text-white"
+                >
+                  + Create workspace
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </div>
+      )}
+
+      {/* Navigation Groups */}
+      <nav className="flex-1 space-y-0.5 px-2.5 py-3 overflow-y-auto no-scrollbar" aria-label="Main navigation">
+        {navGroups.map((group) => (
+          <div key={group.label} className="mb-3">
+            {!collapsed && (
+              <p className="mb-1.5 px-2 text-[10.5px] font-bold uppercase tracking-wider text-[#649693]">
+                {group.label}
+              </p>
+            )}
+            {group.items.map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                className={[
+                  "flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-sm font-medium text-[#A6CBC8] transition-colors duration-100 hover:bg-[rgba(255,255,255,0.08)] hover:text-white group",
+                  collapsed ? "justify-center px-0" : "",
+                ].join(" ")}
+                activeProps={{
+                  className: [
+                    "flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-sm font-semibold bg-[#008080] text-white relative shadow-[0_2px_12px_rgba(0,128,128,0.45)]",
+                    "before:absolute before:left-0 before:top-[15%] before:bottom-[15%] before:w-1 before:rounded-r before:bg-[#2DD4BF] before:shadow-[0_0_8px_#2DD4BF]",
+                    collapsed ? "justify-center px-0" : "",
+                  ].join(" "),
+                }}
+                title={collapsed ? item.label : undefined}
+              >
+                <item.icon className="h-4 w-4 shrink-0 text-[#7FA6A3] group-hover:text-white" />
+                {!collapsed && <span className="truncate">{item.label}</span>}
+              </Link>
+            ))}
+          </div>
+        ))}
+      </nav>
+    </aside>
+  );
+}
+
+// ── Main AppShell ─────────────────────────────────────────────────────────────
+
+export function AppShell({ children }: { children: ReactNode }) {
+  const { current, email } = useWorkspace();
+  const navigate = useNavigate();
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const { isDark, toggleTheme } = useTheme();
+
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+
+  async function signOut() {
+    await queryClient.cancelQueries();
+    queryClient.clear();
+    try { await authApi.logout(); } catch { /* ignore */ }
+    authStorage.clear();
+    try { await supabase.auth.signOut(); } catch { /* ignore */ }
+    router.invalidate();
+    navigate({ to: "/auth", replace: true });
+  }
+
+  const userInitials = email
+    ? (email.split("@")[0] || "U").slice(0, 2).toUpperCase()
+    : "OP";
+
+  return (
+    <div className="h-screen overflow-hidden text-[#0F2423] dark:text-slate-100 flex flex-col bg-white dark:bg-[#071619] transition-colors duration-200">
+
+      {/* ── Top Header ── */}
+      <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center border-b border-[rgba(0,128,128,0.14)] dark:border-teal-500/20 bg-white/90 dark:bg-[#091b1f]/95 backdrop-blur-xl px-4 sm:px-6 shadow-[0_2px_12px_rgba(0,64,64,0.04)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.3)]">
+
+        {/* Mobile hamburger */}
+        <button
+          className="mr-3 rounded-md p-1.5 text-[#5A7573] dark:text-slate-300 hover:bg-[rgba(0,128,128,0.06)] dark:hover:bg-teal-500/15 hover:text-[#0F2423] dark:hover:text-white lg:hidden cursor-pointer"
+          onClick={() => setMobileOpen(true)}
+          aria-label="Open navigation"
+        >
+          <Menu className="h-5 w-5" />
+        </button>
+
+        {/* Desktop sidebar collapse toggle */}
+        <button
+          className="mr-4 hidden rounded-md p-1.5 text-[#5A7573] dark:text-slate-300 hover:bg-[rgba(0,128,128,0.06)] dark:hover:bg-teal-500/15 hover:text-[#0F2423] dark:hover:text-white lg:flex cursor-pointer"
+          onClick={() => setSidebarCollapsed((v) => !v)}
+          aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        >
+          {sidebarCollapsed ? (
+            <ChevronRight className="h-4 w-4" />
+          ) : (
+            <ChevronLeft className="h-4 w-4" />
+          )}
+        </button>
+
+        {/* Mobile logo */}
+        <Link to="/dashboard" className="mr-4 flex items-center gap-2 lg:hidden">
+          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-br from-[#008080] to-[#0D9488] text-white text-xs font-bold shadow-[0_2px_8px_rgba(0,128,128,0.3)]">
+            O
+          </div>
+          <span className="text-sm font-bold tracking-tight text-[#0F2423] dark:text-white">
+            optera<span className="text-gradient">OS</span>
+          </span>
+        </Link>
+
+        {/* Center: Search */}
+        <div className="flex-1 max-w-md mx-auto px-2 hidden sm:block">
+          <GlobalSearchModal />
+        </div>
+
+        {/* Mobile search */}
+        <div className="sm:hidden mr-2">
+          <GlobalSearchModal />
+        </div>
+
+        {/* Right: actions */}
+        <div className="ml-auto flex items-center gap-1.5 sm:gap-2 shrink-0">
+          {/* Theme Toggle */}
+          <button
+            onClick={toggleTheme}
+            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            className="flex items-center justify-center h-8 w-8 rounded-lg border border-[rgba(0,128,128,0.18)] dark:border-teal-500/30 bg-transparent text-[#5A7573] dark:text-teal-300 hover:bg-[rgba(0,128,128,0.08)] dark:hover:bg-teal-500/15 hover:text-[#008080] dark:hover:text-teal-200 transition-all duration-200 cursor-pointer"
+          >
+            {isDark ? <Sun className="h-4 w-4 text-amber-400" /> : <Moon className="h-4 w-4 text-[#008080]" />}
+          </button>
+
+          <NotificationsPopover />
+
+          {/* User avatar dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                className="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-sm font-medium text-[#3D5A58] dark:text-slate-200 hover:bg-[rgba(0,128,128,0.06)] dark:hover:bg-teal-500/10 hover:text-[#0F2423] dark:hover:text-white transition-colors cursor-pointer"
+                aria-label="User menu"
+              >
+                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-[#008080] to-[#0D9488] text-white text-xs font-bold shadow-[0_2px_8px_rgba(0,128,128,0.25)]">
+                  {userInitials}
+                </div>
+                <span className="hidden max-w-[8rem] truncate text-sm font-semibold text-[#0F2423] dark:text-white lg:inline">
+                  {email?.split("@")[0] || "Account"}
+                </span>
+                <ChevronDown className="h-3.5 w-3.5 text-[#5A7573] dark:text-slate-300 hidden sm:block" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              className="w-52 border border-[rgba(0,128,128,0.15)] dark:border-teal-500/30 bg-white dark:bg-[#091b1f] shadow-[0_8px_32px_rgba(0,64,64,0.1)]"
+            >
+              <DropdownMenuLabel className="text-xs text-[#5A7573] dark:text-slate-300">
+                <div className="font-bold text-[#0F2423] dark:text-white text-sm">{email?.split("@")[0] || "User"}</div>
+                <div className="text-[11px] text-[#617D7B] dark:text-slate-400 truncate">{email || ""}</div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator className="bg-[rgba(0,128,128,0.1)] dark:bg-teal-500/20" />
+              <DropdownMenuItem
+                onClick={() => setProfileOpen(true)}
+                className="cursor-pointer text-sm text-[#3D5A58] dark:text-slate-200 hover:bg-[rgba(0,128,128,0.06)] dark:hover:bg-teal-500/15 hover:text-[#0F2423] dark:hover:text-white"
+              >
+                <User className="mr-2 h-4 w-4 text-[#008080] dark:text-teal-400" /> Profile & Account
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => navigate({ to: "/settings" })}
+                className="cursor-pointer text-sm text-[#3D5A58] dark:text-slate-200 hover:bg-[rgba(0,128,128,0.06)] dark:hover:bg-teal-500/15 hover:text-[#0F2423] dark:hover:text-white"
+              >
+                <Settings className="mr-2 h-4 w-4 text-[#008080] dark:text-teal-400" /> Settings
+              </DropdownMenuItem>
+              <DropdownMenuSeparator className="bg-[rgba(0,128,128,0.1)] dark:bg-teal-500/20" />
+              <DropdownMenuItem
+                onClick={signOut}
+                className="cursor-pointer text-sm text-[#E11D48] dark:text-rose-400 hover:bg-[rgba(225,29,72,0.08)] dark:hover:bg-rose-500/15 focus:text-[#E11D48] focus:bg-[rgba(225,29,72,0.08)]"
+              >
+                <LogOut className="mr-2 h-4 w-4" /> Sign out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </header>
+
+      {/* ── Body: Sidebar + Content ── */}
+      <div className="flex flex-1 min-h-0">
+
+        {/* Desktop Sidebar */}
+        <div className="hidden lg:flex lg:shrink-0">
+          <Sidebar collapsed={sidebarCollapsed} />
+        </div>
+
+        {/* Mobile Sidebar Overlay */}
+        {mobileOpen && (
+          <>
+            <div
+              className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
+              onClick={() => setMobileOpen(false)}
+              aria-hidden
+            />
+            <div className="fixed inset-y-0 left-0 z-50 lg:hidden">
+              <Sidebar collapsed={false} onClose={() => setMobileOpen(false)} isOverlay />
+            </div>
+          </>
+        )}
+
+        {/* Main Content Area */}
+        <main className="flex-1 min-w-0 overflow-y-auto overflow-x-hidden">
+          <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 box-border">
+            {children}
+          </div>
+        </main>
+      </div>
+
+      {/* User Profile Modal */}
+      <UserProfileModal open={profileOpen} onOpenChange={setProfileOpen} />
+
+      {/* optera AI Copilot Drawer */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <AiAssistantDrawer />
+      </div>
+    </div>
+  );
+}
