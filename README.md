@@ -1,60 +1,150 @@
-# opteraOS — Restructured for Independent Deployment
+# opteraOS
 
-This is opteraOS reorganized into three separately-deployable units, each
-with its own README:
+> **Build. Automate. Grow.**
 
-```
-frontend/    → the actual app (TanStack Start) — deploy to Vercel/Netlify/Cloudflare
-backend/     → NestJS REST API — deploy to Railway/Render/Fly/a VM
-database/    → Supabase (Postgres) migrations — deploy via Supabase CLI
-docs/        → project-wide documentation (architecture, service requirements, status)
-```
+A modular, multi-tenant business operating system built with **React + TanStack Start**, **NestJS**, **PostgreSQL/Prisma**, **AI (Gemini/OpenAI)**, **n8n**, and **Razorpay**.
 
-Each of `frontend/`, `backend/`, and `database/` is meant to be deployed
-**independently**, potentially on different hosts/services. Read each
-folder's own `README.md` before deploying it — they explain what env vars
-it needs and how it relates to the other two.
+---
 
-## Which one do most features actually use?
+## System Architecture
 
-Almost everything (auth, CRM, leads, deals, tasks, invoices, autopilot,
-workflows) is implemented as server functions **inside `frontend/`** that
-talk to Supabase (`database/`) directly — it does not go through
-`backend/`. The NestJS `backend/` is a separate service with its own
-database; only some specific integrations depend on it. If you're only
-deploying one thing to get the app working, it's `frontend/` + `database/`.
+![opteraOS System Architecture](./docs/architecture.jpg)
 
-## What was left out of this restructure, and why
+---
 
-The original project had accumulated some duplicate/stale folders that this
-restructure intentionally did not carry forward, so you don't end up
-deploying dead code:
+## Tech Stack
 
-- **`apps/web/`** — an older, unused duplicate of the frontend. The
-  project's own `vite.config.ts` builds from the root `src/` (now
-  `frontend/src/`), not this one.
-- **top-level `backend/`** (from the original repo root, not the one now
-  moved here) — an orphaned, pre-monorepo copy of the API. The actual
-  workspace config (`workspaces: ["apps/*", "packages/*"]`) only recognized
-  `apps/api`, which is what's now in `backend/` here.
-- **`payments/`** (top-level legacy payment handler class) — superseded by
-  `frontend/packages/server/src/payments/`, which is what the live webhook
-  route actually calls.
-- **`json/project.json`** — scaffolding tool metadata, not part of the app.
+| Layer | Technologies |
+|---|---|
+| **Frontend** | React 19, TanStack Start, TanStack Router, Vite, Tailwind CSS, shadcn/ui, Radix UI, React Query |
+| **Backend** | NestJS (Modular Monolith), REST API, JWT + Passport, RBAC |
+| **Database** | PostgreSQL 16 (primary), Prisma ORM, Redis 7 (caching) |
+| **AI** | Gemini (primary), OpenAI (fallback) |
+| **Automation** | n8n (direct integration) |
+| **Payments** | Razorpay |
+| **Communication** | Gmail, WhatsApp, Slack, Google Calendar |
+| **Infrastructure** | Docker Compose, persistent volumes |
 
-If any of these turn out to still matter for your setup, they're still in
-your original project — this restructure just didn't assume you wanted them
-carried into the clean, three-folder layout.
+---
 
-## Local development (all three at once)
+## Application Modules
+
+- **CRM & Sales** — Contacts, Companies, Leads, Deals, Pipelines, Quotations
+- **Commerce / Billing** — Orders, Products, Invoices, Payments, Subscriptions, Pricelists
+- **Operations / Enterprise** — Tasks, Activities, Inventory, Projects, Manufacturing, Purchase, HR/Employees, Helpdesk, Discuss
+- **AI** — AI Assistant, Conversations, Messages, Tool Calling, Business Context
+- **Automation** — Workflows, Workflow Executions, Event Triggers, n8n Integration
+- **Integrations** — Integration Service, Gmail/WhatsApp, Slack/Calendar, Webhooks
+- **Core / Tenancy** — Organizations, Users, OrgMembers, Tasks, Custom Fields, Comments, Attachments, Departments/Teams
+
+---
+
+## Key Data Flows
+
+1. **User Request** — `Browser → Frontend (React+TanStack) → NestJS API → Prisma → PostgreSQL`
+2. **AI Chat** — `User → AI Assistant Module → AI Service (NestJS) → Gemini/OpenAI → Business Data (PostgreSQL)`
+3. **Workflow/Automation** — `Event (lead created, etc.) → Automation Module → WorkflowExecution (PostgreSQL) → n8n → External Action`
+4. **Payment (Razorpay)** — `User (checkout) → Backend (create order) → Razorpay → Webhook (HMAC verify) → Payment/Invoice/Subscription → PostgreSQL`
+
+---
+
+## Security & Access Control
+
+- **JWT** (access + refresh tokens)
+- **Password hashing** (bcrypt)
+- **RBAC** — `OWNER`, `ADMIN`, `MANAGER`, `EMPLOYEE`, `VIEWER`
+- **Organization isolation** (multi-tenant)
+- **Webhook signature verification**
+- **Input validation & sanitization**
+- **Secrets/environment variables management**
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- Docker & Docker Compose
+- PostgreSQL 16
+- Redis 7
+
+### Installation
 
 ```bash
-# Terminal 1 — database: apply migrations to your Supabase project once
-cd database && supabase link --project-ref <ref> && supabase db push
+# Clone the repository
+git clone https://github.com/ayukaushik1357-bit/opteraOS.git
+cd opteraOS
 
-# Terminal 2 — backend (only if you need it)
-cd backend && npm install && npm run start:dev
+# Install backend dependencies
+cd backend
+npm install
 
-# Terminal 3 — frontend
-cd frontend && bun install && bun dev
+# Install frontend dependencies
+cd ../frontend
+npm install
 ```
+
+### Running with Docker Compose
+
+```bash
+cd backend
+docker-compose up -d
+```
+
+This starts:
+- **PostgreSQL 16** — primary database
+- **Redis 7** — caching
+- **n8n** (port 5678) — automation engine (optional)
+
+### Running Locally
+
+```bash
+# Backend (port 3001)
+cd backend
+npm run start:dev
+
+# Frontend (Vite dev server)
+cd frontend
+npm run dev
+```
+
+### Environment Setup
+
+Copy the example env file and fill in your credentials:
+
+```bash
+cd backend
+cp .env.example .env
+```
+
+---
+
+## Project Structure
+
+```
+opteraOS/
+├── backend/                  # NestJS modular monolith
+│   ├── src/
+│   │   ├── modules/          # Feature modules (CRM, AI, Billing, etc.)
+│   │   ├── common/           # Guards, decorators, interceptors
+│   │   └── app.module.ts
+│   ├── prisma/
+│   │   ├── schema.prisma     # Database schema
+│   │   └── seed.ts
+│   └── docker-compose.yml
+├── frontend/                 # React + TanStack Start
+│   ├── src/
+│   │   ├── routes/           # File-based routing
+│   │   ├── components/       # UI components
+│   │   └── lib/              # API clients, utilities
+│   └── vite.config.ts
+└── docs/
+    └── architecture.jpg      # System architecture diagram
+```
+
+---
+
+## License
+
+MIT
